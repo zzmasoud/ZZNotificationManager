@@ -6,7 +6,8 @@ import XCTest
 import UserNotifications
 
 protocol NotificationManager {
-    
+    typealias AuthorizationCompletion = (Bool) -> Void
+    func requestAuthorization(completion: AuthorizationCompletion)
 }
 
 final class ZZNotificationManagerTests: XCTestCase {
