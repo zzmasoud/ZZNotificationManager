@@ -1,8 +1,5 @@
 //
-//  ZZNotificationManagerTests.swift
-//  ZZNotificationManagerTests
-//
-//  Copyright © 2022 zzmasoud. All rights reserved.
+//  Copyright © zzmasoud (github.com/zzmasoud).
 //
 
 import XCTest
@@ -27,6 +24,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         let exp = expectation(description: "waiting for completion...")
         sut.checkAuthorization { authorized in
             XCTAssertFalse(authorized)
+            XCTAssertEqual(sut.authorizationCallCounts, 1)
             exp.fulfill()
         }
         
@@ -35,8 +33,8 @@ final class ZZNotificationManagerTests: XCTestCase {
     
     // MARK: - Helpers
     
-    private func makeSUT() -> (sut: SpyNM, notificationCeter: NotificationCenterStub) {
-        let stub = NotificationCenterStub()
+    private func makeSUT() -> (sut: SpyNM, notificationCeter: MockNotificationCenter) {
+        let stub = MockNotificationCenter()
         let sut = SpyNM(notificationCenter: stub)
         
         return (sut, stub)
@@ -44,28 +42,43 @@ final class ZZNotificationManagerTests: XCTestCase {
     
     private class SpyNM: NotificationManager {
         
-        let notificationCenter: NotificationCenterStub
+        let notificationCenter: MockNotificationCenter
         private(set) var authorizationCallCounts = 0
         
-        init(notificationCenter: NotificationCenterStub) {
+        init(notificationCenter: MockNotificationCenter) {
             self.notificationCenter = notificationCenter
         }
         
         func checkAuthorization(completion: (Bool) -> Void) {
-            let authorized = notificationCenter.authorize()
-            completion(authorized)
+            notificationCenter.requestAuthorization(options: [.sound]) { authorized, error in
+                authorizationCallCounts += 1
+                completion(authorized)
+            }
         }
     }
     
-    private class NotificationCenterStub {
-        private var authorizationResponse = false
+    private class MockNotificationCenter: MockUserNotificationCenterProtocol {
+        // to make other tester easier, so no need to authorize everytime at the begin of each tests
+        var didRequestAuthorization = true
         
-        func rejectAuthorization() {
-            authorizationResponse = false
+        func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void)) {
+            completionHandler(didRequestAuthorization, nil)
         }
         
-        func authorize() -> Bool {
-            return authorizationResponse
+        func rejectAuthorization() {
+            didRequestAuthorization = false
         }
     }
 }
+
+private protocol MockUserNotificationCenterProtocol: AnyObject {
+    func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void))
+    
+}
+
+extension UNUserNotificationCenter: MockUserNotificationCenterProtocol {
+    func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void)) {
+        print("Requested Authorization")
+    }
+}
+
