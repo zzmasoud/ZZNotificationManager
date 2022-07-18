@@ -7,7 +7,10 @@ import UserNotifications
 
 protocol NotificationManager {
     typealias AuthorizationCompletion = (Bool, Error?) -> Void
+    typealias AuthorizationStatusCompletion = (UNAuthorizationStatus) -> Void
+    
     func requestAuthorization(completion: AuthorizationCompletion)
+    func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion)
 }
 
 final class ZZNotificationManagerTests: XCTestCase {
@@ -63,6 +66,19 @@ final class ZZNotificationManagerTests: XCTestCase {
         wait(for: [exp], timeout: 1)
     }
     
+    func test_checkAuthorizationStatus_deliversNotDeterminedInitially() {
+        let (sut, stub) = makeSUT()
+        stub.didNotAuthorized()
+        
+        let exp = expectation(description: "waiting for completion...")
+        sut.checkAuthorizationStatus { status in
+            XCTAssertEqual(status, .notDetermined)
+            exp.fulfill()
+        }
+
+        wait(for: [exp], timeout: 1)
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT() -> (sut: SpyNM, notificationCeter: MockNotificationCenter) {
@@ -87,16 +103,29 @@ final class ZZNotificationManagerTests: XCTestCase {
                 completion(authorized, error)
             }
         }
+        
+        func checkAuthorizationStatus(completion: @escaping (UNAuthorizationStatus) -> Void) {
+            notificationCenter.getNotificationSettings { settings in
+                completion(.notDetermined)
+            }
+        }
     }
     
     private class MockNotificationCenter: MockUserNotificationCenterProtocol {
         // to make other tester easier, so no need to authorize everytime at the begin of each tests
         var authorizationRequest: (Bool, Error?) = (true, nil)
-        
+        var authorizationStatus: UNAuthorizationStatus = .notDetermined
         
         func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void)) {
             completionHandler(authorizationRequest.0, authorizationRequest.1)
         }
+        
+        func getNotificationSettings(completionHandler: @escaping (UNNotificationSettings) -> Void) {
+//            let settings = UNNotificationSettings
+//            completionHandler(settings)
+        }
+        
+        // --- Simulate States
         
         func rejectAuthorization(with error: NSError? = nil) {
             authorizationRequest = (false, error)
@@ -105,10 +134,14 @@ final class ZZNotificationManagerTests: XCTestCase {
         func acceptAuthorization() {
             authorizationRequest = (true, nil)
         }
+        
+        func didNotAuthorized() {
+            authorizationStatus = .notDetermined
+        }
     }
 }
 
 private protocol MockUserNotificationCenterProtocol: AnyObject {
     func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void))
-    
+    func getNotificationSettings(completionHandler: @escaping (UNNotificationSettings) -> Void)
 }
