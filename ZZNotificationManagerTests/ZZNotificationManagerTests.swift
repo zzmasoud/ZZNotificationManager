@@ -17,12 +17,12 @@ final class ZZNotificationManagerTests: XCTestCase {
         XCTAssertEqual(sut.authorizationCallCounts, 0)
     }
     
-    func test_checkAuthorization_deliversFalseOnNotAuthorized() {
+    func test_requestAuthorization_deliversFalseOnNotAuthorized() {
         let (sut, stub) = makeSUT()
         stub.rejectAuthorization()
         
         let exp = expectation(description: "waiting for completion...")
-        sut.checkAuthorization { authorized in
+        sut.requestAuthorization { authorized in
             XCTAssertFalse(authorized)
             XCTAssertEqual(sut.authorizationCallCounts, 1)
             exp.fulfill()
@@ -31,12 +31,12 @@ final class ZZNotificationManagerTests: XCTestCase {
         wait(for: [exp], timeout: 1)
     }
     
-    func test_checkAuthorization_deliversTrueOnAuthorized() {
+    func test_requestAuthorization_deliversTrueOnAuthorized() {
         let (sut, stub) = makeSUT()
         stub.acceptAuthorization()
         
         let exp = expectation(description: "waiting for completion...")
-        sut.checkAuthorization { authorized in
+        sut.requestAuthorization { authorized in
             XCTAssertTrue(authorized)
             XCTAssertEqual(sut.authorizationCallCounts, 1)
             exp.fulfill()
@@ -63,7 +63,7 @@ final class ZZNotificationManagerTests: XCTestCase {
             self.notificationCenter = notificationCenter
         }
         
-        func checkAuthorization(completion: (Bool) -> Void) {
+        func requestAuthorization(completion: (Bool) -> Void) {
             notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { authorized, error in
                 authorizationCallCounts += 1
                 completion(authorized)
