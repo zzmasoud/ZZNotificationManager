@@ -31,13 +31,27 @@ final class ZZNotificationManagerTests: XCTestCase {
         wait(for: [exp], timeout: 1)
     }
     
+    func test_checkAuthorization_deliversTrueOnAuthorized() {
+        let (sut, stub) = makeSUT()
+        stub.acceptAuthorization()
+        
+        let exp = expectation(description: "waiting for completion...")
+        sut.checkAuthorization { authorized in
+            XCTAssertTrue(authorized)
+            XCTAssertEqual(sut.authorizationCallCounts, 1)
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1)
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT() -> (sut: SpyNM, notificationCeter: MockNotificationCenter) {
-        let stub = MockNotificationCenter()
-        let sut = SpyNM(notificationCenter: stub)
+        let notificationCenter = MockNotificationCenter()
+        let sut = SpyNM(notificationCenter: notificationCenter)
         
-        return (sut, stub)
+        return (sut, notificationCenter)
     }
     
     private class SpyNM: NotificationManager {
@@ -50,7 +64,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         }
         
         func checkAuthorization(completion: (Bool) -> Void) {
-            notificationCenter.requestAuthorization(options: [.sound]) { authorized, error in
+            notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { authorized, error in
                 authorizationCallCounts += 1
                 completion(authorized)
             }
@@ -68,6 +82,10 @@ final class ZZNotificationManagerTests: XCTestCase {
         func rejectAuthorization() {
             didRequestAuthorization = false
         }
+        
+        func acceptAuthorization() {
+            didRequestAuthorization = true
+        }
     }
 }
 
@@ -75,10 +93,3 @@ private protocol MockUserNotificationCenterProtocol: AnyObject {
     func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void))
     
 }
-
-extension UNUserNotificationCenter: MockUserNotificationCenterProtocol {
-    func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void)) {
-        print("Requested Authorization")
-    }
-}
-
