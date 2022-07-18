@@ -6,7 +6,7 @@ import XCTest
 import UserNotifications
 
 protocol NotificationManager {
-    typealias AuthorizationCompletion = (Bool) -> Void
+    typealias AuthorizationCompletion = (Bool, Error?) -> Void
     func requestAuthorization(completion: AuthorizationCompletion)
 }
 
@@ -23,8 +23,9 @@ final class ZZNotificationManagerTests: XCTestCase {
         stub.rejectAuthorization()
         
         let exp = expectation(description: "waiting for completion...")
-        sut.requestAuthorization { authorized in
+        sut.requestAuthorization { authorized, error in
             XCTAssertFalse(authorized)
+            XCTAssertNil(error)
             XCTAssertEqual(sut.authorizationCallCounts, 1)
             exp.fulfill()
         }
@@ -37,8 +38,24 @@ final class ZZNotificationManagerTests: XCTestCase {
         stub.acceptAuthorization()
         
         let exp = expectation(description: "waiting for completion...")
-        sut.requestAuthorization { authorized in
+        sut.requestAuthorization { authorized, error in
             XCTAssertTrue(authorized)
+            XCTAssertNil(error)
+            XCTAssertEqual(sut.authorizationCallCounts, 1)
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1)
+    }
+    
+    func test_requestAuthorization_deliversFalseWithErrorOnNotAuthorizedAndFailedWithError() {
+        let (sut, stub) = makeSUT()
+        stub.rejectAuthorization(with: NSError(domain: "error", code: -1))
+        
+        let exp = expectation(description: "waiting for completion...")
+        sut.requestAuthorization { authorized, error in
+            XCTAssertFalse(authorized)
+            XCTAssertNotNil(error)
             XCTAssertEqual(sut.authorizationCallCounts, 1)
             exp.fulfill()
         }
@@ -64,28 +81,29 @@ final class ZZNotificationManagerTests: XCTestCase {
             self.notificationCenter = notificationCenter
         }
         
-        func requestAuthorization(completion: (Bool) -> Void) {
+        func requestAuthorization(completion: AuthorizationCompletion) {
             notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { authorized, error in
                 authorizationCallCounts += 1
-                completion(authorized)
+                completion(authorized, error)
             }
         }
     }
     
     private class MockNotificationCenter: MockUserNotificationCenterProtocol {
         // to make other tester easier, so no need to authorize everytime at the begin of each tests
-        var didRequestAuthorization = true
+        var authorizationRequest: (Bool, Error?) = (true, nil)
+        
         
         func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void)) {
-            completionHandler(didRequestAuthorization, nil)
+            completionHandler(authorizationRequest.0, authorizationRequest.1)
         }
         
-        func rejectAuthorization() {
-            didRequestAuthorization = false
+        func rejectAuthorization(with error: NSError? = nil) {
+            authorizationRequest = (false, error)
         }
         
         func acceptAuthorization() {
-            didRequestAuthorization = true
+            authorizationRequest = (true, nil)
         }
     }
 }
