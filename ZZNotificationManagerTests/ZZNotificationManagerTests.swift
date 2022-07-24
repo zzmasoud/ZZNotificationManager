@@ -22,8 +22,8 @@ final class ZZNotificationManagerTests: XCTestCase {
     }
     
     func test_requestAuthorization_deliversFalseOnNotAuthorized() {
-        let (sut, stub) = makeSUT()
-        stub.rejectAuthorization()
+        let (sut, notificationCenter) = makeSUT()
+        notificationCenter.rejectAuthorization()
         
         let exp = expectation(description: "waiting for completion...")
         sut.requestAuthorization { authorized, error in
@@ -37,8 +37,8 @@ final class ZZNotificationManagerTests: XCTestCase {
     }
     
     func test_requestAuthorization_deliversTrueOnAuthorized() {
-        let (sut, stub) = makeSUT()
-        stub.acceptAuthorization()
+        let (sut, notificationCenter) = makeSUT()
+        notificationCenter.acceptAuthorization()
         
         let exp = expectation(description: "waiting for completion...")
         sut.requestAuthorization { authorized, error in
@@ -52,9 +52,9 @@ final class ZZNotificationManagerTests: XCTestCase {
     }
     
     func test_requestAuthorization_deliversFalseWithErrorOnNotAuthorizedAndFailedWithError() {
-        let (sut, stub) = makeSUT()
+        let (sut, notificationCenter) = makeSUT()
         
-        stub.rejectAuthorization(with: NSError(domain: "error", code: -1))
+        notificationCenter.rejectAuthorization(with: NSError(domain: "error", code: -1))
         
         let exp = expectation(description: "waiting for completion...")
         sut.requestAuthorization { authorized, error in
@@ -68,45 +68,27 @@ final class ZZNotificationManagerTests: XCTestCase {
     }
     
     func test_checkAuthorizationStatus_deliversNotDeterminedIfSettingsIsNotDetermined() {
-        let (sut, stub) = makeSUT()
+        let (sut, notificationCenter) = makeSUT()
         
-        stub.didNotAuthorized()
+        notificationCenter.didNotAuthorized()
         
-        let exp = expectation(description: "waiting for completion...")
-        sut.checkAuthorizationStatus { status in
-            XCTAssertEqual(status, .notDetermined)
-            exp.fulfill()
-        }
-
-        wait(for: [exp], timeout: 1)
+        assertThat(sut, deliversAuthorizationStatusWith: .notDetermined)
     }
     
     func test_checkAuthorizationStatus_deliversDeniedIfSettingsIsDenied() {
-        let (sut, stub) = makeSUT()
+        let (sut, notificationCenter) = makeSUT()
         
-        stub.didDenyAuthorized()
+        notificationCenter.didDenyAuthorized()
         
-        let exp = expectation(description: "waiting for completion...")
-        sut.checkAuthorizationStatus { status in
-            XCTAssertEqual(status, .denied)
-            exp.fulfill()
-        }
-
-        wait(for: [exp], timeout: 1)
+        assertThat(sut, deliversAuthorizationStatusWith: .denied)
     }
     
     func test_checkAuthorizationStatus_deliversAuthorizedIfSettingsIsAuhorized() {
-        let (sut, stub) = makeSUT()
+        let (sut, notificationCenter) = makeSUT()
         
-        stub.didAcceptAuthorized()
+        notificationCenter.didAcceptAuthorized()
         
-        let exp = expectation(description: "waiting for completion...")
-        sut.checkAuthorizationStatus { status in
-            XCTAssertEqual(status, .authorized)
-            exp.fulfill()
-        }
-
-        wait(for: [exp], timeout: 1)
+        assertThat(sut, deliversAuthorizationStatusWith: .authorized)
     }
     
     // MARK: - Helpers
@@ -116,6 +98,16 @@ final class ZZNotificationManagerTests: XCTestCase {
         let sut = SpyNM(notificationCenter: notificationCenter)
         
         return (sut, notificationCenter)
+    }
+    
+    private func assertThat(_ sut: NotificationManager, deliversAuthorizationStatusWith status: UNAuthorizationStatus, file: StaticString = #file, line: UInt = #line) {
+        let exp = expectation(description: "waiting for completion...")
+        sut.checkAuthorizationStatus { gotStatus in
+            XCTAssertEqual(status, gotStatus, file: file, line: line)
+            exp.fulfill()
+        }
+
+        wait(for: [exp], timeout: 1)
     }
     
     private class SpyNM: NotificationManager {
