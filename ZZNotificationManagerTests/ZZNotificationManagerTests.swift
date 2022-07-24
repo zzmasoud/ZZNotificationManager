@@ -95,6 +95,20 @@ final class ZZNotificationManagerTests: XCTestCase {
         wait(for: [exp], timeout: 1)
     }
     
+    func test_checkAuthorizationStatus_deliversAuthorizedIfSettingsIsAuhorized() {
+        let (sut, stub) = makeSUT()
+        
+        stub.didAcceptAuthorized()
+        
+        let exp = expectation(description: "waiting for completion...")
+        sut.checkAuthorizationStatus { status in
+            XCTAssertEqual(status, .authorized)
+            exp.fulfill()
+        }
+
+        wait(for: [exp], timeout: 1)
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT() -> (sut: SpyNM, notificationCeter: MockNotificationCenter) {
@@ -160,6 +174,10 @@ final class ZZNotificationManagerTests: XCTestCase {
         
         func didDenyAuthorized() {
             authorizationStatus = .denied
+        }
+        
+        func didAcceptAuthorized() {
+            authorizationStatus = .authorized
         }
     }
 }
