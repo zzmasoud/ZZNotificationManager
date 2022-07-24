@@ -53,6 +53,7 @@ final class ZZNotificationManagerTests: XCTestCase {
     
     func test_requestAuthorization_deliversFalseWithErrorOnNotAuthorizedAndFailedWithError() {
         let (sut, stub) = makeSUT()
+        
         stub.rejectAuthorization(with: NSError(domain: "error", code: -1))
         
         let exp = expectation(description: "waiting for completion...")
@@ -66,8 +67,9 @@ final class ZZNotificationManagerTests: XCTestCase {
         wait(for: [exp], timeout: 1)
     }
     
-    func test_checkAuthorizationStatus_deliversNotDeterminedInitially() {
+    func test_checkAuthorizationStatus_deliversNotDeterminedIfSettingsIsNotDetermined() {
         let (sut, stub) = makeSUT()
+        
         stub.didNotAuthorized()
         
         let exp = expectation(description: "waiting for completion...")
@@ -106,7 +108,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         
         func checkAuthorizationStatus(completion: @escaping (UNAuthorizationStatus) -> Void) {
             notificationCenter.getNotificationSettings { settings in
-                completion(.notDetermined)
+                completion(settings.authorizationStatus)
             }
         }
     }
@@ -121,8 +123,11 @@ final class ZZNotificationManagerTests: XCTestCase {
         }
         
         func getNotificationSettings(completionHandler: @escaping (UNNotificationSettings) -> Void) {
-//            let settings = UNNotificationSettings
-//            completionHandler(settings)
+            UNNotificationSettings.fakeAuthorizationStatus = authorizationStatus
+            let settingsCoder = MockNSCoder()
+            let settings = UNNotificationSettings(coder: settingsCoder)!
+
+            completionHandler(settings)
         }
         
         // --- Simulate States
@@ -144,4 +149,21 @@ final class ZZNotificationManagerTests: XCTestCase {
 private protocol MockUserNotificationCenterProtocol: AnyObject {
     func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void))
     func getNotificationSettings(completionHandler: @escaping (UNNotificationSettings) -> Void)
+}
+
+extension UNNotificationSettings {
+    static var fakeAuthorizationStatus: UNAuthorizationStatus = .authorized
+}
+
+class MockNSCoder: NSCoder {
+
+    var authorizationStatus = UNNotificationSettings.fakeAuthorizationStatus.rawValue
+    
+    override func decodeInt64(forKey key: String) -> Int64 {
+        return Int64(authorizationStatus)
+    }
+    
+    override func decodeBool(forKey key: String) -> Bool {
+        return true
+    }
 }
