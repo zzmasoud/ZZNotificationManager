@@ -23,48 +23,27 @@ final class ZZNotificationManagerTests: XCTestCase {
     
     func test_requestAuthorization_deliversFalseOnNotAuthorized() {
         let (sut, notificationCenter) = makeSUT()
+        
         notificationCenter.rejectAuthorization()
         
-        let exp = expectation(description: "waiting for completion...")
-        sut.requestAuthorization { authorized, error in
-            XCTAssertFalse(authorized)
-            XCTAssertNil(error)
-            XCTAssertEqual(sut.authorizationCallCounts, 1)
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        assertThat(sut, deliversAuthorizationRequestWith: false)
     }
     
     func test_requestAuthorization_deliversTrueOnAuthorized() {
         let (sut, notificationCenter) = makeSUT()
+        
         notificationCenter.acceptAuthorization()
         
-        let exp = expectation(description: "waiting for completion...")
-        sut.requestAuthorization { authorized, error in
-            XCTAssertTrue(authorized)
-            XCTAssertNil(error)
-            XCTAssertEqual(sut.authorizationCallCounts, 1)
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        assertThat(sut, deliversAuthorizationRequestWith: true)
     }
     
     func test_requestAuthorization_deliversFalseWithErrorOnNotAuthorizedAndFailedWithError() {
+        let error = NSError(domain: "error", code: -1)
         let (sut, notificationCenter) = makeSUT()
         
-        notificationCenter.rejectAuthorization(with: NSError(domain: "error", code: -1))
+        notificationCenter.rejectAuthorization(with: error)
         
-        let exp = expectation(description: "waiting for completion...")
-        sut.requestAuthorization { authorized, error in
-            XCTAssertFalse(authorized)
-            XCTAssertNotNil(error)
-            XCTAssertEqual(sut.authorizationCallCounts, 1)
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        assertThat(sut, deliversAuthorizationRequestWith: false, andError: error)
     }
     
     func test_checkAuthorizationStatus_deliversNotDeterminedIfSettingsIsNotDetermined() {
@@ -98,6 +77,17 @@ final class ZZNotificationManagerTests: XCTestCase {
         let sut = SpyNM(notificationCenter: notificationCenter)
         
         return (sut, notificationCenter)
+    }
+    
+    private func assertThat(_ sut: NotificationManager, deliversAuthorizationRequestWith authorized: Bool, andError error: NSError? = nil, file: StaticString = #file, line: UInt = #line) {
+        let exp = expectation(description: "waiting for completion...")
+        sut.requestAuthorization { gotAuthorized, gotError in
+            XCTAssertEqual(authorized, gotAuthorized, file: file, line: line)
+            XCTAssertEqual(error, gotError as? NSError, file: file, line: line)
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1)
     }
     
     private func assertThat(_ sut: NotificationManager, deliversAuthorizationStatusWith status: UNAuthorizationStatus, file: StaticString = #file, line: UInt = #line) {
