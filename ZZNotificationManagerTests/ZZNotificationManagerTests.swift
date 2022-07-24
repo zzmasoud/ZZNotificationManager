@@ -15,12 +15,6 @@ protocol NotificationManager {
 
 final class ZZNotificationManagerTests: XCTestCase {
     
-    func test_init_doesNotAuthorize() {
-        let (sut, _) = makeSUT()
-        
-        XCTAssertEqual(sut.authorizationCallCounts, 0)
-    }
-    
     func test_requestAuthorization_deliversFalseOnNotAuthorized() {
         let (sut, notificationCenter) = makeSUT()
         
@@ -103,7 +97,6 @@ final class ZZNotificationManagerTests: XCTestCase {
     private class SpyNM: NotificationManager {
         
         let notificationCenter: MockNotificationCenter
-        private(set) var authorizationCallCounts = 0
         
         init(notificationCenter: MockNotificationCenter) {
             self.notificationCenter = notificationCenter
@@ -111,7 +104,6 @@ final class ZZNotificationManagerTests: XCTestCase {
         
         func requestAuthorization(completion: AuthorizationCompletion) {
             notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { authorized, error in
-                authorizationCallCounts += 1
                 completion(authorized, error)
             }
         }
