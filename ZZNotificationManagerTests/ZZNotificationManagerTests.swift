@@ -12,7 +12,7 @@ protocol NotificationManager {
     
     func requestAuthorization(completion: AuthorizationCompletion)
     func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion)
-    func setNotification(for fireDate: Date, title: String, body: String?, completion: SetNotificationCompletion)
+    func setNotification(forDate: Date, andId id: String, content: UNNotificationContent, completion: SetNotificationCompletion)
     
     var forbiddenHours: [Int] { get }
 }
@@ -70,11 +70,12 @@ final class ZZNotificationManagerTests: XCTestCase {
     
     func test_setNotification_rejectIfDateIsInForbiddenHours() {
         let (sut, _) = makeSUT()
+        let content = UNNotificationContent()
         let forbiddenHour = sut.forbiddenHours.randomElement()!
         let fireDate = Date().set(hour: forbiddenHour)
         
         let exp = expectation(description: "waiting for completion...")
-        sut.setNotification(for: fireDate, title: "", body: "") { error in
+        sut.setNotification(forDate: fireDate, andId: UUID().uuidString, content: content) { error in
             XCTAssertNotNil(error)
             exp.fulfill()
         }
@@ -84,11 +85,12 @@ final class ZZNotificationManagerTests: XCTestCase {
     
     func test_setNotification_passIfDateIsNotInForbiddenHours() {
         let (sut, _) = makeSUT()
+        let content = UNNotificationContent()
         let notForbiddenHour = Set(Array(0...23)).subtracting(Set(sut.forbiddenHours)).randomElement()!
         let fireDate = Date().set(hour: notForbiddenHour)
         
         let exp = expectation(description: "waiting for completion...")
-        sut.setNotification(for: fireDate, title: "", body: "") { error in
+        sut.setNotification(forDate: fireDate, andId: UUID().uuidString, content: content) { error in
             XCTAssertNil(error)
             exp.fulfill()
         }
@@ -149,7 +151,7 @@ final class ZZNotificationManagerTests: XCTestCase {
             }
         }
         
-        func setNotification(for fireDate: Date, title: String, body: String?, completion: SetNotificationCompletion) {
+        func setNotification(forDate fireDate: Date, andId id: String, content: UNNotificationContent, completion: SetNotificationCompletion) {
             guard !forbiddenHours.contains(getHour(from: fireDate)) else {
                 return completion(NSError(domain: "error", code: -1))
             }
