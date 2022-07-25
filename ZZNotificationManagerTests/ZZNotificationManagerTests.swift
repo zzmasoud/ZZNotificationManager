@@ -36,7 +36,7 @@ final class ZZNotificationManagerTests: XCTestCase {
     }
     
     func test_requestAuthorization_deliversFalseWithErrorOnNotAuthorizedAndFailedWithError() {
-        let error = NSError(domain: "error", code: -1)
+        let error = anyNSError()
         let (sut, notificationCenter) = makeSUT()
         
         notificationCenter.rejectAuthorization(with: error)
@@ -103,7 +103,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         let content = UNNotificationContent()
         let notForbiddenHour = Set(Array(0...23)).subtracting(Set(sut.forbiddenHours)).randomElement()!
         let fireDate = Date().set(hour: notForbiddenHour)
-        let expectedError = NSError(domain: "error", code: -1)
+        let expectedError = anyNSError()
 
         notificationCenter.add(with: expectedError)
         
@@ -149,6 +149,10 @@ final class ZZNotificationManagerTests: XCTestCase {
         wait(for: [exp], timeout: 1)
     }
     
+    private func anyNSError() -> NSError {
+        return NSError(domain: UUID().uuidString, code: [-10,0].randomElement()!)
+    }
+    
     private class SpyNM: NotificationManager {
         
         let notificationCenter: MockNotificationCenter
@@ -171,7 +175,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         
         func setNotification(forDate fireDate: Date, andId id: String, content: UNNotificationContent, completion: @escaping SetNotificationCompletion) {
             guard !forbiddenHours.contains(getHour(from: fireDate)) else {
-                return completion(NSError(domain: "error", code: -1))
+                return completion(anyNSError())
             }
             
             let components = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute, .second], from: fireDate)
