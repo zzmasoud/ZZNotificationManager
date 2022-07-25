@@ -12,7 +12,7 @@ protocol NotificationManager {
     
     func requestAuthorization(completion: AuthorizationCompletion)
     func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion)
-    func setNotification(forDate: Date, andId id: String, content: UNNotificationContent, completion: SetNotificationCompletion)
+    func setNotification(forDate: Date, andId id: String, content: UNNotificationContent, completion: @escaping SetNotificationCompletion)
     
     var forbiddenHours: [Int] { get }
 }
@@ -88,10 +88,28 @@ final class ZZNotificationManagerTests: XCTestCase {
         let content = UNNotificationContent()
         let notForbiddenHour = Set(Array(0...23)).subtracting(Set(sut.forbiddenHours)).randomElement()!
         let fireDate = Date().set(hour: notForbiddenHour)
-        
+                
         let exp = expectation(description: "waiting for completion...")
         sut.setNotification(forDate: fireDate, andId: UUID().uuidString, content: content) { error in
             XCTAssertNil(error)
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1)
+    }
+    
+    func test_setNotification_deliversErrorOnSettingError() {
+        let (sut, notificationCenter) = makeSUT()
+        let content = UNNotificationContent()
+        let notForbiddenHour = Set(Array(0...23)).subtracting(Set(sut.forbiddenHours)).randomElement()!
+        let fireDate = Date().set(hour: notForbiddenHour)
+        let expectedError = NSError(domain: "error", code: -1)
+
+        notificationCenter.add(with: expectedError)
+        
+        let exp = expectation(description: "waiting for completion...")
+        sut.setNotification(forDate: fireDate, andId: UUID().uuidString, content: content) { error in
+            XCTAssertEqual(expectedError, error as? NSError)
             exp.fulfill()
         }
         
@@ -151,11 +169,16 @@ final class ZZNotificationManagerTests: XCTestCase {
             }
         }
         
-        func setNotification(forDate fireDate: Date, andId id: String, content: UNNotificationContent, completion: SetNotificationCompletion) {
+        func setNotification(forDate fireDate: Date, andId id: String, content: UNNotificationContent, completion: @escaping SetNotificationCompletion) {
             guard !forbiddenHours.contains(getHour(from: fireDate)) else {
                 return completion(NSError(domain: "error", code: -1))
             }
-            completion(nil)
+            
+            let components = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute, .second], from: fireDate)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+            let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+
+            notificationCenter.add(request, withCompletionHandler: completion)
         }
         
         private func getHour(from date: Date) -> Int {
@@ -169,6 +192,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         // to make other tester easier, so no need to authorize everytime at the begin of each tests
         var authorizationRequest: (Bool, Error?) = (true, nil)
         var authorizationStatus: UNAuthorizationStatus = .notDetermined
+        var addingNotificationError: NSError? = nil
         
         func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void)) {
             completionHandler(authorizationRequest.0, authorizationRequest.1)
@@ -180,6 +204,10 @@ final class ZZNotificationManagerTests: XCTestCase {
             let settings = UNNotificationSettings(coder: settingsCoder)!
 
             completionHandler(settings)
+        }
+        
+        func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?) {
+            completionHandler?(addingNotificationError)
         }
         
         // --- Simulate States
@@ -203,12 +231,18 @@ final class ZZNotificationManagerTests: XCTestCase {
         func didAcceptAuthorized() {
             authorizationStatus = .authorized
         }
+        
+        func add(with error: NSError?) {
+            addingNotificationError = error
+        }
     }
 }
 
 private protocol MockUserNotificationCenterProtocol: AnyObject {
     func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void))
     func getNotificationSettings(completionHandler: @escaping (UNNotificationSettings) -> Void)
+    func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?)
+
 }
 
 extension UNNotificationSettings {
