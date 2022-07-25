@@ -8,10 +8,13 @@ import UserNotifications
 protocol NotificationManager {
     typealias AuthorizationCompletion = (Bool, Error?) -> Void
     typealias AuthorizationStatusCompletion = (UNAuthorizationStatus) -> Void
+    typealias SetNotificationCompletion = (Error?) -> Void
     
     func requestAuthorization(completion: AuthorizationCompletion)
     func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion)
     func setNotification(for fireDate: Date, title: String, body: String?, completion: SetNotificationCompletion)
+    
+    var forbiddenHours: [Int] { get }
 }
 
 final class ZZNotificationManagerTests: XCTestCase {
@@ -63,6 +66,19 @@ final class ZZNotificationManagerTests: XCTestCase {
         notificationCenter.didAcceptAuthorized()
         
         assertThat(sut, deliversAuthorizationStatusWith: .authorized)
+    }
+    
+    func test_setNotification_rejectIfDateIsInForbiddenHours() {
+        let (sut, _) = makeSUT()
+        let forbiddenHour = sut.forbiddenHours.randomElement()!
+        let fireDate = Date().set(hour: forbiddenHour)
+        
+        let exp = expectation(description: "waiting for completion...")
+        sut.setNotification(for: fireDate, title: "", body: "") { error in
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1)
     }
     
     // MARK: - Helpers
@@ -117,6 +133,12 @@ final class ZZNotificationManagerTests: XCTestCase {
                 completion(settings.authorizationStatus)
             }
         }
+        
+        func setNotification(for fireDate: Date, title: String, body: String?, completion: SetNotificationCompletion) {
+            completion(NSError(domain: "error", code: -1))
+        }
+        
+        var forbiddenHours: [Int] { return [10, 11, 00, 01, 02, 03, 04, 05, 06] }
     }
     
     private class MockNotificationCenter: MockUserNotificationCenterProtocol {
@@ -179,5 +201,13 @@ class MockNSCoder: NSCoder {
     
     override func decodeBool(forKey key: String) -> Bool {
         return true
+    }
+}
+
+private extension Date {
+    func set(hour: Int) -> Date {
+        let calendar = Calendar.current
+        
+        return calendar.date(bySetting: .hour, value: hour, of: self)!
     }
 }
