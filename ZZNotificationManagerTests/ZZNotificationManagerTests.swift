@@ -66,10 +66,13 @@ final class ZZNotificationManagerTests: XCTestCase {
     
     // MARK: - Helpers
     
-    private func makeSUT() -> (sut: SpyNM, notificationCeter: MockNotificationCenter) {
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: SpyNM, notificationCeter: MockNotificationCenter) {
         let notificationCenter = MockNotificationCenter()
         let sut = SpyNM(notificationCenter: notificationCenter)
         
+        trackForMemoryLeaks(notificationCenter, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
+
         return (sut, notificationCenter)
     }
     
