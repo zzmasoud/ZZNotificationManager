@@ -11,6 +11,7 @@ protocol NotificationManager {
     
     func requestAuthorization(completion: AuthorizationCompletion)
     func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion)
+    func setNotification(for fireDate: Date, title: String, body: String?, completion: SetNotificationCompletion)
 }
 
 final class ZZNotificationManagerTests: XCTestCase {
@@ -111,7 +112,7 @@ final class ZZNotificationManagerTests: XCTestCase {
             }
         }
         
-        func checkAuthorizationStatus(completion: @escaping (UNAuthorizationStatus) -> Void) {
+        func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion) {
             notificationCenter.getNotificationSettings { settings in
                 completion(settings.authorizationStatus)
             }
