@@ -75,6 +75,21 @@ final class ZZNotificationManagerTests: XCTestCase {
         
         let exp = expectation(description: "waiting for completion...")
         sut.setNotification(for: fireDate, title: "", body: "") { error in
+            XCTAssertNotNil(error)
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1)
+    }
+    
+    func test_setNotification_passIfDateIsNotInForbiddenHours() {
+        let (sut, _) = makeSUT()
+        let notForbiddenHour = Set(Array(0...23)).subtracting(Set(sut.forbiddenHours)).randomElement()!
+        let fireDate = Date().set(hour: notForbiddenHour)
+        
+        let exp = expectation(description: "waiting for completion...")
+        sut.setNotification(for: fireDate, title: "", body: "") { error in
+            XCTAssertNil(error)
             exp.fulfill()
         }
         
@@ -135,7 +150,14 @@ final class ZZNotificationManagerTests: XCTestCase {
         }
         
         func setNotification(for fireDate: Date, title: String, body: String?, completion: SetNotificationCompletion) {
-            completion(NSError(domain: "error", code: -1))
+            guard !forbiddenHours.contains(getHour(from: fireDate)) else {
+                return completion(NSError(domain: "error", code: -1))
+            }
+            completion(nil)
+        }
+        
+        private func getHour(from date: Date) -> Int {
+            return Calendar.current.component(.hour, from: date)
         }
         
         var forbiddenHours: [Int] { return [10, 11, 00, 01, 02, 03, 04, 05, 06] }
