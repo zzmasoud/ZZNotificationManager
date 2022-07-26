@@ -80,13 +80,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         let id = UUID().uuidString
         let expectedError = SetNotificationError.forbiddenHour
 
-        let exp = expectation(description: "waiting for completion...")
-        sut.setNotification(forDate: fireDate, andId: UUID().uuidString, content: content) { error in
-            XCTAssertEqual(expectedError, error)
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        assertThat(sut, setsNotificationForDate: fireDate, withId: id, content: content, andCompletesWithError: expectedError)
     }
     
     func test_setNotification_passIfDateIsNotInForbiddenHours() {
@@ -96,13 +90,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         let fireDate = Date().set(hour: notForbiddenHour)
         let id = UUID().uuidString
 
-        let exp = expectation(description: "waiting for completion...")
-        sut.setNotification(forDate: fireDate, andId: id, content: content) { error in
-            XCTAssertNil(error)
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        assertThat(sut, setsNotificationForDate: fireDate, withId: id, content: content, andCompletesWithError: nil)
     }
     
     func test_setNotification_deliversErrorOnSettingError() {
@@ -115,13 +103,7 @@ final class ZZNotificationManagerTests: XCTestCase {
 
         notificationCenter.add(with: expectedError)
         
-        let exp = expectation(description: "waiting for completion...")
-        sut.setNotification(forDate: fireDate, andId: UUID().uuidString, content: content) { error in
-            XCTAssertEqual(expectedError, error)
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        assertThat(sut, setsNotificationForDate: fireDate, withId: id, content: content, andCompletesWithError: expectedError)
     }
     
     // MARK: - Helpers
@@ -154,6 +136,16 @@ final class ZZNotificationManagerTests: XCTestCase {
             exp.fulfill()
         }
 
+        wait(for: [exp], timeout: 1)
+    }
+    
+    private func assertThat(_ sut: NotificationManager, setsNotificationForDate fireDate: Date, withId id: String, content: UNNotificationContent, andCompletesWithError expectedError: SetNotificationError?) {
+        let exp = expectation(description: "waiting for completion...")
+        sut.setNotification(forDate: fireDate, andId: id, content: content) { error in
+            XCTAssertEqual(expectedError, error)
+            exp.fulfill()
+        }
+        
         wait(for: [exp], timeout: 1)
     }
     
