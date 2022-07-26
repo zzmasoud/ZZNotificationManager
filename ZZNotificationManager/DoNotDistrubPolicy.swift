@@ -4,6 +4,6 @@
 
 import Foundation
 
-protocol DoNotDisturbPolicy {
+public protocol DoNotDisturbPolicy {
     func isSatisfied(_ date: Date) -> Bool
 }

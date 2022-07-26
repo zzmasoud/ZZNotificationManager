@@ -1,0 +1,52 @@
+//
+//  Copyright © zzmasoud (github.com/zzmasoud).
+//
+
+import XCTest
+import ZZNotificationManager
+
+class ZZDoNotDisturbPolicy: DoNotDisturbPolicy {
+   
+    private let forbiddenHours: [Int]
+    private let calendar: Calendar
+    
+    init(forbiddenHours: [Int], calendar: Calendar) {
+        self.forbiddenHours = forbiddenHours
+        self.calendar = calendar
+    }
+    
+    func isSatisfied(_ date: Date) -> Bool {
+        let hour = calendar.component(.hour, from: date)
+        return !forbiddenHours.contains(hour)
+   }
+}
+
+final class ZZDoNotDisturbPolicyTests: XCTestCase {
+
+    func test_isSatisfied_deliversFalseIfDateIsInForbiddenHours() {
+        let sut = makeSUT()
+        let date = Date().set(hour: 10)
+        
+        let result = sut.isSatisfied(date)
+        
+        XCTAssertFalse(result)
+    }
+    
+    //MARK: - Helper
+    
+    private func makeSUT() -> DoNotDisturbPolicy {
+        return ZZDoNotDisturbPolicy(
+            forbiddenHours: [10,11,1,2,3,4,5],
+            calendar: Calendar.current
+        )
+    }
+
+}
+
+private extension Date {
+    func set(hour: Int) -> Date {
+        let calendar = Calendar.current
+        
+        return calendar.date(bySetting: .hour, value: hour, of: self)!
+    }
+}

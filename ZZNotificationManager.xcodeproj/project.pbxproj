@@ -11,6 +11,7 @@
 		045EB2742960607A00483203 /* ZZNotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */; };
 		04E3D60E2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D60D2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift */; };
 		04E3D6122961F0F6002D64A7 /* DoNotDistrubPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D6112961F0F6002D64A7 /* DoNotDistrubPolicy.swift */; };
+		04E3D6142961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D6132961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManagerTests.swift; sourceTree = "<group>"; };
 		04E3D60D2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+MemoryLeakTracking.swift"; sourceTree = "<group>"; };
 		04E3D6112961F0F6002D64A7 /* DoNotDistrubPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoNotDistrubPolicy.swift; sourceTree = "<group>"; };
+		04E3D6132961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZDoNotDistrubPolicyTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */,
+				04E3D6132961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift */,
 				04E3D60D2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift */,
 			);
 			path = ZZNotificationManagerTests;
@@ -204,6 +207,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04E3D6142961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift in Sources */,
 				045EB2742960607A00483203 /* ZZNotificationManagerTests.swift in Sources */,
 				04E3D60E2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 			);
