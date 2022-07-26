@@ -5,22 +5,6 @@
 import XCTest
 import ZZNotificationManager
 
-class ZZDoNotDisturbPolicy: DoNotDisturbPolicy {
-   
-    private let forbiddenHours: [Int]
-    private let calendar: Calendar
-    
-    init(forbiddenHours: [Int], calendar: Calendar) {
-        self.forbiddenHours = forbiddenHours
-        self.calendar = calendar
-    }
-    
-    func isSatisfied(_ date: Date) -> Bool {
-        let hour = calendar.component(.hour, from: date)
-        return !forbiddenHours.contains(hour)
-   }
-}
-
 final class ZZDoNotDisturbPolicyTests: XCTestCase {
 
     func test_isSatisfied_deliversFalseIfDateIsInForbiddenHours() {

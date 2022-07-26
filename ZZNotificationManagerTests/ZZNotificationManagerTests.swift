@@ -4,11 +4,13 @@
 
 import XCTest
 import UserNotifications
+import ZZNotificationManager
 
 enum SetNotificationError: Error {
     case forbiddenHour
     case system
 }
+
 protocol NotificationManager {
     typealias AuthorizationCompletion = (Bool, Error?) -> Void
     typealias AuthorizationStatusCompletion = (UNAuthorizationStatus) -> Void
@@ -17,8 +19,6 @@ protocol NotificationManager {
     func requestAuthorization(completion: AuthorizationCompletion)
     func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion)
     func setNotification(forDate: Date, andId id: String, content: UNNotificationContent, completion: @escaping SetNotificationCompletion)
-    
-    var forbiddenHours: [Int] { get }
 }
 
 final class ZZNotificationManagerTests: XCTestCase {
@@ -75,7 +75,7 @@ final class ZZNotificationManagerTests: XCTestCase {
     func test_setNotification_rejectIfDateIsInForbiddenHours() {
         let (sut, _) = makeSUT()
         let content = UNNotificationContent()
-        let forbiddenHour = sut.forbiddenHours.randomElement()!
+        let forbiddenHour = forbiddenHours.randomElement()!
         let fireDate = Date().set(hour: forbiddenHour)
         let id = UUID().uuidString
         let expectedError = SetNotificationError.forbiddenHour
@@ -86,7 +86,7 @@ final class ZZNotificationManagerTests: XCTestCase {
     func test_setNotification_passIfDateIsNotInForbiddenHours() {
         let (sut, _) = makeSUT()
         let content = UNNotificationContent()
-        let notForbiddenHour = Set(Array(0...23)).subtracting(Set(sut.forbiddenHours)).randomElement()!
+        let notForbiddenHour = Set(Array(0...23)).subtracting(Set(forbiddenHours)).randomElement()!
         let fireDate = Date().set(hour: notForbiddenHour)
         let id = UUID().uuidString
 
@@ -96,7 +96,7 @@ final class ZZNotificationManagerTests: XCTestCase {
     func test_setNotification_deliversErrorOnSettingError() {
         let (sut, notificationCenter) = makeSUT()
         let content = UNNotificationContent()
-        let notForbiddenHour = Set(Array(0...23)).subtracting(Set(sut.forbiddenHours)).randomElement()!
+        let notForbiddenHour = Set(Array(0...23)).subtracting(Set(forbiddenHours)).randomElement()!
         let fireDate = Date().set(hour: notForbiddenHour)
         let id = UUID().uuidString
         let expectedError = SetNotificationError.system
@@ -108,9 +108,15 @@ final class ZZNotificationManagerTests: XCTestCase {
     
     // MARK: - Helpers
     
+    private var forbiddenHours: [Int] {
+        [22,23,0,1,2,3,4,5]
+    }
+    
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: SpyNM, notificationCeter: MockNotificationCenter) {
         let notificationCenter = MockNotificationCenter()
-        let sut = SpyNM(notificationCenter: notificationCenter)
+        let dontDisturbPolicy = ZZDoNotDisturbPolicy(forbiddenHours: forbiddenHours, calendar: Calendar.current)
+        
+        let sut = SpyNM(notificationCenter: notificationCenter, dontDisturbPolicy: dontDisturbPolicy)
         
         trackForMemoryLeaks(notificationCenter, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
@@ -156,9 +162,11 @@ final class ZZNotificationManagerTests: XCTestCase {
     private class SpyNM: NotificationManager {
         
         let notificationCenter: MockNotificationCenter
+        let dontDisturbPolicy: DoNotDisturbPolicy
         
-        init(notificationCenter: MockNotificationCenter) {
+        init(notificationCenter: MockNotificationCenter, dontDisturbPolicy: DoNotDisturbPolicy) {
             self.notificationCenter = notificationCenter
+            self.dontDisturbPolicy = dontDisturbPolicy
         }
         
         func requestAuthorization(completion: AuthorizationCompletion) {
@@ -174,7 +182,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         }
         
         func setNotification(forDate fireDate: Date, andId id: String, content: UNNotificationContent, completion: @escaping SetNotificationCompletion) {
-            guard !forbiddenHours.contains(getHour(from: fireDate)) else {
+            guard dontDisturbPolicy.isSatisfied(fireDate) else {
                 return completion(.forbiddenHour)
             }
             
@@ -190,12 +198,6 @@ final class ZZNotificationManagerTests: XCTestCase {
                 }
             }
         }
-        
-        private func getHour(from date: Date) -> Int {
-            return Calendar.current.component(.hour, from: date)
-        }
-        
-        var forbiddenHours: [Int] { return [10, 11, 00, 01, 02, 03, 04, 05, 06] }
     }
     
     private class MockNotificationCenter: MockUserNotificationCenterProtocol {
