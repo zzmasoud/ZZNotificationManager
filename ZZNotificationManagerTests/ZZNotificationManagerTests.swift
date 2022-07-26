@@ -5,10 +5,14 @@
 import XCTest
 import UserNotifications
 
+enum SetNotificationError: Error {
+    case forbiddenHour
+    case system
+}
 protocol NotificationManager {
     typealias AuthorizationCompletion = (Bool, Error?) -> Void
     typealias AuthorizationStatusCompletion = (UNAuthorizationStatus) -> Void
-    typealias SetNotificationCompletion = (Error?) -> Void
+    typealias SetNotificationCompletion = (SetNotificationError?) -> Void
     
     func requestAuthorization(completion: AuthorizationCompletion)
     func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion)
@@ -73,10 +77,12 @@ final class ZZNotificationManagerTests: XCTestCase {
         let content = UNNotificationContent()
         let forbiddenHour = sut.forbiddenHours.randomElement()!
         let fireDate = Date().set(hour: forbiddenHour)
-        
+        let id = UUID().uuidString
+        let expectedError = SetNotificationError.forbiddenHour
+
         let exp = expectation(description: "waiting for completion...")
         sut.setNotification(forDate: fireDate, andId: UUID().uuidString, content: content) { error in
-            XCTAssertNotNil(error)
+            XCTAssertEqual(expectedError, error)
             exp.fulfill()
         }
         
@@ -88,9 +94,10 @@ final class ZZNotificationManagerTests: XCTestCase {
         let content = UNNotificationContent()
         let notForbiddenHour = Set(Array(0...23)).subtracting(Set(sut.forbiddenHours)).randomElement()!
         let fireDate = Date().set(hour: notForbiddenHour)
-                
+        let id = UUID().uuidString
+
         let exp = expectation(description: "waiting for completion...")
-        sut.setNotification(forDate: fireDate, andId: UUID().uuidString, content: content) { error in
+        sut.setNotification(forDate: fireDate, andId: id, content: content) { error in
             XCTAssertNil(error)
             exp.fulfill()
         }
@@ -103,13 +110,14 @@ final class ZZNotificationManagerTests: XCTestCase {
         let content = UNNotificationContent()
         let notForbiddenHour = Set(Array(0...23)).subtracting(Set(sut.forbiddenHours)).randomElement()!
         let fireDate = Date().set(hour: notForbiddenHour)
-        let expectedError = anyNSError()
+        let id = UUID().uuidString
+        let expectedError = SetNotificationError.system
 
         notificationCenter.add(with: expectedError)
         
         let exp = expectation(description: "waiting for completion...")
         sut.setNotification(forDate: fireDate, andId: UUID().uuidString, content: content) { error in
-            XCTAssertEqual(expectedError, error as? NSError)
+            XCTAssertEqual(expectedError, error)
             exp.fulfill()
         }
         
@@ -175,14 +183,20 @@ final class ZZNotificationManagerTests: XCTestCase {
         
         func setNotification(forDate fireDate: Date, andId id: String, content: UNNotificationContent, completion: @escaping SetNotificationCompletion) {
             guard !forbiddenHours.contains(getHour(from: fireDate)) else {
-                return completion(anyNSError())
+                return completion(.forbiddenHour)
             }
             
             let components = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute, .second], from: fireDate)
             let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
             let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
 
-            notificationCenter.add(request, withCompletionHandler: completion)
+            notificationCenter.add(request) { error in
+                if let _ = error {
+                    completion(.system)
+                } else {
+                    completion(nil)
+                }
+            }
         }
         
         private func getHour(from date: Date) -> Int {
@@ -196,7 +210,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         // to make other tester easier, so no need to authorize everytime at the begin of each tests
         var authorizationRequest: (Bool, Error?) = (true, nil)
         var authorizationStatus: UNAuthorizationStatus = .notDetermined
-        var addingNotificationError: NSError? = nil
+        var addingNotificationError: Error? = nil
         
         func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void)) {
             completionHandler(authorizationRequest.0, authorizationRequest.1)
@@ -236,7 +250,7 @@ final class ZZNotificationManagerTests: XCTestCase {
             authorizationStatus = .authorized
         }
         
-        func add(with error: NSError?) {
+        func add(with error: Error?) {
             addingNotificationError = error
         }
     }
