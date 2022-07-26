@@ -12,6 +12,8 @@
 		04E3D60E2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D60D2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift */; };
 		04E3D6122961F0F6002D64A7 /* DoNotDistrubPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D6112961F0F6002D64A7 /* DoNotDistrubPolicy.swift */; };
 		04E3D6142961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D6132961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift */; };
+		04E3D6162961F0F6002D64A7 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D6152961F0F6002D64A7 /* NotificationManager.swift */; };
+		04E3D6182961F0F6002D64A7 /* SetNotificationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D6172961F0F6002D64A7 /* SetNotificationError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +33,8 @@
 		04E3D60D2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+MemoryLeakTracking.swift"; sourceTree = "<group>"; };
 		04E3D6112961F0F6002D64A7 /* DoNotDistrubPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoNotDistrubPolicy.swift; sourceTree = "<group>"; };
 		04E3D6132961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZDoNotDistrubPolicyTests.swift; sourceTree = "<group>"; };
+		04E3D6152961F0F6002D64A7 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		04E3D6172961F0F6002D64A7 /* SetNotificationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetNotificationError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +78,8 @@
 			isa = PBXGroup;
 			children = (
 				04E3D6112961F0F6002D64A7 /* DoNotDistrubPolicy.swift */,
+				04E3D6152961F0F6002D64A7 /* NotificationManager.swift */,
+				04E3D6172961F0F6002D64A7 /* SetNotificationError.swift */,
 			);
 			path = ZZNotificationManager;
 			sourceTree = "<group>";
@@ -199,7 +205,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04E3D6162961F0F6002D64A7 /* NotificationManager.swift in Sources */,
 				04E3D6122961F0F6002D64A7 /* DoNotDistrubPolicy.swift in Sources */,
+				04E3D6182961F0F6002D64A7 /* SetNotificationError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,21 +6,6 @@ import XCTest
 import UserNotifications
 import ZZNotificationManager
 
-enum SetNotificationError: Error {
-    case forbiddenHour
-    case system
-}
-
-protocol NotificationManager {
-    typealias AuthorizationCompletion = (Bool, Error?) -> Void
-    typealias AuthorizationStatusCompletion = (UNAuthorizationStatus) -> Void
-    typealias SetNotificationCompletion = (SetNotificationError?) -> Void
-    
-    func requestAuthorization(completion: AuthorizationCompletion)
-    func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion)
-    func setNotification(forDate: Date, andId id: String, content: UNNotificationContent, completion: @escaping SetNotificationCompletion)
-}
-
 final class ZZNotificationManagerTests: XCTestCase {
     
     func test_requestAuthorization_deliversFalseOnNotAuthorized() {
@@ -112,11 +97,11 @@ final class ZZNotificationManagerTests: XCTestCase {
         [22,23,0,1,2,3,4,5]
     }
     
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: SpyNM, notificationCeter: MockNotificationCenter) {
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: NotificationManager, notificationCeter: MockNotificationCenter) {
         let notificationCenter = MockNotificationCenter()
         let dontDisturbPolicy = ZZDoNotDisturbPolicy(forbiddenHours: forbiddenHours, calendar: Calendar.current)
         
-        let sut = SpyNM(notificationCenter: notificationCenter, dontDisturbPolicy: dontDisturbPolicy)
+        let sut = ZZNotificationManager(notificationCenter: notificationCenter, dontDisturbPolicy: dontDisturbPolicy)
         
         trackForMemoryLeaks(notificationCenter, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
@@ -158,48 +143,7 @@ final class ZZNotificationManagerTests: XCTestCase {
     private func anyNSError() -> NSError {
         return NSError(domain: UUID().uuidString, code: [-10,0].randomElement()!)
     }
-    
-    private class SpyNM: NotificationManager {
         
-        let notificationCenter: MockNotificationCenter
-        let dontDisturbPolicy: DoNotDisturbPolicy
-        
-        init(notificationCenter: MockNotificationCenter, dontDisturbPolicy: DoNotDisturbPolicy) {
-            self.notificationCenter = notificationCenter
-            self.dontDisturbPolicy = dontDisturbPolicy
-        }
-        
-        func requestAuthorization(completion: AuthorizationCompletion) {
-            notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { authorized, error in
-                completion(authorized, error)
-            }
-        }
-        
-        func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion) {
-            notificationCenter.getNotificationSettings { settings in
-                completion(settings.authorizationStatus)
-            }
-        }
-        
-        func setNotification(forDate fireDate: Date, andId id: String, content: UNNotificationContent, completion: @escaping SetNotificationCompletion) {
-            guard dontDisturbPolicy.isSatisfied(fireDate) else {
-                return completion(.forbiddenHour)
-            }
-            
-            let components = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute, .second], from: fireDate)
-            let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-            let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-
-            notificationCenter.add(request) { error in
-                if let _ = error {
-                    completion(.system)
-                } else {
-                    completion(nil)
-                }
-            }
-        }
-    }
-    
     private class MockNotificationCenter: MockUserNotificationCenterProtocol {
         // to make other tester easier, so no need to authorize everytime at the begin of each tests
         var authorizationRequest: (Bool, Error?) = (true, nil)
@@ -248,13 +192,6 @@ final class ZZNotificationManagerTests: XCTestCase {
             addingNotificationError = error
         }
     }
-}
-
-private protocol MockUserNotificationCenterProtocol: AnyObject {
-    func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void))
-    func getNotificationSettings(completionHandler: @escaping (UNNotificationSettings) -> Void)
-    func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?)
-
 }
 
 extension UNNotificationSettings {
