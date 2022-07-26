@@ -32,6 +32,16 @@ final class ZZDoNotDisturbPolicyTests: XCTestCase {
         XCTAssertFalse(result)
     }
     
+    func test_isSatisfied_deliversTrueIfDateIsNotInForbiddenHours() {
+        let sut = makeSUT()
+        let notForbiddenHour = Set(Array(0...23)).subtracting(Set([10,11,1,2,3,4,5])).randomElement()!
+        let date = Date().set(hour: notForbiddenHour)
+        
+        let result = sut.isSatisfied(date)
+        
+        XCTAssertTrue(result)
+    }
+    
     //MARK: - Helper
     
     private func makeSUT() -> DoNotDisturbPolicy {
@@ -40,13 +50,11 @@ final class ZZDoNotDisturbPolicyTests: XCTestCase {
             calendar: Calendar.current
         )
     }
-
 }
 
 private extension Date {
     func set(hour: Int) -> Date {
         let calendar = Calendar.current
-        
         return calendar.date(bySetting: .hour, value: hour, of: self)!
     }
 }
