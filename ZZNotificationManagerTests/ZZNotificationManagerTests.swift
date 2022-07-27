@@ -103,6 +103,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         
         let sut = ZZNotificationManager(notificationCenter: notificationCenter, dontDisturbPolicy: dontDisturbPolicy)
         
+        trackForMemoryLeaks(dontDisturbPolicy, file: file, line: line)
         trackForMemoryLeaks(notificationCenter, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
 
