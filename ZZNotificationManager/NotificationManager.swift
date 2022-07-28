@@ -9,6 +9,7 @@ public protocol MockUserNotificationCenterProtocol: AnyObject {
     func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void))
     func getNotificationSettings(completionHandler: @escaping (UNNotificationSettings) -> Void)
     func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?)
+    func removePendingNotificationRequests(withIdentifiers: [String])
 }
 
 public protocol NotificationManager {
@@ -19,6 +20,7 @@ public protocol NotificationManager {
     func requestAuthorization(completion: AuthorizationCompletion)
     func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion)
     func setNotification(forDate: Date, andId id: String, content: UNNotificationContent, completion: @escaping SetNotificationCompletion)
+    func removePendingNotifications(withIds: [String])
 }
 
 public final class ZZNotificationManager: NotificationManager {
@@ -58,5 +60,9 @@ public final class ZZNotificationManager: NotificationManager {
                 completion(nil)
             }
         }
+    }
+    
+    public func removePendingNotifications(withIds ids: [String]) {
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: ids)
     }
 }

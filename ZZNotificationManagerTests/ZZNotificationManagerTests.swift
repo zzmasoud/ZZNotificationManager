@@ -91,6 +91,18 @@ final class ZZNotificationManagerTests: XCTestCase {
         assertThat(sut, setsNotificationForDate: fireDate, withId: id, content: content, andCompletesWithError: expectedError)
     }
     
+    func test_removeNotifications_deletesPendingsWithRelatedIds() {
+        let (sut, notificationCenter) = makeSUT()
+        let content = UNNotificationContent()
+        let notForbiddenHour = Set(Array(0...23)).subtracting(Set(forbiddenHours)).randomElement()!
+        let fireDate = Date().set(hour: notForbiddenHour)
+        let id = UUID().uuidString
+        
+        sut.removePendingNotifications(withIds: [id])
+        
+        XCTAssertEqual(notificationCenter.deletedNotificationRequests, [id])
+    }
+    
     // MARK: - Helpers
     
     private var forbiddenHours: [Int] {
@@ -150,6 +162,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         var authorizationRequest: (Bool, Error?) = (true, nil)
         var authorizationStatus: UNAuthorizationStatus = .notDetermined
         var addingNotificationError: Error? = nil
+        var deletedNotificationRequests: [String] = []
         
         func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void)) {
             completionHandler(authorizationRequest.0, authorizationRequest.1)
@@ -165,6 +178,10 @@ final class ZZNotificationManagerTests: XCTestCase {
         
         func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?) {
             completionHandler?(addingNotificationError)
+        }
+        
+        func removePendingNotificationRequests(withIdentifiers ids: [String]) {
+            deletedNotificationRequests.append(contentsOf: ids)
         }
         
         // --- Simulate States
