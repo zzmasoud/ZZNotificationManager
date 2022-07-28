@@ -98,6 +98,8 @@ final class ZZNotificationManagerTests: XCTestCase {
         let fireDate = Date().set(hour: notForbiddenHour)
         let id = UUID().uuidString
         
+        assertThat(sut, setsNotificationForDate: fireDate, withId: id, content: content, andCompletesWithError: nil)
+        
         sut.removePendingNotifications(withIds: [id])
         
         XCTAssertEqual(notificationCenter.deletedNotificationRequests, [id])
