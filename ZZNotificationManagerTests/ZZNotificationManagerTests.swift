@@ -59,10 +59,7 @@ final class ZZNotificationManagerTests: XCTestCase {
     
     func test_setNotification_rejectIfDateIsInForbiddenHours() {
         let (sut, _) = makeSUT()
-        let content = UNNotificationContent()
-        let forbiddenHour = forbiddenHours.randomElement()!
-        let fireDate = Date().set(hour: forbiddenHour)
-        let id = UUID().uuidString
+        let (fireDate, id, content) = makeNotificationRequestRequirements(inForbiddenHours: true)
         let expectedError = SetNotificationError.forbiddenHour
 
         assertThat(sut, setsNotificationForDate: fireDate, withId: id, content: content, andCompletesWithError: expectedError)
@@ -70,22 +67,16 @@ final class ZZNotificationManagerTests: XCTestCase {
     
     func test_setNotification_passIfDateIsNotInForbiddenHours() {
         let (sut, _) = makeSUT()
-        let content = UNNotificationContent()
-        let notForbiddenHour = Set(Array(0...23)).subtracting(Set(forbiddenHours)).randomElement()!
-        let fireDate = Date().set(hour: notForbiddenHour)
-        let id = UUID().uuidString
+        let (fireDate, id, content) = makeNotificationRequestRequirements()
 
         assertThat(sut, setsNotificationForDate: fireDate, withId: id, content: content, andCompletesWithError: nil)
     }
     
     func test_setNotification_deliversErrorOnSettingError() {
         let (sut, notificationCenter) = makeSUT()
-        let content = UNNotificationContent()
-        let notForbiddenHour = Set(Array(0...23)).subtracting(Set(forbiddenHours)).randomElement()!
-        let fireDate = Date().set(hour: notForbiddenHour)
-        let id = UUID().uuidString
-        let expectedError = SetNotificationError.system
+        let (fireDate, id, content) = makeNotificationRequestRequirements()
 
+        let expectedError = SetNotificationError.system
         notificationCenter.add(with: expectedError)
         
         assertThat(sut, setsNotificationForDate: fireDate, withId: id, content: content, andCompletesWithError: expectedError)
@@ -93,11 +84,7 @@ final class ZZNotificationManagerTests: XCTestCase {
     
     func test_removeNotifications_deletesPendingsWithRelatedIds() {
         let (sut, notificationCenter) = makeSUT()
-        let content = UNNotificationContent()
-        let notForbiddenHour = Set(Array(0...23)).subtracting(Set(forbiddenHours)).randomElement()!
-        let fireDate = Date().set(hour: notForbiddenHour)
-        let id = UUID().uuidString
-        
+        let (fireDate, id, content) = makeNotificationRequestRequirements()
         assertThat(sut, setsNotificationForDate: fireDate, withId: id, content: content, andCompletesWithError: nil)
         
         sut.removePendingNotifications(withIds: [id])
@@ -122,6 +109,16 @@ final class ZZNotificationManagerTests: XCTestCase {
         trackForMemoryLeaks(sut, file: file, line: line)
 
         return (sut, notificationCenter)
+    }
+    
+    private func makeNotificationRequestRequirements(inForbiddenHours: Bool = false) -> (fireDate: Date, id: String, content: UNNotificationContent) {
+        let content = UNNotificationContent()
+        let selectedHour =
+        inForbiddenHours ? forbiddenHours.randomElement()! : Set(Array(0...23)).subtracting(Set(forbiddenHours)).randomElement()!
+        let fireDate = Date().set(hour: selectedHour)
+        let id = UUID().uuidString
+
+        return (fireDate, id, content)
     }
     
     private func assertThat(_ sut: NotificationManager, deliversAuthorizationRequestWith authorized: Bool, andError error: NSError? = nil, file: StaticString = #file, line: UInt = #line) {
