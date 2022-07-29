@@ -49,7 +49,7 @@ public final class ZZNotificationManager: NotificationManager {
             return completion(.forbiddenHour)
         }
         
-        let components = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute, .second], from: fireDate)
+        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: fireDate)
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
 
