@@ -6,7 +6,7 @@ import XCTest
 import UserNotifications
 import ZZNotificationManager
 
-class ZZNotificationContentTest: XCTestCase {
+final class ZZNotificationContentTest: XCTestCase {
     
     func test_mapWithRequiredParameters_deliversSameValuesOnUNNotificationContent() {
         let title = "Title"
