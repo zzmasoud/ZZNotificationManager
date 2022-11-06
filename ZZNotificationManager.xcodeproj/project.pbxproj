@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0408A3962917A7FE00C26444 /* ZZNotificationContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */; };
 		045EB2642960607A00483203 /* ZZNotificationManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045EB25B2960607A00483203 /* ZZNotificationManager.framework */; };
 		045EB2742960607A00483203 /* ZZNotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */; };
 		04E3D60E2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D60D2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationContentTests.swift; sourceTree = "<group>"; };
 		045EB25B2960607A00483203 /* ZZNotificationManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZZNotificationManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		045EB2632960607A00483203 /* ZZNotificationManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZZNotificationManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManagerTests.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */,
+				0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */,
 				04E3D6132961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift */,
 				04E3D60D2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift */,
 			);
@@ -215,6 +218,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0408A3962917A7FE00C26444 /* ZZNotificationContentTests.swift in Sources */,
 				04E3D6142961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift in Sources */,
 				045EB2742960607A00483203 /* ZZNotificationManagerTests.swift in Sources */,
 				04E3D60E2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift in Sources */,
