@@ -14,7 +14,7 @@ public protocol MockUserNotificationCenterProtocol: AnyObject {
 
 public protocol NotificationManager {
     typealias AuthorizationCompletion = (Bool, Error?) -> Void
-    typealias AuthorizationStatusCompletion = (UNAuthorizationStatus) -> Void
+    typealias AuthorizationStatusCompletion = (ZZNotificationAuthStatus) -> Void
     typealias SetNotificationCompletion = (SetNotificationError?) -> Void
     
     func requestAuthorization(completion: AuthorizationCompletion)
@@ -40,7 +40,7 @@ public final class ZZNotificationManager: NotificationManager {
     
     public func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion) {
         notificationCenter.getNotificationSettings { settings in
-            completion(settings.authorizationStatus)
+            completion(ZZNotificationAuthStatus.map(authorizationStatus: settings.authorizationStatus))
         }
     }
     

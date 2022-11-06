@@ -132,7 +132,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         wait(for: [exp], timeout: 1)
     }
     
-    private func assertThat(_ sut: NotificationManager, deliversAuthorizationStatusWith status: UNAuthorizationStatus, file: StaticString = #file, line: UInt = #line) {
+    private func assertThat(_ sut: NotificationManager, deliversAuthorizationStatusWith status: ZZNotificationAuthStatus, file: StaticString = #file, line: UInt = #line) {
         let exp = expectation(description: "waiting for completion...")
         sut.checkAuthorizationStatus { gotStatus in
             XCTAssertEqual(status, gotStatus, file: file, line: line)
