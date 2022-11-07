@@ -200,6 +200,12 @@ final class ZZNotificationManagerTests: XCTestCase {
             return settings
         }
         
+        func add(_ request: UNNotificationRequest) async throws {
+            if let error = addingNotificationError {
+                throw error
+            }
+            return
+        }
         
         // MARK: - Simulate States
         

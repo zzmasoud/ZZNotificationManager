@@ -14,6 +14,7 @@ public protocol MockUserNotificationCenterProtocol: AnyObject {
     // MARK: - async methods
     func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool
     func notificationSettings() async -> UNNotificationSettings
+    func add(_ request: UNNotificationRequest) async throws
 }
 
 public protocol NotificationManager {
@@ -30,6 +31,7 @@ public protocol NotificationManager {
 public protocol AsyncNotificationManager {
     func requestAuthorization() async throws -> Bool
     func checkAuthorizationStatus() async -> ZZNotificationAuthStatus
+    func setNotification(forDate: Date, andId id: String, content: UNNotificationContent) async throws -> Void
 }
 
 public final class ZZNotificationManager: NotificationManager {
@@ -84,5 +86,17 @@ extension ZZNotificationManager: AsyncNotificationManager {
     public func checkAuthorizationStatus() async -> ZZNotificationAuthStatus {
         let settings = await notificationCenter.notificationSettings()
         return ZZNotificationAuthStatus.map(authorizationStatus: settings.authorizationStatus)
+    }
+    
+    public func setNotification(forDate fireDate: Date, andId id: String, content: UNNotificationContent) async throws {
+        guard dontDisturbPolicy.isSatisfied(fireDate) else {
+            throw SetNotificationError.forbiddenHour
+        }
+        
+        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: fireDate)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+
+        return try await notificationCenter.add(request)
     }
 }
