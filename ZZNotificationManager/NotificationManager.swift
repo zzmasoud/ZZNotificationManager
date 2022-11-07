@@ -13,6 +13,7 @@ public protocol MockUserNotificationCenterProtocol: AnyObject {
     
     // MARK: - async methods
     func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool
+    func notificationSettings() async -> UNNotificationSettings
 }
 
 public protocol NotificationManager {
@@ -28,6 +29,7 @@ public protocol NotificationManager {
 
 public protocol AsyncNotificationManager {
     func requestAuthorization() async throws -> Bool
+    func checkAuthorizationStatus() async -> ZZNotificationAuthStatus
 }
 
 public final class ZZNotificationManager: NotificationManager {
@@ -76,6 +78,11 @@ public final class ZZNotificationManager: NotificationManager {
 
 extension ZZNotificationManager: AsyncNotificationManager {
     public func requestAuthorization() async throws -> Bool {
-        return try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
+        return try await notificationCenter.requestAuthorization(options: [.alert, .badge, .sound])
+    }
+    
+    public func checkAuthorizationStatus() async -> ZZNotificationAuthStatus {
+        let settings = await notificationCenter.notificationSettings()
+        return ZZNotificationAuthStatus.map(authorizationStatus: settings.authorizationStatus)
     }
 }

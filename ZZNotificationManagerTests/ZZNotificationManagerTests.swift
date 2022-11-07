@@ -194,6 +194,12 @@ final class ZZNotificationManagerTests: XCTestCase {
             }
         }
         
+        func notificationSettings() async -> UNNotificationSettings {
+            let settingsCoder = MockNSCoder()
+            let settings = UNNotificationSettings(coder: settingsCoder)!
+            return settings
+        }
+        
         
         // MARK: - Simulate States
         
