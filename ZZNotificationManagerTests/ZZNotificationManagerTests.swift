@@ -157,6 +157,7 @@ final class ZZNotificationManagerTests: XCTestCase {
     }
         
     private class MockNotificationCenter: MockUserNotificationCenterProtocol {
+        
         // to make other tester easier, so no need to authorize everytime at the begin of each tests
         var authorizationRequest: (Bool, Error?) = (true, nil)
         var authorizationStatus: UNAuthorizationStatus = .notDetermined
@@ -183,7 +184,18 @@ final class ZZNotificationManagerTests: XCTestCase {
             deletedNotificationRequests.append(contentsOf: ids)
         }
         
-        // --- Simulate States
+        
+        // MARK: - Async methods
+        func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool {
+            if let error = authorizationRequest.1 {
+                throw error
+            } else {
+                return authorizationRequest.0
+            }
+        }
+        
+        
+        // MARK: - Simulate States
         
         func rejectAuthorization(with error: NSError? = nil) {
             authorizationRequest = (false, error)
