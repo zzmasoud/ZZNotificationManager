@@ -61,21 +61,21 @@ final class ZZNotificationManagerTests: XCTestCase {
         let (sut, _) = makeSUT()
         let (fireDate, id, content) = makeNotificationRequestRequirements(inForbiddenHours: true)
         let expectedError = SetNotificationError.forbiddenHour
-
+        
         assertThat(sut, setsNotificationForDate: fireDate, withId: id, content: content, andCompletesWithError: expectedError)
     }
     
     func test_setNotification_passIfDateIsNotInForbiddenHours() {
         let (sut, _) = makeSUT()
         let (fireDate, id, content) = makeNotificationRequestRequirements()
-
+        
         assertThat(sut, setsNotificationForDate: fireDate, withId: id, content: content, andCompletesWithError: nil)
     }
     
     func test_setNotification_deliversErrorOnSettingError() {
         let (sut, notificationCenter) = makeSUT()
         let (fireDate, id, content) = makeNotificationRequestRequirements()
-
+        
         let expectedError = SetNotificationError.system
         notificationCenter.add(with: expectedError)
         
@@ -107,7 +107,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         trackForMemoryLeaks(dontDisturbPolicy, file: file, line: line)
         trackForMemoryLeaks(notificationCenter, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
-
+        
         return (sut, notificationCenter)
     }
     
@@ -117,7 +117,7 @@ final class ZZNotificationManagerTests: XCTestCase {
         inForbiddenHours ? forbiddenHours.randomElement()! : Set(Array(0...23)).subtracting(Set(forbiddenHours)).randomElement()!
         let fireDate = Date().set(hour: selectedHour)
         let id = UUID().uuidString
-
+        
         return (fireDate, id, content)
     }
     
@@ -138,7 +138,7 @@ final class ZZNotificationManagerTests: XCTestCase {
             XCTAssertEqual(status, gotStatus, file: file, line: line)
             exp.fulfill()
         }
-
+        
         wait(for: [exp], timeout: 1)
     }
     
@@ -154,108 +154,5 @@ final class ZZNotificationManagerTests: XCTestCase {
     
     private func anyNSError() -> NSError {
         return NSError(domain: UUID().uuidString, code: [-10,0].randomElement()!)
-    }
-        
-    private class MockNotificationCenter: MockUserNotificationCenterProtocol {
-        
-        // to make other tester easier, so no need to authorize everytime at the begin of each tests
-        var authorizationRequest: (Bool, Error?) = (true, nil)
-        var authorizationStatus: UNAuthorizationStatus = .notDetermined
-        var addingNotificationError: Error? = nil
-        var deletedNotificationRequests: [String] = []
-        
-        func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void)) {
-            completionHandler(authorizationRequest.0, authorizationRequest.1)
-        }
-        
-        func getNotificationSettings(completionHandler: @escaping (UNNotificationSettings) -> Void) {
-            UNNotificationSettings.fakeAuthorizationStatus = authorizationStatus
-            let settingsCoder = MockNSCoder()
-            let settings = UNNotificationSettings(coder: settingsCoder)!
-
-            completionHandler(settings)
-        }
-        
-        func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?) {
-            completionHandler?(addingNotificationError)
-        }
-        
-        func removePendingNotificationRequests(withIdentifiers ids: [String]) {
-            deletedNotificationRequests.append(contentsOf: ids)
-        }
-        
-        
-        // MARK: - Async methods
-        func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool {
-            if let error = authorizationRequest.1 {
-                throw error
-            } else {
-                return authorizationRequest.0
-            }
-        }
-        
-        func notificationSettings() async -> UNNotificationSettings {
-            let settingsCoder = MockNSCoder()
-            let settings = UNNotificationSettings(coder: settingsCoder)!
-            return settings
-        }
-        
-        func add(_ request: UNNotificationRequest) async throws {
-            if let error = addingNotificationError {
-                throw error
-            }
-            return
-        }
-        
-        // MARK: - Simulate States
-        
-        func rejectAuthorization(with error: NSError? = nil) {
-            authorizationRequest = (false, error)
-        }
-        
-        func acceptAuthorization() {
-            authorizationRequest = (true, nil)
-        }
-        
-        func didNotAuthorized() {
-            authorizationStatus = .notDetermined
-        }
-        
-        func didDenyAuthorized() {
-            authorizationStatus = .denied
-        }
-        
-        func didAcceptAuthorized() {
-            authorizationStatus = .authorized
-        }
-        
-        func add(with error: Error?) {
-            addingNotificationError = error
-        }
-    }
-}
-
-extension UNNotificationSettings {
-    static var fakeAuthorizationStatus: UNAuthorizationStatus = .authorized
-}
-
-class MockNSCoder: NSCoder {
-
-    var authorizationStatus = UNNotificationSettings.fakeAuthorizationStatus.rawValue
-    
-    override func decodeInt64(forKey key: String) -> Int64 {
-        return Int64(authorizationStatus)
-    }
-    
-    override func decodeBool(forKey key: String) -> Bool {
-        return true
-    }
-}
-
-private extension Date {
-    func set(hour: Int) -> Date {
-        let calendar = Calendar.current
-        
-        return calendar.date(bySetting: .hour, value: hour, of: self)!
     }
 }
