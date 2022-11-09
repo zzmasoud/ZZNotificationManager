@@ -31,7 +31,7 @@ final class ZZDoNotDisturbPolicyTests: XCTestCase {
     private func makeSUT() -> DoNotDisturbPolicy {
         return ZZDoNotDisturbPolicy(
             forbiddenHours: [10,11,1,2,3,4,5],
-            calendar: Calendar.current
+            calendar: { Calendar.current }
         )
     }
 }

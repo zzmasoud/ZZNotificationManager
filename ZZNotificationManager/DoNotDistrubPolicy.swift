@@ -9,16 +9,18 @@ public protocol DoNotDisturbPolicy {
 }
 
 public class ZZDoNotDisturbPolicy: DoNotDisturbPolicy {
-   
-    private let forbiddenHours: [Int]
-    private let calendar: Calendar
+    public typealias CalendarClosure = (() -> Calendar)
     
-    public init(forbiddenHours: [Int], calendar: Calendar) {
+    private let forbiddenHours: [Int]
+    var calendar: CalendarClosure
+    
+    public init(forbiddenHours: [Int], calendar: @escaping CalendarClosure) {
         self.forbiddenHours = forbiddenHours
         self.calendar = calendar
     }
     
     public func isSatisfied(_ date: Date) -> Bool {
+        let calendar = calendar()
         let hour = calendar.component(.hour, from: date)
         return !forbiddenHours.contains(hour)
    }

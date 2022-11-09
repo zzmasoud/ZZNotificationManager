@@ -101,11 +101,8 @@ final class ZZNotificationManagerTests: XCTestCase {
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: NotificationManager, notificationCeter: MockNotificationCenter) {
         let notificationCenter = MockNotificationCenter()
         let calendar = Calendar.current
-        let dontDisturbPolicy = ZZDoNotDisturbPolicy(forbiddenHours: forbiddenHours, calendar: Calendar.current)
+        let sut = ZZNotificationManagerComposer.composedWith(notificationCenter: notificationCenter, calendar: calendar, forbiddenHours: forbiddenHours)
         
-        let sut = ZZNotificationManagerComposer.composedWith(notificationCenter: notificationCenter, calendar: Calendar.current, dontDisturbPolicy: dontDisturbPolicy)
-        
-        trackForMemoryLeaks(dontDisturbPolicy, file: file, line: line)
         trackForMemoryLeaks(notificationCenter, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         
