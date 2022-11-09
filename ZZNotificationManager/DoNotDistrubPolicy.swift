@@ -20,8 +20,7 @@ public class ZZDoNotDisturbPolicy: DoNotDisturbPolicy {
     }
     
     public func isSatisfied(_ date: Date) -> Bool {
-        let calendar = calendar()
-        let hour = calendar.component(.hour, from: date)
+        let hour = calendar().component(.hour, from: date)
         return !forbiddenHours.contains(hour)
    }
 }
