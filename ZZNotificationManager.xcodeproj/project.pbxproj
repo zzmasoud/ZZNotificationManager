@@ -12,6 +12,7 @@
 		04444A35291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */; };
 		04444A39291A772300B6273B /* Date+GetComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A38291A772300B6273B /* Date+GetComponents.swift */; };
 		04444A3C291A779800B6273B /* MockNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A3B291A779800B6273B /* MockNotificationCenter.swift */; };
+		04444A3F291BA15B00B6273B /* ZZNotificationManagerComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A3E291BA15B00B6273B /* ZZNotificationManagerComposer.swift */; };
 		045EB2642960607A00483203 /* ZZNotificationManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045EB25B2960607A00483203 /* ZZNotificationManager.framework */; };
 		045EB2742960607A00483203 /* ZZNotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */; };
 		04AABEE92917B06D00D4CA64 /* ZZNotificationContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AABEE82917B06D00D4CA64 /* ZZNotificationContent.swift */; };
@@ -39,6 +40,7 @@
 		04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserNotificationCenterProtocol.swift; sourceTree = "<group>"; };
 		04444A38291A772300B6273B /* Date+GetComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+GetComponents.swift"; sourceTree = "<group>"; };
 		04444A3B291A779800B6273B /* MockNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNotificationCenter.swift; sourceTree = "<group>"; };
+		04444A3E291BA15B00B6273B /* ZZNotificationManagerComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManagerComposer.swift; sourceTree = "<group>"; };
 		045EB25B2960607A00483203 /* ZZNotificationManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZZNotificationManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		045EB2632960607A00483203 /* ZZNotificationManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZZNotificationManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManagerTests.swift; sourceTree = "<group>"; };
@@ -79,6 +81,14 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		04444A3D291BA14000B6273B /* Composer */ = {
+			isa = PBXGroup;
+			children = (
+				04444A3E291BA15B00B6273B /* ZZNotificationManagerComposer.swift */,
+			);
+			path = Composer;
+			sourceTree = "<group>";
+		};
 		045EB2512960607A00483203 = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +117,7 @@
 				04AABEE82917B06D00D4CA64 /* ZZNotificationContent.swift */,
 				04AABEEA2917DBBA00D4CA64 /* ZZNotificationAuthStatus.swift */,
 				04444A32291A756600B6273B /* ZZNotificationManager.swift */,
+				04444A3D291BA14000B6273B /* Composer */,
 			);
 			path = ZZNotificationManager;
 			sourceTree = "<group>";
@@ -238,6 +249,7 @@
 				04444A33291A756600B6273B /* ZZNotificationManager.swift in Sources */,
 				04AABEEB2917DBBA00D4CA64 /* ZZNotificationAuthStatus.swift in Sources */,
 				04AABEE92917B06D00D4CA64 /* ZZNotificationContent.swift in Sources */,
+				04444A3F291BA15B00B6273B /* ZZNotificationManagerComposer.swift in Sources */,
 				04E3D6162961F0F6002D64A7 /* NotificationManager.swift in Sources */,
 				04E3D6122961F0F6002D64A7 /* DoNotDistrubPolicy.swift in Sources */,
 				04E3D6182961F0F6002D64A7 /* SetNotificationError.swift in Sources */,
