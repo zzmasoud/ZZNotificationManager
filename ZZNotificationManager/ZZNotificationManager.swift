@@ -10,7 +10,7 @@ public final class ZZNotificationManager: NotificationManager {
 
     let notificationCenter: MockUserNotificationCenterProtocol
     public var getDateComponentsFromDate: GetDateComponentsClosure
-    public var dontDisturbPolicy: ((_ date: Date) -> Bool)?
+    public var dontDisturbPolicy: DoNotDisturbPolicy?
 
     init(notificationCenter: MockUserNotificationCenterProtocol, getDateComponentsFromDate: @escaping GetDateComponentsClosure) {
         self.notificationCenter = notificationCenter
@@ -30,7 +30,7 @@ public final class ZZNotificationManager: NotificationManager {
     }
     
     public func setNotification(forDate fireDate: Date, andId id: String, content: UNNotificationContent, completion: @escaping SetNotificationCompletion) {
-        guard let policy = dontDisturbPolicy, policy(fireDate) else {
+        guard let policy = dontDisturbPolicy, policy.isSatisfied(fireDate) else {
             return completion(.forbiddenHour)
         }
         
@@ -63,7 +63,7 @@ extension ZZNotificationManager: AsyncNotificationManager {
     }
     
     public func setNotification(forDate fireDate: Date, andId id: String, content: UNNotificationContent) async throws {
-        guard let policy = dontDisturbPolicy, policy(fireDate) else {
+        guard let policy = dontDisturbPolicy, policy.isSatisfied(fireDate) else {
             throw SetNotificationError.forbiddenHour
         }
         

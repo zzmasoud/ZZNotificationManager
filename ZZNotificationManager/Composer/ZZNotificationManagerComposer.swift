@@ -15,10 +15,9 @@ public final class ZZNotificationManagerComposer {
         
         if let forbiddenHours = forbiddenHours {
             let dontDisturbPolicy: DoNotDisturbPolicy = ZZDoNotDisturbPolicy(forbiddenHours: forbiddenHours, calendar: { calendar } )
-            notificationManager.dontDisturbPolicy = { date in
-                dontDisturbPolicy.isSatisfied(date)
-            }
+            notificationManager.dontDisturbPolicy = dontDisturbPolicy
         }
+        
         return notificationManager
     }
 }
