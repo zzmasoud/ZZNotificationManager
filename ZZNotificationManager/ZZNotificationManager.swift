@@ -6,12 +6,15 @@ import Foundation
 import UserNotifications
 
 public final class ZZNotificationManager: NotificationManager {
+    public typealias GetDateComponentsClosure = ((_ date: Date) -> DateComponents)
+
     let notificationCenter: MockUserNotificationCenterProtocol
-    
+    public var getDateComponentsFromDate: GetDateComponentsClosure
     public var dontDisturbPolicy: ((_ date: Date) -> Bool)?
-    
-    init(notificationCenter: MockUserNotificationCenterProtocol) {
+
+    init(notificationCenter: MockUserNotificationCenterProtocol, getDateComponentsFromDate: @escaping GetDateComponentsClosure) {
         self.notificationCenter = notificationCenter
+        self.getDateComponentsFromDate = getDateComponentsFromDate
     }
     
     public func requestAuthorization(completion: AuthorizationCompletion) {
@@ -31,7 +34,7 @@ public final class ZZNotificationManager: NotificationManager {
             return completion(.forbiddenHour)
         }
         
-        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: fireDate)
+        let components = getDateComponentsFromDate(fireDate)
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
 
@@ -64,7 +67,7 @@ extension ZZNotificationManager: AsyncNotificationManager {
             throw SetNotificationError.forbiddenHour
         }
         
-        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: fireDate)
+        let components = getDateComponentsFromDate(fireDate)
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
 
