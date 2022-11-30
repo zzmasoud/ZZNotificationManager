@@ -13,7 +13,8 @@ class CLOCNotificationManager {
     }
     
     func calculateEndDate(fromPassedTime passed: TimeInterval, andLimit limit: TimeInterval?) -> Date? {
-        return nil
+        guard let limit = limit, passed < limit else { return nil }
+        return Date(timeIntervalSinceNow: limit - passed)
     }
 }
 
@@ -27,6 +28,18 @@ final class CLOCNotificationManagerTests: XCTestCase {
         let date = sut.calculateEndDate(fromPassedTime: passedTimeInterval, andLimit: limit)
         
         XCTAssertNil(date)
+    }
+    
+    func test_calculateEndDate_returnsDateIfNotPassed() {
+        let passedTimeInterval = 40.minutes
+        let limit = passedTimeInterval + 15.minutes
+        let sut = makeSUT()
+        
+        let date = sut.calculateEndDate(fromPassedTime: passedTimeInterval, andLimit: limit)
+        
+        XCTAssertNotNil(date)
+        XCTAssertTrue(date!.timeIntervalSinceNow > passedTimeInterval - limit)
+        XCTAssertTrue(date!.timeIntervalSinceNow < limit)
     }
     
     // MARK: - Helpers
