@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04030BFB296755E1006EF9BE /* CLOCNotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030BF2296755E1006EF9BE /* CLOCNotificationManagerTests.swift */; };
+		04030C04296755E1006EF9BE /* ZZNotificationManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045EB25B2960607A00483203 /* ZZNotificationManager.framework */; };
+		04030C0A296755E1006EF9BE /* CLOCNotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030BF2296755E1006EF9BE /* CLOCNotificationManagerTests.swift */; };
+		04030C0B296755E1006EF9BE /* MockNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A3B291A779800B6273B /* MockNotificationCenter.swift */; };
+		04030C0C296755E1006EF9BE /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D60D2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift */; };
+		04030C0D296755E1006EF9BE /* Date+GetComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A38291A772300B6273B /* Date+GetComponents.swift */; };
 		0408A3962917A7FE00C26444 /* ZZNotificationContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */; };
 		04444A33291A756600B6273B /* ZZNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A32291A756600B6273B /* ZZNotificationManager.swift */; };
 		04444A35291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */; };
@@ -26,6 +30,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		04030C05296755E1006EF9BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 045EB2522960607A00483203 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 045EB25A2960607A00483203;
+			remoteInfo = ZZNotificationManager;
+		};
 		045EB2652960607A00483203 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 045EB2522960607A00483203 /* Project object */;
@@ -37,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		04030BF2296755E1006EF9BE /* CLOCNotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationManagerTests.swift; sourceTree = "<group>"; };
+		04030C00296755E1006EF9BE /* CLOCNotificationManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CLOCNotificationManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationContentTests.swift; sourceTree = "<group>"; };
 		04444A32291A756600B6273B /* ZZNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManager.swift; sourceTree = "<group>"; };
 		04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserNotificationCenterProtocol.swift; sourceTree = "<group>"; };
@@ -56,6 +68,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		04030BFD296755E1006EF9BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04030C04296755E1006EF9BE /* ZZNotificationManager.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		045EB2582960607A00483203 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -74,6 +94,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04030C01296755E1006EF9BE /* CLOCNotificationManagerTests */ = {
+			isa = PBXGroup;
+			children = (
+				04030BF2296755E1006EF9BE /* CLOCNotificationManagerTests.swift */,
+			);
+			path = CLOCNotificationManagerTests;
+			sourceTree = "<group>";
+		};
 		04444A3A291A773700B6273B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +125,7 @@
 			children = (
 				045EB25D2960607A00483203 /* ZZNotificationManager */,
 				045EB2672960607A00483203 /* ZZNotificationManagerTests */,
+				04030C01296755E1006EF9BE /* CLOCNotificationManagerTests */,
 				045EB25C2960607A00483203 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -106,6 +135,7 @@
 			children = (
 				045EB25B2960607A00483203 /* ZZNotificationManager.framework */,
 				045EB2632960607A00483203 /* ZZNotificationManagerTests.xctest */,
+				04030C00296755E1006EF9BE /* CLOCNotificationManagerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -131,7 +161,6 @@
 				045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */,
 				0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */,
 				04E3D6132961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift */,
-				04030BF2296755E1006EF9BE /* CLOCNotificationManagerTests.swift */,
 				04444A3A291A773700B6273B /* Shared */,
 			);
 			path = ZZNotificationManagerTests;
@@ -150,6 +179,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		04030BFF296755E1006EF9BE /* CLOCNotificationManagerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04030C07296755E1006EF9BE /* Build configuration list for PBXNativeTarget "CLOCNotificationManagerTests" */;
+			buildPhases = (
+				04030BFC296755E1006EF9BE /* Sources */,
+				04030BFD296755E1006EF9BE /* Frameworks */,
+				04030BFE296755E1006EF9BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				04030C06296755E1006EF9BE /* PBXTargetDependency */,
+			);
+			name = CLOCNotificationManagerTests;
+			productName = CLOCNotificationManagerTests;
+			productReference = 04030C00296755E1006EF9BE /* CLOCNotificationManagerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		045EB25A2960607A00483203 /* ZZNotificationManager */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 045EB26D2960607A00483203 /* Build configuration list for PBXNativeTarget "ZZNotificationManager" */;
@@ -197,6 +244,9 @@
 				LastUpgradeCheck = 1400;
 				ORGANIZATIONNAME = zzmasoud;
 				TargetAttributes = {
+					04030BFF296755E1006EF9BE = {
+						CreatedOnToolsVersion = 14.0;
+					};
 					045EB25A2960607A00483203 = {
 						CreatedOnToolsVersion = 14.0;
 						LastSwiftMigration = 1400;
@@ -222,11 +272,19 @@
 			targets = (
 				045EB25A2960607A00483203 /* ZZNotificationManager */,
 				045EB2622960607A00483203 /* ZZNotificationManagerTests */,
+				04030BFF296755E1006EF9BE /* CLOCNotificationManagerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		04030BFE296755E1006EF9BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		045EB2592960607A00483203 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -244,6 +302,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		04030BFC296755E1006EF9BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04030C0A296755E1006EF9BE /* CLOCNotificationManagerTests.swift in Sources */,
+				04030C0B296755E1006EF9BE /* MockNotificationCenter.swift in Sources */,
+				04030C0D296755E1006EF9BE /* Date+GetComponents.swift in Sources */,
+				04030C0C296755E1006EF9BE /* XCTestCase+MemoryLeakTracking.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		045EB2572960607A00483203 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -267,7 +336,6 @@
 				04444A3C291A779800B6273B /* MockNotificationCenter.swift in Sources */,
 				04E3D6142961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift in Sources */,
 				045EB2742960607A00483203 /* ZZNotificationManagerTests.swift in Sources */,
-				04030BFB296755E1006EF9BE /* CLOCNotificationManagerTests.swift in Sources */,
 				04444A39291A772300B6273B /* Date+GetComponents.swift in Sources */,
 				04E3D60E2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 			);
@@ -276,6 +344,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		04030C06296755E1006EF9BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 045EB25A2960607A00483203 /* ZZNotificationManager */;
+			targetProxy = 04030C05296755E1006EF9BE /* PBXContainerItemProxy */;
+		};
 		045EB2662960607A00483203 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 045EB25A2960607A00483203 /* ZZNotificationManager */;
@@ -284,6 +357,34 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		04030C08296755E1006EF9BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zzmasoud.CLOCNotificationManagerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		04030C09296755E1006EF9BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zzmasoud.CLOCNotificationManagerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		045EB26B2960607A00483203 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -518,6 +619,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		04030C07296755E1006EF9BE /* Build configuration list for PBXNativeTarget "CLOCNotificationManagerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04030C08296755E1006EF9BE /* Debug */,
+				04030C09296755E1006EF9BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		045EB2552960607A00483203 /* Build configuration list for PBXProject "ZZNotificationManager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
