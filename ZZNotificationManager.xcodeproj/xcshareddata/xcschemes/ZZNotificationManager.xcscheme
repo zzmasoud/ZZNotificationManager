@@ -51,6 +51,17 @@
                ReferencedContainer = "container:ZZNotificationManager.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            testExecutionOrdering = "random">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "04030BFF296755E1006EF9BE"
+               BuildableName = "CLOCNotificationManagerTests.xctest"
+               BlueprintName = "CLOCNotificationManagerTests"
+               ReferencedContainer = "container:ZZNotificationManager.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
