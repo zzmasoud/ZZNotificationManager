@@ -6,9 +6,11 @@ import XCTest
 import ZZNotificationManager
 
 class CLOCNotificationManager {
-    let notificationManager: NotificationManager
+    typealias NEED_RENAME = NotificationManager & AsyncNotificationManager
     
-    init(notificationManager: NotificationManager) {
+    let notificationManager: NEED_RENAME
+    
+    init(notificationManager: NEED_RENAME) {
         self.notificationManager = notificationManager
     }
 
