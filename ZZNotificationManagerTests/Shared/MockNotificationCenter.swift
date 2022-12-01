@@ -12,6 +12,7 @@ class MockNotificationCenter: MockUserNotificationCenterProtocol {
     var authorizationStatus: UNAuthorizationStatus = .notDetermined
     var addingNotificationError: Error? = nil
     var deletedNotificationRequests: [String] = []
+    var addedNotificationRequests: [UNNotificationRequest] = []
     
     func requestAuthorization(options: UNAuthorizationOptions, completionHandler: ((Bool, Error?) -> Void)) {
         completionHandler(authorizationRequest.0, authorizationRequest.1)
@@ -26,6 +27,7 @@ class MockNotificationCenter: MockUserNotificationCenterProtocol {
     }
     
     func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?) {
+        addedNotificationRequests.append(request)
         completionHandler?(addingNotificationError)
     }
     
