@@ -64,7 +64,7 @@ final class CLOCNotificationManagerTests: XCTestCase {
         XCTAssertTrue(date!.timeIntervalSinceNow < limit)
     }
     
-    func test_TimerDidStop_removesTimerNotifications() {
+    func test_timerDidStop_removesTimerNotifications() {
         let (sut, notificationCenter, _) = makeSUT()
 
         sut.timerDidStop()
@@ -74,7 +74,7 @@ final class CLOCNotificationManagerTests: XCTestCase {
         XCTAssertTrue(notificationCenter.deletedNotificationRequests.contains(CLOCNotificationSettingKey.timerPassedTheDeadline.rawValue))
     }
     
-    func test_TimerDidStop_DoesNotAddTaskReminderNotificationIfValueIsNil() {
+    func test_timerDidStop_DoesNotAddTaskReminderNotificationIfValueIsNil() {
         let (sut, notificationCenter, settings) = makeSUT()
         settings.noTasksHasBeenAddedSince = nil
         
