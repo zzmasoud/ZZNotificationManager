@@ -55,7 +55,7 @@ class MockNotificationCenter: MockUserNotificationCenterProtocol {
         if let error = addingNotificationError {
             throw error
         }
-        return
+        addedNotificationRequests.append(request)
     }
     
     // MARK: - Simulate States
