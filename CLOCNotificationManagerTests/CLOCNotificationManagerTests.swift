@@ -78,34 +78,33 @@ final class CLOCNotificationManagerTests: XCTestCase {
     
     func test_timerDidStop_removesTimerNotifications() async {
         let (sut, notificationCenter, _) = makeSUT()
+        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedTheDeadline]
 
         await sut.timerDidStop()
         
-        // XCTAssert like this becuase comparing two `Array`s may fail because of orders and keeping orders is also important so I couldn't use `Set`
-        XCTAssertEqual(notificationCenter.deletedNotificationRequests.count, 2)
-        XCTAssertTrue(notificationCenter.deletedNotificationRequests.contains(CLOCNotificationSettingKey.timerPassedTheDeadline.rawValue))
+        assertThat(notificationCenter, deletedNotificationRequestsWithIds: keys.map { $0.rawValue} )
     }
     
     func test_timerDidStop_DoesNotAddTaskReminderNotificationIfValueIsNil() async {
         let (sut, notificationCenter, settings) = makeSUT()
+        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedTheDeadline]
         settings.noTasksHasBeenAddedSince = nil
         
         await sut.timerDidStop()
 
-        XCTAssertEqual(notificationCenter.deletedNotificationRequests.count, 2)
-        XCTAssertTrue(notificationCenter.deletedNotificationRequests.contains(CLOCNotificationSettingKey.timerPassedTheDeadline.rawValue))
+        assertThat(notificationCenter, deletedNotificationRequestsWithIds: keys.map { $0.rawValue} )
         XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 0)
     }
     
     func test_timerDidStop_addsTaskReminderNotificationIfValueExist() async {
         let (sut, notificationCenter, settings) = makeSUT()
         settings.noTasksHasBeenAddedSince = 20.minutes
+        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedTheDeadline]
         let key = CLOCNotificationSettingKey.noTasksHasBeenAddedSince
         
         await sut.timerDidStop()
 
-        XCTAssertEqual(notificationCenter.deletedNotificationRequests.count, 2)
-        XCTAssertTrue(notificationCenter.deletedNotificationRequests.contains(CLOCNotificationSettingKey.timerPassedTheDeadline.rawValue))
+        assertThat(notificationCenter, deletedNotificationRequestsWithIds: keys.map { $0.rawValue} )
         XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 1)
         assertThat(notificationCenter, addedNotificationRequestWithId: key.rawValue)
         assertThat(notificationCenter, addedNotificationRequestWith: settings.title(forKey: key), body: settings.body(forKey: key))
@@ -128,6 +127,14 @@ final class CLOCNotificationManagerTests: XCTestCase {
         trackForMemoryLeaks(sut, file: file, line: line)
 
         return (sut, notificationCenter, settings)
+    }
+    
+    // XCTAssert like this becuase comparing two `Array`s may fail because of orders and keeping orders is also important so I couldn't use `Set`
+    private func assertThat(_ notificationCenter: MockNotificationCenter, deletedNotificationRequestsWithIds ids: [String]) {
+        XCTAssertEqual(notificationCenter.deletedNotificationRequests.count, ids.count)
+        ids.forEach { id in
+            XCTAssertTrue(notificationCenter.deletedNotificationRequests.contains(id))
+        }
     }
     
     private func assertThat(_ notificationCenter: MockNotificationCenter, addedNotificationRequestWithId id: String, at index: Int = 0) {
