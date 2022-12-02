@@ -11,6 +11,8 @@ enum CLOCNotificationSettingKey: String {
 
 protocol CLOCNotificationSetting {
     func time(forKey: CLOCNotificationSettingKey) -> TimeInterval?
+    func title(forKey: CLOCNotificationSettingKey) -> String
+    func body(forKey: CLOCNotificationSettingKey) -> String?
 }
 
 class CLOCNotificationManager {
@@ -32,7 +34,16 @@ class CLOCNotificationManager {
     func timerDidStop() async {
         removeTimerNotifications()
         guard let time = settings.time(forKey: .noTasksHasBeenAddedSince) else { return }
-        try? await notificationManager.setNotification(forDate: Date(), andId: CLOCNotificationSettingKey.noTasksHasBeenAddedSince.rawValue,  content: ZZNotificationContent.map(title: "title", categoryId: CLOCNotificationSettingKey.noTasksHasBeenAddedSince.rawValue))
+        let key = CLOCNotificationSettingKey.noTasksHasBeenAddedSince
+        try? await notificationManager.setNotification(
+            forDate: Date(),
+            andId: key.rawValue,
+            content: ZZNotificationContent.map(
+                title: settings.title(forKey: key),
+                categoryId: key.rawValue,
+                body: settings.body(forKey: key)
+            )
+        )
     }
     
     private func removeTimerNotifications() {
@@ -89,14 +100,17 @@ final class CLOCNotificationManagerTests: XCTestCase {
     func test_timerDidStop_addsTaskReminderNotificationIfValueExist() async {
         let (sut, notificationCenter, settings) = makeSUT()
         settings.noTasksHasBeenAddedSince = 20.minutes
+        let key = CLOCNotificationSettingKey.noTasksHasBeenAddedSince
         
         await sut.timerDidStop()
 
         XCTAssertEqual(notificationCenter.deletedNotificationRequests.count, 2)
         XCTAssertTrue(notificationCenter.deletedNotificationRequests.contains(CLOCNotificationSettingKey.timerPassedTheDeadline.rawValue))
         XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 1)
-        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].identifier, CLOCNotificationSettingKey.noTasksHasBeenAddedSince.rawValue)
-        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].identifier, CLOCNotificationSettingKey.noTasksHasBeenAddedSince.rawValue)
+        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].identifier, key.rawValue)
+        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].identifier, key.rawValue)
+        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].content.title, settings.title(forKey: key))
+        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].content.body, settings.body(forKey: key))
     }
     
     // MARK: - Helpers
@@ -129,6 +143,28 @@ final class CLOCNotificationManagerTests: XCTestCase {
                 return nil
             case .noTasksHasBeenAddedSince:
                 return noTasksHasBeenAddedSince
+            }
+        }
+        
+        func title(forKey key: CLOCNotificationSettingKey) -> String {
+            switch key {
+            case .timerPassedTheDeadline:
+                return "-"
+            case .timerPassedTheDuration:
+                return "-"
+            case .noTasksHasBeenAddedSince:
+                return "noTasksHasBeenAddedSince-title"
+            }
+        }
+        
+        func body(forKey key: CLOCNotificationSettingKey) -> String? {
+            switch key {
+            case .timerPassedTheDeadline:
+                return "-"
+            case .timerPassedTheDuration:
+                return "-"
+            case .noTasksHasBeenAddedSince:
+                return "noTasksHasBeenAddedSince-body"
             }
         }
     }
