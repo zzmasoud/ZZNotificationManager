@@ -29,9 +29,10 @@ class CLOCNotificationManager {
         return Date(timeIntervalSinceNow: limit - passed)
     }
     
-    func timerDidStop() {
+    func timerDidStop() async {
         removeTimerNotifications()
         guard let time = settings.time(forKey: .noTasksHasBeenAddedSince) else { return }
+        try? await notificationManager.setNotification(forDate: Date(), andId: CLOCNotificationSettingKey.noTasksHasBeenAddedSince.rawValue,  content: ZZNotificationContent.map(title: "title", categoryId: CLOCNotificationSettingKey.noTasksHasBeenAddedSince.rawValue))
     }
     
     private func removeTimerNotifications() {
@@ -64,25 +65,38 @@ final class CLOCNotificationManagerTests: XCTestCase {
         XCTAssertTrue(date!.timeIntervalSinceNow < limit)
     }
     
-    func test_timerDidStop_removesTimerNotifications() {
+    func test_timerDidStop_removesTimerNotifications() async {
         let (sut, notificationCenter, _) = makeSUT()
 
-        sut.timerDidStop()
+        await sut.timerDidStop()
         
         // XCTAssert like this becuase comparing two `Array`s may fail because of orders and keeping orders is also important so I couldn't use `Set`
         XCTAssertEqual(notificationCenter.deletedNotificationRequests.count, 2)
         XCTAssertTrue(notificationCenter.deletedNotificationRequests.contains(CLOCNotificationSettingKey.timerPassedTheDeadline.rawValue))
     }
     
-    func test_timerDidStop_DoesNotAddTaskReminderNotificationIfValueIsNil() {
+    func test_timerDidStop_DoesNotAddTaskReminderNotificationIfValueIsNil() async {
         let (sut, notificationCenter, settings) = makeSUT()
         settings.noTasksHasBeenAddedSince = nil
         
-        sut.timerDidStop()
+        await sut.timerDidStop()
 
         XCTAssertEqual(notificationCenter.deletedNotificationRequests.count, 2)
         XCTAssertTrue(notificationCenter.deletedNotificationRequests.contains(CLOCNotificationSettingKey.timerPassedTheDeadline.rawValue))
         XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 0)
+    }
+    
+    func test_timerDidStop_addsTaskReminderNotificationIfValueExist() async {
+        let (sut, notificationCenter, settings) = makeSUT()
+        settings.noTasksHasBeenAddedSince = 20.minutes
+        
+        await sut.timerDidStop()
+
+        XCTAssertEqual(notificationCenter.deletedNotificationRequests.count, 2)
+        XCTAssertTrue(notificationCenter.deletedNotificationRequests.contains(CLOCNotificationSettingKey.timerPassedTheDeadline.rawValue))
+        XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 1)
+        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].identifier, CLOCNotificationSettingKey.noTasksHasBeenAddedSince.rawValue)
+        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].identifier, CLOCNotificationSettingKey.noTasksHasBeenAddedSince.rawValue)
     }
     
     // MARK: - Helpers
