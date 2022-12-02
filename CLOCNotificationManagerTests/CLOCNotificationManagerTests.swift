@@ -107,10 +107,8 @@ final class CLOCNotificationManagerTests: XCTestCase {
         XCTAssertEqual(notificationCenter.deletedNotificationRequests.count, 2)
         XCTAssertTrue(notificationCenter.deletedNotificationRequests.contains(CLOCNotificationSettingKey.timerPassedTheDeadline.rawValue))
         XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 1)
-        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].identifier, key.rawValue)
-        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].identifier, key.rawValue)
-        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].content.title, settings.title(forKey: key))
-        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].content.body, settings.body(forKey: key))
+        assertThat(notificationCenter, addedNotificationRequestWithId: key.rawValue)
+        assertThat(notificationCenter, addedNotificationRequestWith: settings.title(forKey: key), body: settings.body(forKey: key))
     }
     
     // MARK: - Helpers
@@ -130,6 +128,16 @@ final class CLOCNotificationManagerTests: XCTestCase {
         trackForMemoryLeaks(sut, file: file, line: line)
 
         return (sut, notificationCenter, settings)
+    }
+    
+    private func assertThat(_ notificationCenter: MockNotificationCenter, addedNotificationRequestWithId id: String, at index: Int = 0) {
+        XCTAssertEqual(notificationCenter.addedNotificationRequests[index].identifier, id)
+        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].identifier, id)
+    }
+    
+    private func assertThat(_ notificationCenter: MockNotificationCenter, addedNotificationRequestWith title: String, body: String?, at index: Int = 0) {
+        XCTAssertEqual(notificationCenter.addedNotificationRequests[index].content.title, title)
+        XCTAssertEqual(notificationCenter.addedNotificationRequests[index].content.body, body)
     }
     
     private class MockNotificationSetting: CLOCNotificationSetting {
