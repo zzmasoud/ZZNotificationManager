@@ -36,7 +36,7 @@ class CLOCNotificationManager {
         guard let time = settings.time(forKey: .noTasksHasBeenAddedSince) else { return }
         let key = CLOCNotificationSettingKey.noTasksHasBeenAddedSince
         try? await notificationManager.setNotification(
-            forDate: Date(),
+            forDate: Date().addingTimeInterval(time),
             andId: key.rawValue,
             content: ZZNotificationContent.map(
                 title: settings.title(forKey: key),
@@ -99,6 +99,7 @@ final class CLOCNotificationManagerTests: XCTestCase {
     func test_timerDidStop_addsTaskReminderNotificationIfValueExist() async {
         let (sut, notificationCenter, settings) = makeSUT()
         settings.noTasksHasBeenAddedSince = 20.minutes
+        let expectedDate = Date().addingTimeInterval(settings.noTasksHasBeenAddedSince!)
         let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedTheDeadline]
         let key = CLOCNotificationSettingKey.noTasksHasBeenAddedSince
         
@@ -108,6 +109,7 @@ final class CLOCNotificationManagerTests: XCTestCase {
         XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 1)
         assertThat(notificationCenter, addedNotificationRequestWithId: key.rawValue)
         assertThat(notificationCenter, addedNotificationRequestWith: settings.title(forKey: key), body: settings.body(forKey: key))
+        XCTAssertTrue((notificationCenter.addedNotificationRequests[0].trigger as! UNCalendarNotificationTrigger).isEqual(toDate: expectedDate, calendar: Calendar.current))
     }
     
     // MARK: - Helpers
@@ -189,4 +191,13 @@ extension Int {
     var minutes: TimeInterval { Double(self) * 60 }
     var hours: TimeInterval { Double(self) * 60 * minutes }
     var days: TimeInterval { Double(self) * 24 * hours * minutes * 60 }
+}
+
+import UserNotifications
+
+private extension UNCalendarNotificationTrigger {
+    func isEqual(toDate date: Date, calendar: Calendar) -> Bool {
+        guard let selfAsDate = calendar.date(from: self.dateComponents) else { return false }
+        return calendar.compare(selfAsDate, to: date, toGranularity: .minute) == .orderedSame
+    }
 }
