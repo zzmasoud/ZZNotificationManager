@@ -122,9 +122,10 @@ final class CLOCNotificationManagerTests: XCTestCase {
     typealias NotificationRequestParamaters = (id: String, title: String, body: String?, fireDate: Date)
     
     var forbiddenHours: [Int] { [10, 11, 00, 1, 2, 3, 4, 5, 6] }
+    var calendar: Calendar { Calendar.current }
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationManager, notificationCenter: MockNotificationCenter, settings: MockNotificationSetting) {
-        let calendar = Calendar.current
+        let calendar = self.calendar
         let notificationCenter = MockNotificationCenter()
         let notificationManager = ZZNotificationManagerComposer.composedWith(notificationCenter: notificationCenter, calendar: calendar, forbiddenHours: forbiddenHours)
         let settings = MockNotificationSetting()
@@ -174,7 +175,7 @@ final class CLOCNotificationManagerTests: XCTestCase {
             XCTFail("expected to get \(UNCalendarNotificationTrigger.self).")
             return
         }
-        XCTAssertTrue(calendarTrigger.isEqual(toDate: fireDate, calendar: Calendar.current))
+        XCTAssertTrue(calendarTrigger.isEqual(toDate: fireDate, calendar: self.calendar))
     }
     
     private func getNotificationRequest(_ notificationCenter: MockNotificationCenter, at index: Int = 0) -> UNNotificationRequest {
