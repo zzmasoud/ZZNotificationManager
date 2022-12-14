@@ -99,20 +99,27 @@ final class CLOCNotificationManagerTests: XCTestCase {
     func test_timerDidStop_addsTaskReminderNotificationIfValueExist() async {
         let (sut, notificationCenter, settings) = makeSUT()
         settings.noTasksHasBeenAddedSince = 20.minutes
-        let expectedDate = Date().addingTimeInterval(settings.noTasksHasBeenAddedSince!)
         let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedTheDeadline]
-        let key = CLOCNotificationSettingKey.noTasksHasBeenAddedSince
+        let expectedDate = Date().addingTimeInterval(settings.noTasksHasBeenAddedSince!)
+        let expectedKey = CLOCNotificationSettingKey.noTasksHasBeenAddedSince
+        let expectedRequests: [NotificationRequestParamaters] = [
+            (
+                id: expectedKey.rawValue,
+                title: settings.title(forKey: expectedKey),
+                body: settings.body(forKey: expectedKey),
+                fireDate: expectedDate
+            )
+        ]
         
         await sut.timerDidStop()
 
         assertThat(notificationCenter, deletedNotificationRequestsWithIds: keys.map { $0.rawValue} )
-        XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 1)
-        assertThat(notificationCenter, addedNotificationRequestWithId: key.rawValue)
-        assertThat(notificationCenter, addedNotificationRequestWith: settings.title(forKey: key), body: settings.body(forKey: key))
-        assertThat(notificationCenter, addedNotificationReuqestWithDate: expectedDate)
+        assertThat(notificationCenter, addedNotificationRequestWithItems: expectedRequests)
     }
     
     // MARK: - Helpers
+    
+    typealias NotificationRequestParamaters = (id: String, title: String, body: String?, fireDate: Date)
     
     var forbiddenHours: [Int] { [10, 11, 00, 1, 2, 3, 4, 5, 6] }
     
@@ -139,20 +146,29 @@ final class CLOCNotificationManagerTests: XCTestCase {
         }
     }
     
-    private func assertThat(_ notificationCenter: MockNotificationCenter, addedNotificationRequestWithId id: String, at index: Int = 0) {
-        let notificationRequest = getNotificationRequest(notificationCenter, at: index)
+    private func assertThat(_ notificationCenter: MockNotificationCenter, addedNotificationRequestWithItems items: [NotificationRequestParamaters]) {
+        guard notificationCenter.addedNotificationRequests.count == items.count else {
+            return XCTFail("expected to get \(items.count) notification requests but got \(notificationCenter.addedNotificationRequests.count).")
+        }
+        for (index, item) in items.enumerated() {
+            let notificationRequest = getNotificationRequest(notificationCenter, at: index)
+            assertThat(notificationRequest, hasSameId: item.id)
+            assertThat(notificationRequest, hasSameTitle: item.title, andBody: item.body)
+            assertThat(notificationRequest, hasSameFireDate: item.fireDate)
+        }
+    }
+    
+    private func assertThat(_ notificationRequest: UNNotificationRequest, hasSameId id: String) {
         XCTAssertEqual(notificationRequest.identifier, id)
         XCTAssertEqual(notificationRequest.content.categoryIdentifier, id)
     }
     
-    private func assertThat(_ notificationCenter: MockNotificationCenter, addedNotificationRequestWith title: String, body: String?, at index: Int = 0) {
-        let notificationRequest = getNotificationRequest(notificationCenter, at: index)
+    private func assertThat(_ notificationRequest: UNNotificationRequest, hasSameTitle title: String, andBody body: String?, at index: Int = 0) {
         XCTAssertEqual(notificationRequest.content.title, title)
         XCTAssertEqual(notificationRequest.content.body, body)
     }
     
-    private func assertThat(_ notificationCenter: MockNotificationCenter, addedNotificationReuqestWithDate fireDate: Date, at index: Int = 0) {
-        let notificationRequest = getNotificationRequest(notificationCenter, at: index)
+    private func assertThat(_ notificationRequest: UNNotificationRequest, hasSameFireDate fireDate: Date) {
         let trigger = notificationRequest.trigger
         guard let calendarTrigger = trigger as? UNCalendarNotificationTrigger else {
             XCTFail("expected to get \(UNCalendarNotificationTrigger.self).")
