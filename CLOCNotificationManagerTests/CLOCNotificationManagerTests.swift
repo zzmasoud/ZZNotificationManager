@@ -140,22 +140,29 @@ final class CLOCNotificationManagerTests: XCTestCase {
     }
     
     private func assertThat(_ notificationCenter: MockNotificationCenter, addedNotificationRequestWithId id: String, at index: Int = 0) {
-        XCTAssertEqual(notificationCenter.addedNotificationRequests[index].identifier, id)
-        XCTAssertEqual(notificationCenter.addedNotificationRequests[0].identifier, id)
+        let notificationRequest = getNotificationRequest(notificationCenter, at: index)
+        XCTAssertEqual(notificationRequest.identifier, id)
+        XCTAssertEqual(notificationRequest.content.categoryIdentifier, id)
     }
     
     private func assertThat(_ notificationCenter: MockNotificationCenter, addedNotificationRequestWith title: String, body: String?, at index: Int = 0) {
-        XCTAssertEqual(notificationCenter.addedNotificationRequests[index].content.title, title)
-        XCTAssertEqual(notificationCenter.addedNotificationRequests[index].content.body, body)
+        let notificationRequest = getNotificationRequest(notificationCenter, at: index)
+        XCTAssertEqual(notificationRequest.content.title, title)
+        XCTAssertEqual(notificationRequest.content.body, body)
     }
     
     private func assertThat(_ notificationCenter: MockNotificationCenter, addedNotificationReuqestWithDate fireDate: Date, at index: Int = 0) {
-        let trigger = notificationCenter.addedNotificationRequests[index].trigger
+        let notificationRequest = getNotificationRequest(notificationCenter, at: index)
+        let trigger = notificationRequest.trigger
         guard let calendarTrigger = trigger as? UNCalendarNotificationTrigger else {
-            XCTFail("expected to get \(UNCalendarNotificationTrigger.self) but got \(trigger.self)")
+            XCTFail("expected to get \(UNCalendarNotificationTrigger.self).")
             return
         }
         XCTAssertTrue(calendarTrigger.isEqual(toDate: fireDate, calendar: Calendar.current))
+    }
+    
+    private func getNotificationRequest(_ notificationCenter: MockNotificationCenter, at index: Int = 0) -> UNNotificationRequest {
+        return notificationCenter.addedNotificationRequests[index]
     }
     
     private class MockNotificationSetting: CLOCNotificationSetting {
