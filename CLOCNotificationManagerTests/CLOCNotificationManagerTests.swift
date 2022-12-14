@@ -109,7 +109,7 @@ final class CLOCNotificationManagerTests: XCTestCase {
         XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 1)
         assertThat(notificationCenter, addedNotificationRequestWithId: key.rawValue)
         assertThat(notificationCenter, addedNotificationRequestWith: settings.title(forKey: key), body: settings.body(forKey: key))
-        XCTAssertTrue((notificationCenter.addedNotificationRequests[0].trigger as! UNCalendarNotificationTrigger).isEqual(toDate: expectedDate, calendar: Calendar.current))
+        assertThat(notificationCenter, addedNotificationReuqestWithDate: expectedDate)
     }
     
     // MARK: - Helpers
@@ -147,6 +147,15 @@ final class CLOCNotificationManagerTests: XCTestCase {
     private func assertThat(_ notificationCenter: MockNotificationCenter, addedNotificationRequestWith title: String, body: String?, at index: Int = 0) {
         XCTAssertEqual(notificationCenter.addedNotificationRequests[index].content.title, title)
         XCTAssertEqual(notificationCenter.addedNotificationRequests[index].content.body, body)
+    }
+    
+    private func assertThat(_ notificationCenter: MockNotificationCenter, addedNotificationReuqestWithDate fireDate: Date, at index: Int = 0) {
+        let trigger = notificationCenter.addedNotificationRequests[index].trigger
+        guard let calendarTrigger = trigger as? UNCalendarNotificationTrigger else {
+            XCTFail("expected to get \(UNCalendarNotificationTrigger.self) but got \(trigger.self)")
+            return
+        }
+        XCTAssertTrue(calendarTrigger.isEqual(toDate: fireDate, calendar: Calendar.current))
     }
     
     private class MockNotificationSetting: CLOCNotificationSetting {
