@@ -3,6 +3,7 @@
 //  
 
 import XCTest
+import UserNotifications
 import ZZNotificationManager
 
 final class TimerDidStopUseCaseTests: XCTestCase {
@@ -109,14 +110,5 @@ final class TimerDidStopUseCaseTests: XCTestCase {
     
     private func getNotificationRequest(_ notificationCenter: MockNotificationCenter, at index: Int = 0) -> UNNotificationRequest {
         return notificationCenter.addedNotificationRequests[index]
-    }
-}
-
-import UserNotifications
-
-private extension UNCalendarNotificationTrigger {
-    func isEqual(toDate date: Date, calendar: Calendar) -> Bool {
-        guard let selfAsDate = calendar.date(from: self.dateComponents) else { return false }
-        return calendar.compare(selfAsDate, to: date, toGranularity: .minute) == .orderedSame
     }
 }
