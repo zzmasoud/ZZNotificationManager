@@ -3,6 +3,7 @@
 //  
 
 import Foundation
+import ZZNotificationManager
 
 class MockNotificationSetting: CLOCNotificationSetting {
     var noTasksHasBeenAddedSince: Double? = nil
