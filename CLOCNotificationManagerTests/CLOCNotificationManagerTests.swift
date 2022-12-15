@@ -96,9 +96,3 @@ final class CLOCNotificationManagerTests: XCTestCase {
         return (sut, notificationCenter, settings)
     }
 }
-
-extension Int {
-    var minutes: TimeInterval { Double(self) * 60 }
-    var hours: TimeInterval { Double(self) * 60 * minutes }
-    var days: TimeInterval { Double(self) * 24 * hours * minutes * 60 }
-}
