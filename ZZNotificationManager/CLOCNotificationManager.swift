@@ -50,7 +50,7 @@ public class CLOCNotificationManager {
         notificationManager.removePendingNotifications(withIds: keys)
     }
     
-    public func timerDidStart() async {
+    public func timerDidStart(passed: TimeInterval = 0, deadline: TimeInterval = 0) async {
         removeTimerNotifications()
     }
 }
