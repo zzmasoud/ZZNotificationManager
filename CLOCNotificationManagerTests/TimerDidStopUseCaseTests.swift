@@ -50,26 +50,6 @@ final class TimerDidStopUseCaseTests: XCTestCase {
     
     // MARK: - Helpers
     
-    typealias NotificationRequestParamaters = (id: String, title: String, body: String?, fireDate: Date)
-    
-    var forbiddenHours: [Int] { [10, 11, 00, 1, 2, 3, 4, 5, 6] }
-    var calendar: Calendar { Calendar.current }
-    
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationManager, notificationCenter: MockNotificationCenter, settings: MockNotificationSetting) {
-        let calendar = self.calendar
-        let notificationCenter = MockNotificationCenter()
-        let notificationManager = ZZNotificationManagerComposer.composedWith(notificationCenter: notificationCenter, calendar: calendar, forbiddenHours: forbiddenHours)
-        let settings = MockNotificationSetting()
-        
-        let sut = CLOCNotificationManager(notificationManager: notificationManager, settings: settings)
-        
-        trackForMemoryLeaks(notificationCenter, file: file, line: line)
-        trackForMemoryLeaks(notificationManager, file: file, line: line)
-        trackForMemoryLeaks(sut, file: file, line: line)
-
-        return (sut, notificationCenter, settings)
-    }
-    
     // XCTAssert like this becuase comparing two `Array`s may fail because of orders and keeping orders is also important so I couldn't use `Set`
     private func assertThat(_ notificationCenter: MockNotificationCenter, deletedNotificationRequestsWithIds ids: [String], file: StaticString = #file, line: UInt = #line) {
         XCTAssertEqual(notificationCenter.deletedNotificationRequests.count, ids.count, file: file, line: line)
