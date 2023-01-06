@@ -5,7 +5,7 @@
 import Foundation
 
 public enum CLOCNotificationSettingKey: String {
-    case timerPassedTheDeadline, timerPassedTheDuration, noTasksHasBeenAddedSince
+    case timerPassedItsDeadline, timerPassedTheDuration, noTasksHasBeenAddedSince
 }
 
 public protocol CLOCNotificationSetting {
@@ -46,7 +46,7 @@ public class CLOCNotificationManager {
     }
     
     private func removeTimerNotifications() {
-        let keys = [CLOCNotificationSettingKey.timerPassedTheDuration, CLOCNotificationSettingKey.timerPassedTheDeadline].map { $0.rawValue }
+        let keys = [CLOCNotificationSettingKey.timerPassedTheDuration, CLOCNotificationSettingKey.timerPassedItsDeadline].map { $0.rawValue }
         notificationManager.removePendingNotifications(withIds: keys)
     }
     

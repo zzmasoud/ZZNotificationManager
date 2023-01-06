@@ -9,7 +9,7 @@ final class TimerDidStartUseCaseTests: XCTestCase {
     
     func test_timerDidStart_removesTimerNotifications() async {
         let (sut, notificationCenter, _) = makeSUT()
-        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedTheDeadline]
+        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
 
         await sut.timerDidStart()
         
@@ -18,8 +18,8 @@ final class TimerDidStartUseCaseTests: XCTestCase {
     
     func test_timerDidStart_DoesNotAddTimerPassedTheDeadlineNotificationIfValueIsNil() async {
         let (sut, notificationCenter, settings) = makeSUT()
-        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedTheDeadline]
-        settings.timerPassedTheDeadline = nil
+        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
+        settings.timerPassedItsDeadline = nil
         
         await sut.timerDidStart()
         
@@ -29,7 +29,7 @@ final class TimerDidStartUseCaseTests: XCTestCase {
     
     func test_timerDidStart_DoesNotAddTimerPassedTheDurationNotificationIfValueIsNil() async {
         let (sut, notificationCenter, settings) = makeSUT()
-        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedTheDeadline]
+        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
         settings.timerPassedTheDuration = nil
         
         await sut.timerDidStart()

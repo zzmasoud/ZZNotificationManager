@@ -9,7 +9,7 @@ import ZZNotificationManager
 final class TimerDidStopUseCaseTests: XCTestCase {
     func test_timerDidStop_removesTimerNotifications() async {
         let (sut, notificationCenter, _) = makeSUT()
-        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedTheDeadline]
+        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
 
         await sut.timerDidStop()
         
@@ -18,7 +18,7 @@ final class TimerDidStopUseCaseTests: XCTestCase {
     
     func test_timerDidStop_DoesNotAddTaskReminderNotificationIfValueIsNil() async {
         let (sut, notificationCenter, settings) = makeSUT()
-        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedTheDeadline]
+        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
         settings.noTasksHasBeenAddedSince = nil
         
         await sut.timerDidStop()
@@ -30,7 +30,7 @@ final class TimerDidStopUseCaseTests: XCTestCase {
     func test_timerDidStop_addsTaskReminderNotificationIfValueExist() async {
         let (sut, notificationCenter, settings) = makeSUT()
         settings.noTasksHasBeenAddedSince = 20.minutes
-        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedTheDeadline]
+        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
         let expectedDate = Date().addingTimeInterval(settings.noTasksHasBeenAddedSince!)
         let expectedKey = CLOCNotificationSettingKey.noTasksHasBeenAddedSince
         let expectedRequests: [NotificationRequestParamaters] = [
