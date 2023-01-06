@@ -7,6 +7,7 @@ import ZZNotificationManager
 
 class MockNotificationSetting: CLOCNotificationSetting {
     var noTasksHasBeenAddedSince: Double? = nil
+    var timerPassedTheDeadline: Double? = nil
     
     func time(forKey key: CLOCNotificationSettingKey) -> Double? {
         switch key {
