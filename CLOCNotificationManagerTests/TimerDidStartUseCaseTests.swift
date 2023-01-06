@@ -27,6 +27,17 @@ final class TimerDidStartUseCaseTests: XCTestCase {
         XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 0)
     }
     
+    func test_timerDidStart_DoesNotAddTimerPassedTheDurationNotificationIfValueIsNil() async {
+        let (sut, notificationCenter, settings) = makeSUT()
+        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedTheDeadline]
+        settings.timerPassedTheDuration = nil
+        
+        await sut.timerDidStart()
+        
+        assertThat(notificationCenter, deletedNotificationRequestsWithIds: keys.map { $0.rawValue} )
+        XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 0)
+    }
+    
     // MARK: - Helpers
     
     // XCTAssert like this becuase comparing two `Array`s may fail because of orders and keeping orders is also important so I couldn't use `Set`
