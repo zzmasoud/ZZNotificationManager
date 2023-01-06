@@ -49,4 +49,8 @@ public class CLOCNotificationManager {
         let keys = [CLOCNotificationSettingKey.timerPassedTheDuration, CLOCNotificationSettingKey.timerPassedTheDeadline].map { $0.rawValue }
         notificationManager.removePendingNotifications(withIds: keys)
     }
+    
+    public func timerDidStart() async {
+        removeTimerNotifications()
+    }
 }
