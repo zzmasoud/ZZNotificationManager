@@ -41,12 +41,10 @@ final class TimerDidStartUseCaseTests: XCTestCase {
     func test_timerDidStart_DoesNotAddTimerPassedItsDeadlineNotificationIfValueExistButNotPassedDeadline() async {
         let (sut, notificationCenter, settings) = makeSUT()
         let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
-        // any number makes this case valid (means turned on)
-        settings.timerPassedItsDeadline = 1.minutes
-        let timerDeadline = 20.minutes
-        let timerPassedTime = timerDeadline - 1
+        turnOnTimerPassedItsDeadlineNotification(onSettings: settings)
+        let timer = simulateTimerStartedButNotPassedDeadline()
         
-        await sut.timerDidStart(passed: timerPassedTime, deadline: timerDeadline)
+        await sut.timerDidStart(passed: timer.passed, deadline: timer.deadline)
         
         assertThat(notificationCenter, deletedNotificationRequestsWithIds: keys.map { $0.rawValue} )
         XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 0)
@@ -60,5 +58,22 @@ final class TimerDidStartUseCaseTests: XCTestCase {
         ids.forEach { id in
             XCTAssertTrue(notificationCenter.deletedNotificationRequests.contains(id), file: file, line: line)
         }
+    }
+    
+    // MARK: - Simulate settings changes
+    
+    private func turnOnTimerPassedItsDeadlineNotification(onSettings settings: MockNotificationSetting) {
+        // any number makes this case valid (means turned on)
+        settings.timerPassedItsDeadline = 1.minutes
+
+    }
+    
+    // MARK: - Simulate timer states
+    
+    // this happens when a user start tracking time on a 'paused' timer
+    private func simulateTimerStartedButNotPassedDeadline() -> (passed: TimeInterval, deadline: TimeInterval) {
+        let timerDeadline = 20.minutes
+        let timerPassedTime = timerDeadline - 1
+        return (timerPassedTime, timerDeadline)
     }
 }
