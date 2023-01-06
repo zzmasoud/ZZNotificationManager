@@ -17,6 +17,7 @@
 		04030C16296755E1006EF9BE /* Int+TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C15296755E1006EF9BE /* Int+TimeInterval.swift */; };
 		04030C18296755E1006EF9BE /* UNCalendarNotificationTrigger+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C17296755E1006EF9BE /* UNCalendarNotificationTrigger+Date.swift */; };
 		04030C1A296755E1006EF9BE /* CLOCNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C19296755E1006EF9BE /* CLOCNotificationManager.swift */; };
+		04030C1C29688532006EF9BE /* TimerDidStartUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C1B29688532006EF9BE /* TimerDidStartUseCaseTests.swift */; };
 		0408A3962917A7FE00C26444 /* ZZNotificationContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */; };
 		04444A33291A756600B6273B /* ZZNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A32291A756600B6273B /* ZZNotificationManager.swift */; };
 		04444A35291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */; };
@@ -59,6 +60,7 @@
 		04030C15296755E1006EF9BE /* Int+TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+TimeInterval.swift"; sourceTree = "<group>"; };
 		04030C17296755E1006EF9BE /* UNCalendarNotificationTrigger+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UNCalendarNotificationTrigger+Date.swift"; sourceTree = "<group>"; };
 		04030C19296755E1006EF9BE /* CLOCNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationManager.swift; sourceTree = "<group>"; };
+		04030C1B29688532006EF9BE /* TimerDidStartUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDidStartUseCaseTests.swift; sourceTree = "<group>"; };
 		0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationContentTests.swift; sourceTree = "<group>"; };
 		04444A32291A756600B6273B /* ZZNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManager.swift; sourceTree = "<group>"; };
 		04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserNotificationCenterProtocol.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				04030C11296755E1006EF9BE /* Shared */,
 				04030BF2296755E1006EF9BE /* CLOCNotificationManagerTests.swift */,
 				04030C0E296755E1006EF9BE /* TimerDidStopUseCaseTests.swift */,
+				04030C1B29688532006EF9BE /* TimerDidStartUseCaseTests.swift */,
 			);
 			path = CLOCNotificationManagerTests;
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				04030C16296755E1006EF9BE /* Int+TimeInterval.swift in Sources */,
 				04030C18296755E1006EF9BE /* UNCalendarNotificationTrigger+Date.swift in Sources */,
 				04030C0D296755E1006EF9BE /* Date+GetComponents.swift in Sources */,
+				04030C1C29688532006EF9BE /* TimerDidStartUseCaseTests.swift in Sources */,
 				04030C0C296755E1006EF9BE /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
