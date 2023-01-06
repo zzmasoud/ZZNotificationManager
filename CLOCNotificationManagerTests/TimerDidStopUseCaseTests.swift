@@ -16,7 +16,7 @@ final class TimerDidStopUseCaseTests: XCTestCase {
         assertThat(notificationCenter, deletedNotificationRequestsWithIds: keys.map { $0.rawValue} )
     }
     
-    func test_timerDidStop_DoesNotAddTaskReminderNotificationIfValueIsNil() async {
+    func test_timerDidStop_doesNotAddTaskReminderNotificationIfValueIsNil() async {
         let (sut, notificationCenter, settings) = makeSUT()
         let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
         settings.noTasksHasBeenAddedSince = nil

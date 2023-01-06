@@ -24,7 +24,7 @@ class MockNotificationSetting: CLOCNotificationSetting {
     func title(forKey key: CLOCNotificationSettingKey) -> String {
         switch key {
         case .timerPassedItsDeadline:
-            return "-"
+            return "timerPassedItsDeadline-title"
         case .timerPassedTheDuration:
             return "-"
         case .noTasksHasBeenAddedSince:
@@ -35,7 +35,7 @@ class MockNotificationSetting: CLOCNotificationSetting {
     func body(forKey key: CLOCNotificationSettingKey) -> String? {
         switch key {
         case .timerPassedItsDeadline:
-            return "-"
+            return "timerPassedItsDeadline-body"
         case .timerPassedTheDuration:
             return "-"
         case .noTasksHasBeenAddedSince:
