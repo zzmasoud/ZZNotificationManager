@@ -54,6 +54,7 @@ public class CLOCNotificationManager {
     public func timerDidStart(passed: TimeInterval = 0, deadline: TimeInterval = 0, duration: TimeInterval = 0) async {
         removeTimerNotifications()
         await setTimerDeadlineNotificationIfPossible(passed: passed, deadline: deadline)
+        await setTimerDurationNotificationIfPossible(passed: passed, duration: duration)
     }
     
     private func setTimerDeadlineNotificationIfPossible(passed: TimeInterval, deadline: TimeInterval) async {

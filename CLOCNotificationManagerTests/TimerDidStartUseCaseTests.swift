@@ -76,7 +76,7 @@ final class TimerDidStartUseCaseTests: XCTestCase {
     func test_timerDidStart_doesNotAddTimerPassedDurationNotificationIfValueExistsAndPassedDuration() async {
         let (sut, notificationCenter, settings) = makeSUT()
         let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
-        turnOnTimerPassedItsDeadlineNotification(onSettings: settings)
+        turnOnTimerPassedDurationNotification(onSettings: settings)
         let timer = simulateTimerStartedAndPassedDuration()
         
         await sut.timerDidStart(passed: timer.passed, duration: timer.duration)
@@ -85,12 +85,40 @@ final class TimerDidStartUseCaseTests: XCTestCase {
         XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 0)
     }
     
+    func test_timerDidStart_addsTimerPassedDurationNotificationIfValueExistsAndNotPassedDuration() async {
+        let (sut, notificationCenter, settings) = makeSUT()
+        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
+        turnOnTimerPassedDurationNotification(onSettings: settings)
+        let timer = simulateTimerStartedButNotPassedDuration()
+        let expectedDate = Date().addingTimeInterval(timer.duration - timer.passed)
+        let expectedKey = CLOCNotificationSettingKey.timerPassedTheDuration
+        let expectedRequests: [NotificationRequestParamaters] = [
+            (
+                id: expectedKey.rawValue,
+                title: settings.title(forKey: expectedKey),
+                body: settings.body(forKey: expectedKey),
+                fireDate: expectedDate
+            )
+        ]
+        
+        await sut.timerDidStart(passed: timer.passed, duration: timer.duration)
+        
+        assertThat(notificationCenter, deletedNotificationRequestsWithIds: keys.map { $0.rawValue} )
+        assertThat(notificationCenter, addedNotificationRequestWithItems: expectedRequests)
+    }
+    
     // MARK: - Simulate settings changes
+    
+    var duration: TimeInterval { return 15.minutes }
     
     private func turnOnTimerPassedItsDeadlineNotification(onSettings settings: MockNotificationSetting) {
         // any number makes this case valid (means turned on)
         settings.timerPassedItsDeadline = 1.minutes
 
+    }
+    
+    private func turnOnTimerPassedDurationNotification(onSettings settings: MockNotificationSetting) {
+        settings.timerPassedItsDeadline = duration
     }
     
     // MARK: - Simulate timer states
@@ -109,8 +137,14 @@ final class TimerDidStartUseCaseTests: XCTestCase {
     }
     
     private func simulateTimerStartedAndPassedDuration() -> (passed: TimeInterval, duration: TimeInterval) {
-        let settedDuration = 20.minutes
+        let settedDuration = duration
         let timerPassedTime = settedDuration + 1
+        return (timerPassedTime, settedDuration)
+    }
+    
+    private func simulateTimerStartedButNotPassedDuration() -> (passed: TimeInterval, duration: TimeInterval) {
+        let settedDuration = duration
+        let timerPassedTime = settedDuration - 2.minutes
         return (timerPassedTime, settedDuration)
     }
 }
