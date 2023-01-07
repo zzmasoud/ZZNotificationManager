@@ -20,6 +20,7 @@
 		04030C1C29688532006EF9BE /* TimerDidStartUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C1B29688532006EF9BE /* TimerDidStartUseCaseTests.swift */; };
 		04030C1E296885A4006EF9BE /* XCTestCase+SUT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C1D296885A4006EF9BE /* XCTestCase+SUT.swift */; };
 		0408A3962917A7FE00C26444 /* ZZNotificationContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */; };
+		043AEFB02969C6B900FC5B86 /* XCTestCase+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */; };
 		04444A33291A756600B6273B /* ZZNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A32291A756600B6273B /* ZZNotificationManager.swift */; };
 		04444A35291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */; };
 		04444A39291A772300B6273B /* Date+GetComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A38291A772300B6273B /* Date+GetComponents.swift */; };
@@ -64,6 +65,7 @@
 		04030C1B29688532006EF9BE /* TimerDidStartUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDidStartUseCaseTests.swift; sourceTree = "<group>"; };
 		04030C1D296885A4006EF9BE /* XCTestCase+SUT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+SUT.swift"; sourceTree = "<group>"; };
 		0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationContentTests.swift; sourceTree = "<group>"; };
+		043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Assertions.swift"; sourceTree = "<group>"; };
 		04444A32291A756600B6273B /* ZZNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManager.swift; sourceTree = "<group>"; };
 		04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserNotificationCenterProtocol.swift; sourceTree = "<group>"; };
 		04444A38291A772300B6273B /* Date+GetComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+GetComponents.swift"; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				04030C15296755E1006EF9BE /* Int+TimeInterval.swift */,
 				04030C17296755E1006EF9BE /* UNCalendarNotificationTrigger+Date.swift */,
 				04030C1D296885A4006EF9BE /* XCTestCase+SUT.swift */,
+				043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				04030C10296755E1006EF9BE /* TimerDidStopUseCaseTests.swift in Sources */,
 				04030C0A296755E1006EF9BE /* CLOCNotificationManagerTests.swift in Sources */,
 				04030C0B296755E1006EF9BE /* MockNotificationCenter.swift in Sources */,
+				043AEFB02969C6B900FC5B86 /* XCTestCase+Assertions.swift in Sources */,
 				04030C14296755E1006EF9BE /* MockNotificationSettings.swift in Sources */,
 				04030C16296755E1006EF9BE /* Int+TimeInterval.swift in Sources */,
 				04030C18296755E1006EF9BE /* UNCalendarNotificationTrigger+Date.swift in Sources */,
