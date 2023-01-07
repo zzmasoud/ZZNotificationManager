@@ -14,12 +14,16 @@ public class CLOCNotificationManager {
         self.notificationManager = notificationManager
         self.settings = settings
     }
-
+    
     open func calculateFutureDate(fromPassedTime passed: TimeInterval, andBorder border: TimeInterval?) -> Date? {
         guard let limit = border, passed < limit else { return nil }
         return Date(timeIntervalSinceNow: limit - passed)
     }
-    
+}
+
+// MARK: - Timer States
+
+extension CLOCNotificationManager {
     public func timerDidStop() async {
         removeTimerNotifications()
         guard let time = settings.time(forKey: .noTasksHasBeenAddedSince) else { return }
