@@ -107,6 +107,32 @@ final class TimerDidStartUseCaseTests: XCTestCase {
         assertThat(notificationCenter, addedNotificationRequestWithItems: expectedRequests)
     }
     
+    func test_timerDidStart_addsTimerPassedDurationAndTimerPassedItsDeadlineNotifications() async {
+        let (sut, notificationCenter, settings) = makeSUT()
+        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
+        turnOnTimerPassedDurationNotification(onSettings: settings)
+        turnOnTimerPassedItsDeadlineNotification(onSettings: settings)
+        let timer = simulateTimerStartedButNotPassedDurationAndItsDeadline()
+        // here order is important, if changed will fails. how to fix it?
+        let expectedKeys: [CLOCNotificationSettingKey] = [.timerPassedItsDeadline, .timerPassedTheDuration]
+        let expectedRequests: [NotificationRequestParamaters] = expectedKeys.map { key in
+            var expectedDate = Date().addingTimeInterval(timer.duration - timer.passed)
+            if key == .timerPassedItsDeadline {
+                expectedDate = Date().addingTimeInterval(timer.deadline - timer.passed)
+            }
+            return (
+                id: key.rawValue,
+                title: settings.title(forKey: key),
+                body: settings.body(forKey: key),
+                fireDate: expectedDate
+            )
+        }
+        
+        await sut.timerDidStart(passed: timer.passed, deadline: timer.deadline, duration: timer.duration)
+        assertThat(notificationCenter, deletedNotificationRequestsWithIds: keys.map { $0.rawValue} )
+        assertThat(notificationCenter, addedNotificationRequestWithItems: expectedRequests)
+    }
+    
     // MARK: - Simulate settings changes
     
     var duration: TimeInterval { return 15.minutes }
@@ -146,5 +172,12 @@ final class TimerDidStartUseCaseTests: XCTestCase {
         let settedDuration = duration
         let timerPassedTime = settedDuration - 2.minutes
         return (timerPassedTime, settedDuration)
+    }
+    
+    private func simulateTimerStartedButNotPassedDurationAndItsDeadline() -> (passed: TimeInterval, duration: TimeInterval, deadline: TimeInterval) {
+        let settedDuration = duration
+        let timerDeadline = settedDuration + 30.minutes
+        let timerPassedTime = settedDuration - 5.minutes
+        return (timerPassedTime, settedDuration, timerDeadline)
     }
 }

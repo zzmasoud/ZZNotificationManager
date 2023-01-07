@@ -26,7 +26,7 @@ class MockNotificationSetting: CLOCNotificationSetting {
         case .timerPassedItsDeadline:
             return "timerPassedItsDeadline-title"
         case .timerPassedTheDuration:
-            return "-"
+            return "timerPassedTheDuration-title"
         case .noTasksHasBeenAddedSince:
             return "noTasksHasBeenAddedSince-title"
         }
@@ -37,7 +37,7 @@ class MockNotificationSetting: CLOCNotificationSetting {
         case .timerPassedItsDeadline:
             return "timerPassedItsDeadline-body"
         case .timerPassedTheDuration:
-            return "-"
+            return "timerPassedTheDuration-body"
         case .noTasksHasBeenAddedSince:
             return "noTasksHasBeenAddedSince-body"
         }
