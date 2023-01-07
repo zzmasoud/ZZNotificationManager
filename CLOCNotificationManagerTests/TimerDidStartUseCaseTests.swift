@@ -27,18 +27,7 @@ final class TimerDidStartUseCaseTests: XCTestCase {
         assertThat(notificationCenter, deletedNotificationRequestsWithIds: keys.map { $0.rawValue} )
         XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 0)
     }
-    
-    func test_timerDidStart_doesNotAddTimerPassedTheDurationNotificationIfValueIsNil() async {
-        let (sut, notificationCenter, settings) = makeSUT()
-        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
-        settings.timerPassedTheDuration = nil
         
-        await sut.timerDidStart()
-        
-        assertThat(notificationCenter, deletedNotificationRequestsWithIds: keys.map { $0.rawValue} )
-        XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 0)
-    }
-    
     func test_timerDidStart_doesNotAddTimerPassedItsDeadlineNotificationIfValueExistsAndPassedDeadline() async {
         let (sut, notificationCenter, settings) = makeSUT()
         let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
@@ -73,12 +62,24 @@ final class TimerDidStartUseCaseTests: XCTestCase {
         assertThat(notificationCenter, addedNotificationRequestWithItems: expectedRequests)
     }
     
-    func test_timerDidStart_doesNotAddTimerPassedDurationNotificationIfValueIsNil() async {
+    func test_timerDidStart_doesNotAddTimerPassedTheDurationNotificationIfValueIsNil() async {
         let (sut, notificationCenter, settings) = makeSUT()
         let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
         settings.timerPassedTheDuration = nil
         
         await sut.timerDidStart()
+        
+        assertThat(notificationCenter, deletedNotificationRequestsWithIds: keys.map { $0.rawValue} )
+        XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 0)
+    }
+
+    func test_timerDidStart_doesNotAddTimerPassedDurationNotificationIfValueExistsAndPassedDuration() async {
+        let (sut, notificationCenter, settings) = makeSUT()
+        let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
+        turnOnTimerPassedItsDeadlineNotification(onSettings: settings)
+        let timer = simulateTimerStartedAndPassedDuration()
+        
+        await sut.timerDidStart(passed: timer.passed, duration: timer.duration)
         
         assertThat(notificationCenter, deletedNotificationRequestsWithIds: keys.map { $0.rawValue} )
         XCTAssertEqual(notificationCenter.addedNotificationRequests.count, 0)
@@ -105,5 +106,11 @@ final class TimerDidStartUseCaseTests: XCTestCase {
         let timerDeadline = 20.minutes
         let timerPassedTime = timerDeadline - 2.minutes
         return (timerPassedTime, timerDeadline)
+    }
+    
+    private func simulateTimerStartedAndPassedDuration() -> (passed: TimeInterval, duration: TimeInterval) {
+        let settedDuration = 20.minutes
+        let timerPassedTime = settedDuration + 1
+        return (timerPassedTime, settedDuration)
     }
 }

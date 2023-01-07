@@ -51,7 +51,7 @@ public class CLOCNotificationManager {
         notificationManager.removePendingNotifications(withIds: keys)
     }
     
-    public func timerDidStart(passed: TimeInterval = 0, deadline: TimeInterval = 0) async {
+    public func timerDidStart(passed: TimeInterval = 0, deadline: TimeInterval = 0, duration: TimeInterval = 0) async {
         removeTimerNotifications()
         await setTimerDeadlineNotificationIfPossible(passed: passed, deadline: deadline)
     }
@@ -61,6 +61,22 @@ public class CLOCNotificationManager {
         
         let remaining = deadline - passed
         let key = CLOCNotificationSettingKey.timerPassedItsDeadline
+        try? await notificationManager.setNotification(
+            forDate: Date().addingTimeInterval(remaining),
+            andId: key.rawValue,
+            content: ZZNotificationContent.map(
+                title: settings.title(forKey: key),
+                categoryId: key.rawValue,
+                body: settings.body(forKey: key)
+            )
+        )
+    }
+    
+    private func setTimerDurationNotificationIfPossible(passed: TimeInterval, duration: TimeInterval) async {
+        guard passed < duration else { return }
+        
+        let remaining = duration - passed
+        let key = CLOCNotificationSettingKey.timerPassedTheDuration
         try? await notificationManager.setNotification(
             forDate: Date().addingTimeInterval(remaining),
             andId: key.rawValue,
