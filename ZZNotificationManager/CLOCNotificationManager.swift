@@ -58,12 +58,10 @@ public class CLOCNotificationManager {
     }
     
     private func setTimerDeadlineNotificationIfPossible(passed: TimeInterval, deadline: TimeInterval) async {
-        guard passed < deadline else { return }
-        
-        let remaining = deadline - passed
+        guard let fireDate = self.calculateFutureDate(fromPassedTime: passed, andBorder: deadline) else { return }
         let key = CLOCNotificationSettingKey.timerPassedItsDeadline
         try? await notificationManager.setNotification(
-            forDate: Date().addingTimeInterval(remaining),
+            forDate: fireDate,
             andId: key.rawValue,
             content: ZZNotificationContent.map(
                 title: settings.title(forKey: key),
@@ -74,12 +72,10 @@ public class CLOCNotificationManager {
     }
     
     private func setTimerDurationNotificationIfPossible(passed: TimeInterval, duration: TimeInterval) async {
-        guard passed < duration else { return }
-        
-        let remaining = duration - passed
+        guard let fireDate = self.calculateFutureDate(fromPassedTime: passed, andBorder: duration) else { return }
         let key = CLOCNotificationSettingKey.timerPassedTheDuration
         try? await notificationManager.setNotification(
-            forDate: Date().addingTimeInterval(remaining),
+            forDate: fireDate,
             andId: key.rawValue,
             content: ZZNotificationContent.map(
                 title: settings.title(forKey: key),
