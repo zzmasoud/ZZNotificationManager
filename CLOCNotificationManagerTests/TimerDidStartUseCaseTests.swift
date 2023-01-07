@@ -45,7 +45,7 @@ final class TimerDidStartUseCaseTests: XCTestCase {
         let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
         turnOnTimerPassedItsDeadlineNotification(onSettings: settings)
         let timer = simulateTimerStartedButNotPassedDeadline()
-        let expectedDate = Date().addingTimeInterval(timer.deadline - timer.passed)
+        guard let expectedDate = sut.calculateFutureDate(fromPassedTime: timer.passed, andBorder: timer.deadline) else { return XCTFail("expexted to get a date but got nil.") }
         let expectedKey = CLOCNotificationSettingKey.timerPassedItsDeadline
         let expectedRequests: [NotificationRequestParamaters] = [
             (
@@ -90,7 +90,7 @@ final class TimerDidStartUseCaseTests: XCTestCase {
         let keys: [CLOCNotificationSettingKey] = [.timerPassedTheDuration, .timerPassedItsDeadline]
         turnOnTimerPassedDurationNotification(onSettings: settings)
         let timer = simulateTimerStartedButNotPassedDuration()
-        let expectedDate = Date().addingTimeInterval(timer.duration - timer.passed)
+        guard let expectedDate = sut.calculateFutureDate(fromPassedTime: timer.passed, andBorder: timer.duration) else { return XCTFail("expexted to get a date but got nil.") }
         let expectedKey = CLOCNotificationSettingKey.timerPassedTheDuration
         let expectedRequests: [NotificationRequestParamaters] = [
             (
@@ -116,10 +116,7 @@ final class TimerDidStartUseCaseTests: XCTestCase {
         // here order is important, if changed will fails. how to fix it?
         let expectedKeys: [CLOCNotificationSettingKey] = [.timerPassedItsDeadline, .timerPassedTheDuration]
         let expectedRequests: [NotificationRequestParamaters] = expectedKeys.map { key in
-            var expectedDate = Date().addingTimeInterval(timer.duration - timer.passed)
-            if key == .timerPassedItsDeadline {
-                expectedDate = Date().addingTimeInterval(timer.deadline - timer.passed)
-            }
+            let expectedDate = sut.calculateFutureDate(fromPassedTime: timer.passed, andBorder: key == .timerPassedTheDuration ? timer.duration : timer.deadline)!
             return (
                 id: key.rawValue,
                 title: settings.title(forKey: key),
