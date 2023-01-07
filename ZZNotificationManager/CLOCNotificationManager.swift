@@ -73,11 +73,18 @@ public class CLOCNotificationManager {
         try? await notificationManager.setNotification(
             forDate: fireDate,
             andId: key.rawValue,
-            content: ZZNotificationContent.map(
-                title: settings.title(forKey: key),
-                categoryId: key.rawValue,
-                body: settings.body(forKey: key)
-            )
+            content: ZZNotificationContent.map(key: key, settings: settings)
+        )
+    }
+}
+
+import UserNotifications
+private extension ZZNotificationContent {
+    static func map(key: CLOCNotificationSettingKey, settings: CLOCNotificationSetting) -> UNNotificationContent {
+        Self.map(
+            title: settings.title(forKey: key),
+            categoryId: key.rawValue,
+            body: settings.body(forKey: key)
         )
     }
 }
