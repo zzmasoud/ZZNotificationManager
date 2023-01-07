@@ -21,6 +21,7 @@
 		04030C1E296885A4006EF9BE /* XCTestCase+SUT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C1D296885A4006EF9BE /* XCTestCase+SUT.swift */; };
 		0408A3962917A7FE00C26444 /* ZZNotificationContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */; };
 		043AEFB02969C6B900FC5B86 /* XCTestCase+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */; };
+		043AEFB32969CCF400FC5B86 /* CLOCNotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */; };
 		04444A33291A756600B6273B /* ZZNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A32291A756600B6273B /* ZZNotificationManager.swift */; };
 		04444A35291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */; };
 		04444A39291A772300B6273B /* Date+GetComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A38291A772300B6273B /* Date+GetComponents.swift */; };
@@ -66,6 +67,7 @@
 		04030C1D296885A4006EF9BE /* XCTestCase+SUT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+SUT.swift"; sourceTree = "<group>"; };
 		0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationContentTests.swift; sourceTree = "<group>"; };
 		043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Assertions.swift"; sourceTree = "<group>"; };
+		043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationSettings.swift; sourceTree = "<group>"; };
 		04444A32291A756600B6273B /* ZZNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManager.swift; sourceTree = "<group>"; };
 		04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserNotificationCenterProtocol.swift; sourceTree = "<group>"; };
 		04444A38291A772300B6273B /* Date+GetComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+GetComponents.swift"; sourceTree = "<group>"; };
@@ -133,6 +135,15 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		043AEFB12969CCD800FC5B86 /* CLOC */ = {
+			isa = PBXGroup;
+			children = (
+				04030C19296755E1006EF9BE /* CLOCNotificationManager.swift */,
+				043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */,
+			);
+			path = CLOC;
+			sourceTree = "<group>";
+		};
 		04444A3A291A773700B6273B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -174,7 +185,7 @@
 		045EB25D2960607A00483203 /* ZZNotificationManager */ = {
 			isa = PBXGroup;
 			children = (
-				04030C19296755E1006EF9BE /* CLOCNotificationManager.swift */,
+				043AEFB12969CCD800FC5B86 /* CLOC */,
 				04E3D6112961F0F6002D64A7 /* DoNotDistrubPolicy.swift */,
 				04E3D6152961F0F6002D64A7 /* NotificationManager.swift */,
 				04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */,
@@ -362,6 +373,7 @@
 				04AABEE92917B06D00D4CA64 /* ZZNotificationContent.swift in Sources */,
 				04444A3F291BA15B00B6273B /* ZZNotificationManagerComposer.swift in Sources */,
 				04E3D6162961F0F6002D64A7 /* NotificationManager.swift in Sources */,
+				043AEFB32969CCF400FC5B86 /* CLOCNotificationSettings.swift in Sources */,
 				04E3D6122961F0F6002D64A7 /* DoNotDistrubPolicy.swift in Sources */,
 				04030C1A296755E1006EF9BE /* CLOCNotificationManager.swift in Sources */,
 				04E3D6182961F0F6002D64A7 /* SetNotificationError.swift in Sources */,

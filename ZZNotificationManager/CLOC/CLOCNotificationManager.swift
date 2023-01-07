@@ -4,16 +4,6 @@
 
 import Foundation
 
-public enum CLOCNotificationSettingKey: String {
-    case timerPassedItsDeadline, timerPassedTheDuration, noTasksHasBeenAddedSince
-}
-
-public protocol CLOCNotificationSetting {
-    func time(forKey: CLOCNotificationSettingKey) -> TimeInterval?
-    func title(forKey: CLOCNotificationSettingKey) -> String
-    func body(forKey: CLOCNotificationSettingKey) -> String?
-}
-
 public class CLOCNotificationManager {
     public typealias NEED_RENAME = NotificationManager & AsyncNotificationManager
     
@@ -74,17 +64,6 @@ public class CLOCNotificationManager {
             forDate: fireDate,
             andId: key.rawValue,
             content: ZZNotificationContent.map(key: key, settings: settings)
-        )
-    }
-}
-
-import UserNotifications
-private extension ZZNotificationContent {
-    static func map(key: CLOCNotificationSettingKey, settings: CLOCNotificationSetting) -> UNNotificationContent {
-        Self.map(
-            title: settings.title(forKey: key),
-            categoryId: key.rawValue,
-            body: settings.body(forKey: key)
         )
     }
 }
