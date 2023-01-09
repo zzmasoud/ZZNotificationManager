@@ -19,6 +19,10 @@ public class CLOCNotificationManager {
         guard let limit = border, passed < limit else { return nil }
         return Date(timeIntervalSinceNow: limit - passed)
     }
+    
+    public func projectDidAdd(deadline: Date) async {
+        guard let time = settings.time(forKey: .projectDeadlineReached) else { return }
+    }
 }
 
 // MARK: - Timer States

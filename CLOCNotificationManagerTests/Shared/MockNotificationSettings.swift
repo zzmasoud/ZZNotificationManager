@@ -9,6 +9,7 @@ class MockNotificationSetting: CLOCNotificationSetting {
     var noTasksHasBeenAddedSince: Double? = nil
     var timerPassedItsDeadline: Double? = nil
     var timerPassedTheDuration: Double? = nil
+    var projectDeadlineReached: Double? = nil
     
     func time(forKey key: CLOCNotificationSettingKey) -> Double? {
         switch key {
@@ -18,6 +19,8 @@ class MockNotificationSetting: CLOCNotificationSetting {
             return timerPassedTheDuration
         case .noTasksHasBeenAddedSince:
             return noTasksHasBeenAddedSince
+        case .projectDeadlineReached:
+            return projectDeadlineReached
         }
     }
     
@@ -29,6 +32,8 @@ class MockNotificationSetting: CLOCNotificationSetting {
             return "timerPassedTheDuration-title"
         case .noTasksHasBeenAddedSince:
             return "noTasksHasBeenAddedSince-title"
+        case .projectDeadlineReached:
+            return "-"
         }
     }
     
@@ -40,6 +45,8 @@ class MockNotificationSetting: CLOCNotificationSetting {
             return "timerPassedTheDuration-body"
         case .noTasksHasBeenAddedSince:
             return "noTasksHasBeenAddedSince-body"
+        case .projectDeadlineReached:
+            return "-"
         }
     }
 }

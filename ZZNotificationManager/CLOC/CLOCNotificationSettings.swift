@@ -5,7 +5,10 @@
 import Foundation
 
 public enum CLOCNotificationSettingKey: String {
-    case timerPassedItsDeadline, timerPassedTheDuration, noTasksHasBeenAddedSince
+    case timerPassedItsDeadline,
+         timerPassedTheDuration,
+         noTasksHasBeenAddedSince,
+         projectDeadlineReached
 }
 
 public protocol CLOCNotificationSetting {
