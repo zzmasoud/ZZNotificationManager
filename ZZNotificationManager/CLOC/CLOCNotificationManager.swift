@@ -24,7 +24,7 @@ public class CLOCNotificationManager {
     
     public func projectDidAdd(deadline: Date, title: String, id: String) async {
         guard let time = settings.time(forKey: .projectDeadlineReached) else { return }
-        let specificDay = Date().addingTimeInterval(time)
+        let specificDay = deadline.addingTimeInterval(-time)
         let fireDate = projectDeadlineTimeSetter.setTime(ofDate: specificDay)
         
         let key = CLOCNotificationSettingKey.projectDeadlineReached
