@@ -20,8 +20,19 @@ public class CLOCNotificationManager {
         return Date(timeIntervalSinceNow: limit - passed)
     }
     
-    public func projectDidAdd(deadline: Date) async {
+    public func projectDidAdd(deadline: Date, title: String, id: String) async {
         guard let time = settings.time(forKey: .projectDeadlineReached) else { return }
+        
+        let key = CLOCNotificationSettingKey.projectDeadlineReached
+        try? await notificationManager.setNotification(
+            forDate: Date().addingTimeInterval(time),
+            andId: id,
+            content: ZZNotificationContent.map(
+                title: settings.title(forKey: key),
+                categoryId: key.rawValue,
+                body: settings.body(forKey: key)
+            )
+        )
     }
 }
 
