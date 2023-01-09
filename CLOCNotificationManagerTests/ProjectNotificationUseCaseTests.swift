@@ -27,6 +27,16 @@ final class ProjectNotificationUseCaseTests: XCTestCase {
         assertThat(notificationCenter, addedNotificationRequestWithItems: [])
     }
     
+    func test_projectDidAdd_doesNotAddProjectDeadlineNotificationIfValueIsLessThan1DayCloseToSetting() async {
+        let (sut, notificationCenter, settings) = makeSUT()
+        turnOnProjectDeadlineNotification(onSettings: settings)
+        let project = anyProjectWithExactDeadline()
+
+        await sut.projectDidAdd(deadline: project.deadline, title: project.title, id: project.id)
+        
+        assertThat(notificationCenter, addedNotificationRequestWithItems: [])
+    }
+    
     func test_projectDidAdd_addsProjectDeadlineNotificationIfValueIsNotNilAndAvailable() async {
         let (sut, notificationCenter, settings) = makeSUT()
         turnOnProjectDeadlineNotification(onSettings: settings)
@@ -96,6 +106,11 @@ final class ProjectNotificationUseCaseTests: XCTestCase {
     private func anyProjectWithSonnerDeadline() -> (id: String, deadline: Date, title: String) {
         let (id, deadline, title) = anyProject()
         return (id, deadline.addingTimeInterval(-projectDeadlineReached), title)
+    }
+    
+    private func anyProjectWithExactDeadline() -> (id: String, deadline: Date, title: String) {
+        let (id, _, title) = anyProject()
+        return (id, Date().addingTimeInterval(projectDeadlineReached).addingTimeInterval(1.minutes), title)
     }
     
     private func newDateAfterApplyingTimeSetter(toDate deadline: Date) -> Date {
