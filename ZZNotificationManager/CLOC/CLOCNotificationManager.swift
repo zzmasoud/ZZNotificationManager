@@ -9,10 +9,12 @@ public class CLOCNotificationManager {
     
     let notificationManager: NEED_RENAME
     let settings: CLOCNotificationSetting
+    let projectDeadlineTimeSetter: TimeSetter
     
-    public init(notificationManager: NEED_RENAME, settings: CLOCNotificationSetting) {
+    public init(notificationManager: NEED_RENAME, settings: CLOCNotificationSetting, projectDeadlineTimeSetter: TimeSetter) {
         self.notificationManager = notificationManager
         self.settings = settings
+        self.projectDeadlineTimeSetter = projectDeadlineTimeSetter
     }
     
     open func calculateFutureDate(fromPassedTime passed: TimeInterval, andBorder border: TimeInterval?) -> Date? {
@@ -22,10 +24,12 @@ public class CLOCNotificationManager {
     
     public func projectDidAdd(deadline: Date, title: String, id: String) async {
         guard let time = settings.time(forKey: .projectDeadlineReached) else { return }
+        let specificDay = Date().addingTimeInterval(time)
+        let fireDate = projectDeadlineTimeSetter.setTime(ofDate: specificDay)
         
         let key = CLOCNotificationSettingKey.projectDeadlineReached
         try? await notificationManager.setNotification(
-            forDate: Date().addingTimeInterval(time),
+            forDate: fireDate,
             andId: id,
             content: ZZNotificationContent.map(
                 title: settings.title(forKey: key),

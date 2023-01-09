@@ -26,7 +26,7 @@ final class ProjectNotificationUseCaseTests: XCTestCase {
         let title = "Project-X"
         let id = UUID().uuidString
         let key = CLOCNotificationSettingKey.projectDeadlineReached
-        let expectedDate = deadline
+        let expectedDate = calendar.date(bySettingHour: projectDeadlineTime.hour, minute: projectDeadlineTime.minute, second: 0, of: deadline)!
         
         await sut.projectDidAdd(deadline: deadline, title: title, id: id)
 
