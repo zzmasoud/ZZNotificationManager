@@ -21,29 +21,6 @@ public class CLOCNotificationManager {
         guard let limit = border, passed < limit else { return nil }
         return Date(timeIntervalSinceNow: limit - passed)
     }
-    
-    public func projectDidAdd(deadline: Date, title: String, id: String) async {
-        guard let time = settings.time(forKey: .projectDeadlineReached) else { return }
-        guard deadline > Date(timeIntervalSinceNow: time).addingTimeInterval(1.days) else { return }
-        
-        let specificDay = deadline.addingTimeInterval(-time)
-        let fireDate = projectDeadlineTimeSetter.setTime(ofDate: specificDay)
-        
-        let key = CLOCNotificationSettingKey.projectDeadlineReached
-        try? await notificationManager.setNotification(
-            forDate: fireDate,
-            andId: id,
-            content: ZZNotificationContent.map(
-                title: settings.title(forKey: key),
-                categoryId: key.rawValue,
-                body: settings.body(forKey: key)
-            )
-        )
-    }
-    
-    public func projectDidDelete(id: String) async {
-        notificationManager.removePendingNotifications(withIds: [id])
-    }
 }
 
 // MARK: - Timer States
@@ -94,5 +71,32 @@ extension CLOCNotificationManager {
             andId: key.rawValue,
             content: ZZNotificationContent.map(key: key, settings: settings)
         )
+    }
+}
+
+// MARK: - Project States
+
+extension CLOCNotificationManager {
+    public func addProject(withId id: String, title: String, deadline: Date) async {
+        guard let time = settings.time(forKey: .projectDeadlineReached) else { return }
+        guard deadline > Date(timeIntervalSinceNow: time).addingTimeInterval(1.days) else { return }
+        
+        let specificDay = deadline.addingTimeInterval(-time)
+        let fireDate = projectDeadlineTimeSetter.setTime(ofDate: specificDay)
+        
+        let key = CLOCNotificationSettingKey.projectDeadlineReached
+        try? await notificationManager.setNotification(
+            forDate: fireDate,
+            andId: id,
+            content: ZZNotificationContent.map(
+                title: settings.title(forKey: key),
+                categoryId: key.rawValue,
+                body: settings.body(forKey: key)
+            )
+        )
+    }
+    
+    public func deleteProject(withId: String) async {
+        notificationManager.removePendingNotifications(withIds: [withId])
     }
 }

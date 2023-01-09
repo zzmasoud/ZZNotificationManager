@@ -7,43 +7,43 @@ import ZZNotificationManager
 
 final class ProjectNotificationUseCaseTests: XCTestCase {
     
-    func test_projectDidAdd_doesNotAddProjectDeadlineNotificationIfValueIsNil() async {
+    func test_addProject_doesNotAddProjectDeadlineNotificationIfValueIsNil() async {
         let (sut, notificationCenter, settings) = makeSUT()
         turnOffProjectDeadlineNotification(onSettings: settings)
         let project = anyProject()
         
-        await sut.projectDidAdd(deadline: project.deadline, title: project.title, id: project.id)
-        
+        await sut.addProject(withId: project.id, title: project.title, deadline: project.deadline)
+
         assertThat(notificationCenter, addedNotificationRequestWithItems: [])
     }
         
-    func test_projectDidAdd_doesNotAddProjectDeadlineNotificationIfValueIsSonnerThanSetting() async {
+    func test_addProject_doesNotAddProjectDeadlineNotificationIfValueIsSonnerThanSetting() async {
         let (sut, notificationCenter, settings) = makeSUT()
         turnOnProjectDeadlineNotification(onSettings: settings)
         let project = anyProjectWithSonnerDeadline()
 
-        await sut.projectDidAdd(deadline: project.deadline, title: project.title, id: project.id)
-        
+        await sut.addProject(withId: project.id, title: project.title, deadline: project.deadline)
+
         assertThat(notificationCenter, addedNotificationRequestWithItems: [])
     }
     
-    func test_projectDidAdd_doesNotAddProjectDeadlineNotificationIfValueIsLessThan1DayCloseToSetting() async {
+    func test_addProject_doesNotAddProjectDeadlineNotificationIfValueIsLessThan1DayCloseToSetting() async {
         let (sut, notificationCenter, settings) = makeSUT()
         turnOnProjectDeadlineNotification(onSettings: settings)
         let project = anyProjectWithExactDeadline()
 
-        await sut.projectDidAdd(deadline: project.deadline, title: project.title, id: project.id)
-        
+        await sut.addProject(withId: project.id, title: project.title, deadline: project.deadline)
+
         assertThat(notificationCenter, addedNotificationRequestWithItems: [])
     }
     
-    func test_projectDidAdd_addsProjectDeadlineNotificationIfValueIsNotNilAndAvailable() async {
+    func test_addProject_addsProjectDeadlineNotificationIfValueIsNotNilAndAvailable() async {
         let (sut, notificationCenter, settings) = makeSUT()
         turnOnProjectDeadlineNotification(onSettings: settings)
         let key = CLOCNotificationSettingKey.projectDeadlineReached
         let project = anyProject()
         let expectedDate = newDateAfterApplyingTimeSetter(toDate: project.deadline)
-        await sut.projectDidAdd(deadline: project.deadline, title: project.title, id: project.id)
+        await sut.addProject(withId: project.id, title: project.title, deadline: project.deadline)
         assertThat(notificationCenter, addedNotificationRequestWithItems: [
             (
                 id: project.id,
@@ -55,15 +55,15 @@ final class ProjectNotificationUseCaseTests: XCTestCase {
         ])
     }
     
-    func test_projectDidDelete_removesRelatedNotification() async {
+    func test_deleteProject_removesRelatedNotification() async {
         let (sut, notificationCenter, settings) = makeSUT()
         turnOnProjectDeadlineNotification(onSettings: settings)
         let key = CLOCNotificationSettingKey.projectDeadlineReached
         let project = anyProject()
         let expectedDate = newDateAfterApplyingTimeSetter(toDate: project.deadline)
         
-        await sut.projectDidAdd(deadline: project.deadline, title: project.title, id: project.id)
-        
+        await sut.addProject(withId: project.id, title: project.title, deadline: project.deadline)
+
         assertThat(notificationCenter, addedNotificationRequestWithItems: [
             (
                 id: project.id,
@@ -74,7 +74,7 @@ final class ProjectNotificationUseCaseTests: XCTestCase {
             )
         ])
         
-        await sut.projectDidDelete(id: project.id)
+        await sut.deleteProject(withId: project.id)
         
         assertThat(notificationCenter, deletedNotificationRequestsWithIds: [project.id])
     }
