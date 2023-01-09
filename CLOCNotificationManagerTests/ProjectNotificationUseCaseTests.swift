@@ -16,6 +16,16 @@ final class ProjectNotificationUseCaseTests: XCTestCase {
         
         assertThat(notificationCenter, addedNotificationRequestWithItems: [])
     }
+        
+    func test_projectDidAdd_doesNotAddProjectDeadlineNotificationIfValueIsSonnerThanSetting() async {
+        let (sut, notificationCenter, settings) = makeSUT()
+        turnOnProjectDeadlineNotification(onSettings: settings)
+        let project = anyProjectWithSonnerDeadline()
+
+        await sut.projectDidAdd(deadline: project.deadline, title: project.title, id: project.id)
+        
+        assertThat(notificationCenter, addedNotificationRequestWithItems: [])
+    }
     
     func test_projectDidAdd_addsProjectDeadlineNotificationIfValueIsNotNilAndAvailable() async {
         let (sut, notificationCenter, settings) = makeSUT()
@@ -57,16 +67,6 @@ final class ProjectNotificationUseCaseTests: XCTestCase {
         await sut.projectDidDelete(id: project.id)
         
         assertThat(notificationCenter, deletedNotificationRequestsWithIds: [project.id])
-    }
-    
-    func test_projectDidAdd_doesNotAddProjectDeadlineNotificationIfValueIsSonnerThanSetting() async {
-        let (sut, notificationCenter, settings) = makeSUT()
-        turnOnProjectDeadlineNotification(onSettings: settings)
-        let project = anyProjectWithSonnerDeadline()
-
-        await sut.projectDidAdd(deadline: project.deadline, title: project.title, id: project.id)
-        
-        assertThat(notificationCenter, addedNotificationRequestWithItems: [])
     }
     
     // MARK: - Simulate settings changes
