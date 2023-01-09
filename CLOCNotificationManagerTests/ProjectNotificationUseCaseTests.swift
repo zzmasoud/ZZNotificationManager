@@ -43,6 +43,7 @@ final class ProjectNotificationUseCaseTests: XCTestCase {
         let expectedDate = newDateAfterApplyingTimeSetter(toDate: project.deadline)
         
         await sut.projectDidAdd(deadline: project.deadline, title: project.title, id: project.id)
+        
         assertThat(notificationCenter, addedNotificationRequestWithItems: [
             (
                 id: project.id,
@@ -54,7 +55,18 @@ final class ProjectNotificationUseCaseTests: XCTestCase {
         ])
         
         await sut.projectDidDelete(id: project.id)
+        
         assertThat(notificationCenter, deletedNotificationRequestsWithIds: [project.id])
+    }
+    
+    func test_projectDidAdd_doesNotAddProjectDeadlineNotificationIfValueIsSonnerThanSetting() async {
+        let (sut, notificationCenter, settings) = makeSUT()
+        turnOnProjectDeadlineNotification(onSettings: settings)
+        let project = anyProjectWithSonnerDeadline()
+
+        await sut.projectDidAdd(deadline: project.deadline, title: project.title, id: project.id)
+        
+        assertThat(notificationCenter, addedNotificationRequestWithItems: [])
     }
     
     // MARK: - Simulate settings changes
@@ -81,9 +93,9 @@ final class ProjectNotificationUseCaseTests: XCTestCase {
         return (id, deadline, title)
     }
     
-    private func anyProjectWithSoonerDeadline() -> (id: String, deadline: Date, title: String) {
+    private func anyProjectWithSonnerDeadline() -> (id: String, deadline: Date, title: String) {
         let (id, deadline, title) = anyProject()
-        return (id, deadline.addingTimeInterval(-1.days), title)
+        return (id, deadline.addingTimeInterval(-projectDeadlineReached), title)
     }
     
     private func newDateAfterApplyingTimeSetter(toDate deadline: Date) -> Date {
