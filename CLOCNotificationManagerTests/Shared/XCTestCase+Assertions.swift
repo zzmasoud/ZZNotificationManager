@@ -20,15 +20,15 @@ extension XCTestCase {
         }
         for (index, item) in items.enumerated() {
             let notificationRequest = getNotificationRequest(notificationCenter, at: index)
-            assertThat(notificationRequest, hasSameId: item.id, file: file, line: line)
+            assertThat(notificationRequest, hasSameId: item.id, andCategoryId: item.categoryId, file: file, line: line)
             assertThat(notificationRequest, hasSameTitle: item.title, andBody: item.body, file: file, line: line)
             assertThat(notificationRequest, hasSameFireDate: item.fireDate, file: file, line: line)
         }
     }
     
-    func assertThat(_ notificationRequest: UNNotificationRequest, hasSameId id: String, file: StaticString = #file, line: UInt = #line) {
+    func assertThat(_ notificationRequest: UNNotificationRequest, hasSameId id: String, andCategoryId categoryId: String, file: StaticString = #file, line: UInt = #line) {
         XCTAssertEqual(notificationRequest.identifier, id, file: file, line: line)
-        XCTAssertEqual(notificationRequest.content.categoryIdentifier, id, file: file, line: line)
+        XCTAssertEqual(notificationRequest.content.categoryIdentifier, categoryId, file: file, line: line)
     }
     
     func assertThat(_ notificationRequest: UNNotificationRequest, hasSameTitle title: String, andBody body: String?, at index: Int = 0, file: StaticString = #file, line: UInt = #line) {

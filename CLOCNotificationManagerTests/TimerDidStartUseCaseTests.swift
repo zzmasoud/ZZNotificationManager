@@ -50,6 +50,7 @@ final class TimerDidStartUseCaseTests: XCTestCase {
         let expectedRequests: [NotificationRequestParamaters] = [
             (
                 id: expectedKey.rawValue,
+                categoryId: expectedKey.rawValue,
                 title: settings.title(forKey: expectedKey),
                 body: settings.body(forKey: expectedKey),
                 fireDate: expectedDate
@@ -95,6 +96,7 @@ final class TimerDidStartUseCaseTests: XCTestCase {
         let expectedRequests: [NotificationRequestParamaters] = [
             (
                 id: expectedKey.rawValue,
+                categoryId: expectedKey.rawValue,
                 title: settings.title(forKey: expectedKey),
                 body: settings.body(forKey: expectedKey),
                 fireDate: expectedDate
@@ -119,6 +121,7 @@ final class TimerDidStartUseCaseTests: XCTestCase {
             let expectedDate = sut.calculateFutureDate(fromPassedTime: timer.passed, andBorder: key == .timerPassedTheDuration ? timer.duration : timer.deadline)!
             return (
                 id: key.rawValue,
+                categoryId: key.rawValue,
                 title: settings.title(forKey: key),
                 body: settings.body(forKey: key),
                 fireDate: expectedDate

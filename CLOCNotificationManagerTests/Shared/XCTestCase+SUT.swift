@@ -6,9 +6,9 @@ import XCTest
 import ZZNotificationManager
 
 extension XCTestCase {
-    typealias NotificationRequestParamaters = (id: String, title: String, body: String?, fireDate: Date)
+    typealias NotificationRequestParamaters = (id: String, categoryId: String, title: String, body: String?, fireDate: Date)
     
-    var forbiddenHours: [Int] { [10, 11, 00, 1, 2, 3, 4, 5, 6] }
+    var forbiddenHours: [Int] { [22, 23, 00, 1, 2, 3, 4, 5, 6] }
     var calendar: Calendar { Calendar.current }
     
     func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationManager, notificationCenter: MockNotificationCenter, settings: MockNotificationSetting) {

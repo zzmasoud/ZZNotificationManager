@@ -36,6 +36,7 @@ final class TimerDidStopUseCaseTests: XCTestCase {
         let expectedRequests: [NotificationRequestParamaters] = [
             (
                 id: expectedKey.rawValue,
+                categoryId: expectedKey.rawValue,
                 title: settings.title(forKey: expectedKey),
                 body: settings.body(forKey: expectedKey),
                 fireDate: expectedDate
