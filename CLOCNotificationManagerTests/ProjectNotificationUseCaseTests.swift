@@ -15,4 +15,10 @@ final class ProjectNotificationUseCaseTests: XCTestCase {
         
         assertThat(notificationCenter, addedNotificationRequestWithItems: [])
     }
+    
+    // MARK: - Simulate settings changes
+
+    private func turnOffProjectDeadlineNotification(onSettings settings: MockNotificationSetting) {
+        settings.projectDeadlineReached = nil
+    }
 }
