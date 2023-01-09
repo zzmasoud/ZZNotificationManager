@@ -38,6 +38,10 @@ public class CLOCNotificationManager {
             )
         )
     }
+    
+    public func projectDidDelete(id: String) async {
+        notificationManager.removePendingNotifications(withIds: [id])
+    }
 }
 
 // MARK: - Timer States
