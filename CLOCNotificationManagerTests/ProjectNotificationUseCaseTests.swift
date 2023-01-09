@@ -67,15 +67,17 @@ final class ProjectNotificationUseCaseTests: XCTestCase {
     }
     
     private func turnOnProjectDeadlineNotification(onSettings settings: MockNotificationSetting) {
-        settings.projectDeadlineReached = 10.days
+        settings.projectDeadlineReached = projectDeadlineReached
 
     }
+    
+    private var projectDeadlineReached: TimeInterval { return 7.days }
     
     // MARK: - Project
     
     private func anyProject() -> (id: String, deadline: Date, title: String) {
         let id = UUID().uuidString
-        let deadline = Date().addingTimeInterval(10.days)
+        let deadline = Date().addingTimeInterval(projectDeadlineReached)
         let title = "Project-X"
         return (id, deadline, title)
     }
