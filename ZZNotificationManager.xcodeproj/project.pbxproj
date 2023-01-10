@@ -18,16 +18,19 @@
 		04030C1A296755E1006EF9BE /* CLOCNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C19296755E1006EF9BE /* CLOCNotificationManager.swift */; };
 		04030C1C29688532006EF9BE /* TimerDidStartUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C1B29688532006EF9BE /* TimerDidStartUseCaseTests.swift */; };
 		04030C1E296885A4006EF9BE /* XCTestCase+SUT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C1D296885A4006EF9BE /* XCTestCase+SUT.swift */; };
+		04075772296D58AD00A25D66 /* CLOCNotificationManager+Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04075771296D58AC00A25D66 /* CLOCNotificationManager+Timer.swift */; };
+		04075775296D590500A25D66 /* CLOCNotificationManager+Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04075774296D590500A25D66 /* CLOCNotificationManager+Project.swift */; };
+		0407577B296D598800A25D66 /* ZZNotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */; };
+		0407577C296D598B00A25D66 /* MockUserNotificationCenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */; };
+		0407577E296D59DB00A25D66 /* ZZNotificationContent+CLOCNotificationSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0407577D296D59DB00A25D66 /* ZZNotificationContent+CLOCNotificationSetting.swift */; };
 		0408A3962917A7FE00C26444 /* ZZNotificationContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */; };
 		043AEFB02969C6B900FC5B86 /* XCTestCase+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */; };
 		043AEFB32969CCF400FC5B86 /* CLOCNotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */; };
 		04444A33291A756600B6273B /* ZZNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A32291A756600B6273B /* ZZNotificationManager.swift */; };
-		04444A35291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */; };
 		04444A39291A772300B6273B /* Date+GetComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A38291A772300B6273B /* Date+GetComponents.swift */; };
 		04444A3C291A779800B6273B /* MockNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A3B291A779800B6273B /* MockNotificationCenter.swift */; };
 		04444A3F291BA15B00B6273B /* ZZNotificationManagerComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A3E291BA15B00B6273B /* ZZNotificationManagerComposer.swift */; };
 		045EB2642960607A00483203 /* ZZNotificationManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045EB25B2960607A00483203 /* ZZNotificationManager.framework */; };
-		045EB2742960607A00483203 /* ZZNotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */; };
 		0481EBF6296C022800669E59 /* ProjectNotificationUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0481EBF5296C022800669E59 /* ProjectNotificationUseCaseTests.swift */; };
 		0481EBF8296C1B7700669E59 /* CLOCNotificationTimeSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0481EBF7296C1B7700669E59 /* CLOCNotificationTimeSetter.swift */; };
 		0481EBF9296C384100669E59 /* Int+TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C15296755E1006EF9BE /* Int+TimeInterval.swift */; };
@@ -69,6 +72,9 @@
 		04030C19296755E1006EF9BE /* CLOCNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationManager.swift; sourceTree = "<group>"; };
 		04030C1B29688532006EF9BE /* TimerDidStartUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDidStartUseCaseTests.swift; sourceTree = "<group>"; };
 		04030C1D296885A4006EF9BE /* XCTestCase+SUT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+SUT.swift"; sourceTree = "<group>"; };
+		04075771296D58AC00A25D66 /* CLOCNotificationManager+Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLOCNotificationManager+Timer.swift"; sourceTree = "<group>"; };
+		04075774296D590500A25D66 /* CLOCNotificationManager+Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLOCNotificationManager+Project.swift"; sourceTree = "<group>"; };
+		0407577D296D59DB00A25D66 /* ZZNotificationContent+CLOCNotificationSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZZNotificationContent+CLOCNotificationSetting.swift"; sourceTree = "<group>"; };
 		0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationContentTests.swift; sourceTree = "<group>"; };
 		043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Assertions.swift"; sourceTree = "<group>"; };
 		043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationSettings.swift; sourceTree = "<group>"; };
@@ -141,11 +147,22 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		04075773296D58EC00A25D66 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				04075771296D58AC00A25D66 /* CLOCNotificationManager+Timer.swift */,
+				04075774296D590500A25D66 /* CLOCNotificationManager+Project.swift */,
+				0407577D296D59DB00A25D66 /* ZZNotificationContent+CLOCNotificationSetting.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		043AEFB12969CCD800FC5B86 /* CLOC */ = {
 			isa = PBXGroup;
 			children = (
-				04030C19296755E1006EF9BE /* CLOCNotificationManager.swift */,
+				04075773296D58EC00A25D66 /* Helpers */,
 				043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */,
+				04030C19296755E1006EF9BE /* CLOCNotificationManager.swift */,
 				0481EBF7296C1B7700669E59 /* CLOCNotificationTimeSetter.swift */,
 			);
 			path = CLOC;
@@ -192,16 +209,16 @@
 		045EB25D2960607A00483203 /* ZZNotificationManager */ = {
 			isa = PBXGroup;
 			children = (
+				04444A3D291BA14000B6273B /* Composer */,
 				0481EBFA296C3A5800669E59 /* Shared */,
 				043AEFB12969CCD800FC5B86 /* CLOC */,
-				04E3D6112961F0F6002D64A7 /* DoNotDistrubPolicy.swift */,
 				04E3D6152961F0F6002D64A7 /* NotificationManager.swift */,
-				04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */,
-				04E3D6172961F0F6002D64A7 /* SetNotificationError.swift */,
+				04E3D6112961F0F6002D64A7 /* DoNotDistrubPolicy.swift */,
 				04AABEE82917B06D00D4CA64 /* ZZNotificationContent.swift */,
 				04AABEEA2917DBBA00D4CA64 /* ZZNotificationAuthStatus.swift */,
 				04444A32291A756600B6273B /* ZZNotificationManager.swift */,
-				04444A3D291BA14000B6273B /* Composer */,
+				04E3D6172961F0F6002D64A7 /* SetNotificationError.swift */,
+				04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */,
 			);
 			path = ZZNotificationManager;
 			sourceTree = "<group>";
@@ -384,12 +401,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04444A35291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift in Sources */,
+				0407577C296D598B00A25D66 /* MockUserNotificationCenterProtocol.swift in Sources */,
 				04444A33291A756600B6273B /* ZZNotificationManager.swift in Sources */,
 				04AABEEB2917DBBA00D4CA64 /* ZZNotificationAuthStatus.swift in Sources */,
+				04075775296D590500A25D66 /* CLOCNotificationManager+Project.swift in Sources */,
 				0481EBF8296C1B7700669E59 /* CLOCNotificationTimeSetter.swift in Sources */,
+				04075772296D58AD00A25D66 /* CLOCNotificationManager+Timer.swift in Sources */,
 				04AABEE92917B06D00D4CA64 /* ZZNotificationContent.swift in Sources */,
 				04444A3F291BA15B00B6273B /* ZZNotificationManagerComposer.swift in Sources */,
+				0407577E296D59DB00A25D66 /* ZZNotificationContent+CLOCNotificationSetting.swift in Sources */,
 				04E3D6162961F0F6002D64A7 /* NotificationManager.swift in Sources */,
 				043AEFB32969CCF400FC5B86 /* CLOCNotificationSettings.swift in Sources */,
 				04E3D6122961F0F6002D64A7 /* DoNotDistrubPolicy.swift in Sources */,
@@ -403,10 +423,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0407577B296D598800A25D66 /* ZZNotificationManagerTests.swift in Sources */,
 				0408A3962917A7FE00C26444 /* ZZNotificationContentTests.swift in Sources */,
 				04444A3C291A779800B6273B /* MockNotificationCenter.swift in Sources */,
 				04E3D6142961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift in Sources */,
-				045EB2742960607A00483203 /* ZZNotificationManagerTests.swift in Sources */,
 				0481EBFD296C3A7A00669E59 /* Int+TimeInterval.swift in Sources */,
 				04444A39291A772300B6273B /* Date+GetComponents.swift in Sources */,
 				04E3D60E2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift in Sources */,
