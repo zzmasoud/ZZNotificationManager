@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>CLOCNotificationManageriOS.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>ZZNotificationManager.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +28,16 @@
 			<true/>
 		</dict>
 		<key>045EB2622960607A00483203</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>048A2EAD296DC420008C904B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>048A2EB4296DC420008C904B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
