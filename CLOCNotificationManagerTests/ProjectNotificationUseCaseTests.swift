@@ -74,7 +74,7 @@ final class ProjectNotificationUseCaseTests: XCTestCase {
             )
         ])
         
-        await sut.deleteProject(withId: project.id)
+        await sut.deleteProjects(withIds: [project.id])
         
         assertThat(notificationCenter, deletedNotificationRequestsWithIds: [project.id])
     }

@@ -99,7 +99,7 @@ extension CLOCNotificationManager {
         )
     }
     
-    public func deleteProject(withId: String) async {
-        notificationManager.removePendingNotifications(withIds: [withId])
+    public func deleteProjects(withIds ids: [String]) async {
+        notificationManager.removePendingNotifications(withIds: ids)
     }
 }
