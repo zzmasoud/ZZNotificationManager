@@ -7,6 +7,8 @@ import Foundation
 public class CLOCNotificationManager {
     public typealias NEED_RENAME = NotificationManager & AsyncNotificationManager
     
+    static let instantTime: TimeInterval = 2
+    
     let notificationManager: NEED_RENAME
     let settings: CLOCNotificationSetting
     let projectDeadlineTimeSetter: TimeSetter
@@ -23,7 +25,7 @@ public class CLOCNotificationManager {
     }
     
     public func instantNotification(key: CLOCNotificationSettingKey) async {
-        await setNotification(forKey: key, withFireDate: Date().addingTimeInterval(5))
+        await setNotification(forKey: key, withFireDate: Date().addingTimeInterval(Self.instantTime))
     }
     
     private func setNotification(forKey key: CLOCNotificationSettingKey, withFireDate fireDate: Date) async {

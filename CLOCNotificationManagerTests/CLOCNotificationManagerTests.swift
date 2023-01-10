@@ -29,10 +29,10 @@ final class CLOCNotificationManagerTests: XCTestCase {
         XCTAssertTrue(date!.timeIntervalSinceNow < limit)
     }
     
-    func test_instantNotification_addsNotificationWith5SecondsFireDate() async {
+    func test_instantNotification_addsNotificationWithInstantFireDate() async {
         let (sut, notificationCenter, settings) = makeSUT()
         let expectedKey: CLOCNotificationSettingKey = .projectDeadlineReached
-        let expectedDate = Date().addingTimeInterval(5)
+        let expectedDate = Date().addingTimeInterval(2)
         
         await sut.instantNotification(key: expectedKey)
         
