@@ -21,6 +21,18 @@ public class CLOCNotificationManager {
         guard let limit = border, passed < limit else { return nil }
         return Date(timeIntervalSinceNow: limit - passed)
     }
+    
+    public func instantNotification(key: CLOCNotificationSettingKey) async {
+        await setNotification(forKey: key, withFireDate: Date().addingTimeInterval(5))
+    }
+    
+    private func setNotification(forKey key: CLOCNotificationSettingKey, withFireDate fireDate: Date) async {
+        try? await notificationManager.setNotification(
+            forDate: fireDate,
+            andId: key.rawValue,
+            content: ZZNotificationContent.map(key: key, settings: settings)
+        )
+    }
 }
 
 // MARK: - Timer States
@@ -66,14 +78,6 @@ extension CLOCNotificationManager {
         guard let fireDate = self.calculateFutureDate(fromPassedTime: passed, andBorder: duration) else { return }
         let key = CLOCNotificationSettingKey.timerPassedTheDuration
         await setNotification(forKey: key, withFireDate: fireDate)
-    }
-    
-    private func setNotification(forKey key: CLOCNotificationSettingKey, withFireDate fireDate: Date) async {
-        try? await notificationManager.setNotification(
-            forDate: fireDate,
-            andId: key.rawValue,
-            content: ZZNotificationContent.map(key: key, settings: settings)
-        )
     }
 }
 
