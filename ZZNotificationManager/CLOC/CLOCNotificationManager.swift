@@ -28,8 +28,16 @@ public class CLOCNotificationManager {
 extension CLOCNotificationManager {
     public func timerDidStop() async {
         removeTimerNotifications()
+        await self.setTaskReminderNotificationIfPossible()
+    }
+    
+    private func removeTimerNotifications() {
+        let keys = [CLOCNotificationSettingKey.timerPassedTheDuration, CLOCNotificationSettingKey.timerPassedItsDeadline].map { $0.rawValue }
+        notificationManager.removePendingNotifications(withIds: keys)
+    }
+    
+    private func setTaskReminderNotificationIfPossible() async {
         guard let time = settings.time(forKey: .noTasksHasBeenAddedSince) else { return }
-        
         let key = CLOCNotificationSettingKey.noTasksHasBeenAddedSince
         try? await notificationManager.setNotification(
             forDate: Date().addingTimeInterval(time),
@@ -40,11 +48,6 @@ extension CLOCNotificationManager {
                 body: settings.body(forKey: key)
             )
         )
-    }
-    
-    private func removeTimerNotifications() {
-        let keys = [CLOCNotificationSettingKey.timerPassedTheDuration, CLOCNotificationSettingKey.timerPassedItsDeadline].map { $0.rawValue }
-        notificationManager.removePendingNotifications(withIds: keys)
     }
     
     public func timerDidStart(passed: TimeInterval = 0, deadline: TimeInterval = 0, duration: TimeInterval = 0) async {
