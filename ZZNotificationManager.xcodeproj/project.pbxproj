@@ -36,6 +36,7 @@
 		0481EBF9296C384100669E59 /* Int+TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C15296755E1006EF9BE /* Int+TimeInterval.swift */; };
 		0481EBFD296C3A7A00669E59 /* Int+TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C15296755E1006EF9BE /* Int+TimeInterval.swift */; };
 		0481EBFE296C3A7A00669E59 /* Int+TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C15296755E1006EF9BE /* Int+TimeInterval.swift */; };
+		048A2EB6296DC420008C904B /* CLOCNotificationManageriOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048A2EAE296DC420008C904B /* CLOCNotificationManageriOS.framework */; };
 		04AABEE92917B06D00D4CA64 /* ZZNotificationContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AABEE82917B06D00D4CA64 /* ZZNotificationContent.swift */; };
 		04AABEEB2917DBBA00D4CA64 /* ZZNotificationAuthStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AABEEA2917DBBA00D4CA64 /* ZZNotificationAuthStatus.swift */; };
 		04E3D60E2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D60D2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift */; };
@@ -59,6 +60,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 045EB25A2960607A00483203;
 			remoteInfo = ZZNotificationManager;
+		};
+		048A2EB7296DC420008C904B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 045EB2522960607A00483203 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 048A2EAD296DC420008C904B;
+			remoteInfo = CLOCNotificationManageriOS;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -88,6 +96,8 @@
 		045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManagerTests.swift; sourceTree = "<group>"; };
 		0481EBF5296C022800669E59 /* ProjectNotificationUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNotificationUseCaseTests.swift; sourceTree = "<group>"; };
 		0481EBF7296C1B7700669E59 /* CLOCNotificationTimeSetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationTimeSetter.swift; sourceTree = "<group>"; };
+		048A2EAE296DC420008C904B /* CLOCNotificationManageriOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CLOCNotificationManageriOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		048A2EB5296DC420008C904B /* CLOCNotificationManageriOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CLOCNotificationManageriOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		04AABEE82917B06D00D4CA64 /* ZZNotificationContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationContent.swift; sourceTree = "<group>"; };
 		04AABEEA2917DBBA00D4CA64 /* ZZNotificationAuthStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationAuthStatus.swift; sourceTree = "<group>"; };
 		04E3D60D2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+MemoryLeakTracking.swift"; sourceTree = "<group>"; };
@@ -118,6 +128,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				045EB2642960607A00483203 /* ZZNotificationManager.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		048A2EAB296DC420008C904B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		048A2EB2296DC420008C904B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				048A2EB6296DC420008C904B /* CLOCNotificationManageriOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,6 +217,8 @@
 				045EB25D2960607A00483203 /* ZZNotificationManager */,
 				045EB2672960607A00483203 /* ZZNotificationManagerTests */,
 				04030C01296755E1006EF9BE /* CLOCNotificationManagerTests */,
+				048A2EAF296DC420008C904B /* CLOCNotificationManageriOS */,
+				048A2EB9296DC420008C904B /* CLOCNotificationManageriOSTests */,
 				045EB25C2960607A00483203 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -202,6 +229,8 @@
 				045EB25B2960607A00483203 /* ZZNotificationManager.framework */,
 				045EB2632960607A00483203 /* ZZNotificationManagerTests.xctest */,
 				04030C00296755E1006EF9BE /* CLOCNotificationManagerTests.xctest */,
+				048A2EAE296DC420008C904B /* CLOCNotificationManageriOS.framework */,
+				048A2EB5296DC420008C904B /* CLOCNotificationManageriOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -242,10 +271,31 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		048A2EAF296DC420008C904B /* CLOCNotificationManageriOS */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CLOCNotificationManageriOS;
+			sourceTree = "<group>";
+		};
+		048A2EB9296DC420008C904B /* CLOCNotificationManageriOSTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CLOCNotificationManageriOSTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
 		045EB2562960607A00483203 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		048A2EA9296DC420008C904B /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -309,6 +359,42 @@
 			productReference = 045EB2632960607A00483203 /* ZZNotificationManagerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		048A2EAD296DC420008C904B /* CLOCNotificationManageriOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 048A2EC1296DC420008C904B /* Build configuration list for PBXNativeTarget "CLOCNotificationManageriOS" */;
+			buildPhases = (
+				048A2EA9296DC420008C904B /* Headers */,
+				048A2EAA296DC420008C904B /* Sources */,
+				048A2EAB296DC420008C904B /* Frameworks */,
+				048A2EAC296DC420008C904B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CLOCNotificationManageriOS;
+			productName = CLOCNotificationManageriOS;
+			productReference = 048A2EAE296DC420008C904B /* CLOCNotificationManageriOS.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		048A2EB4296DC420008C904B /* CLOCNotificationManageriOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 048A2EC2296DC420008C904B /* Build configuration list for PBXNativeTarget "CLOCNotificationManageriOSTests" */;
+			buildPhases = (
+				048A2EB1296DC420008C904B /* Sources */,
+				048A2EB2296DC420008C904B /* Frameworks */,
+				048A2EB3296DC420008C904B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				048A2EB8296DC420008C904B /* PBXTargetDependency */,
+			);
+			name = CLOCNotificationManageriOSTests;
+			productName = CLOCNotificationManageriOSTests;
+			productReference = 048A2EB5296DC420008C904B /* CLOCNotificationManageriOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -331,6 +417,12 @@
 						CreatedOnToolsVersion = 14.0;
 						LastSwiftMigration = 1400;
 					};
+					048A2EAD296DC420008C904B = {
+						CreatedOnToolsVersion = 14.0;
+					};
+					048A2EB4296DC420008C904B = {
+						CreatedOnToolsVersion = 14.0;
+					};
 				};
 			};
 			buildConfigurationList = 045EB2552960607A00483203 /* Build configuration list for PBXProject "ZZNotificationManager" */;
@@ -349,6 +441,8 @@
 				045EB25A2960607A00483203 /* ZZNotificationManager */,
 				045EB2622960607A00483203 /* ZZNotificationManagerTests */,
 				04030BFF296755E1006EF9BE /* CLOCNotificationManagerTests */,
+				048A2EAD296DC420008C904B /* CLOCNotificationManageriOS */,
+				048A2EB4296DC420008C904B /* CLOCNotificationManageriOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -369,6 +463,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		045EB2612960607A00483203 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		048A2EAC296DC420008C904B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		048A2EB3296DC420008C904B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -433,6 +541,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		048A2EAA296DC420008C904B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		048A2EB1296DC420008C904B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -445,6 +567,11 @@
 			isa = PBXTargetDependency;
 			target = 045EB25A2960607A00483203 /* ZZNotificationManager */;
 			targetProxy = 045EB2652960607A00483203 /* PBXContainerItemProxy */;
+		};
+		048A2EB8296DC420008C904B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 048A2EAD296DC420008C904B /* CLOCNotificationManageriOS */;
+			targetProxy = 048A2EB7296DC420008C904B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -712,6 +839,100 @@
 			};
 			name = Release;
 		};
+		048A2EBD296DC420008C904B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 zzmasoud. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zzmasoud.CLOCNotificationManageriOS;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		048A2EBE296DC420008C904B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 zzmasoud. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zzmasoud.CLOCNotificationManageriOS;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		048A2EBF296DC420008C904B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zzmasoud.CLOCNotificationManageriOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		048A2EC0296DC420008C904B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zzmasoud.CLOCNotificationManageriOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -747,6 +968,24 @@
 			buildConfigurations = (
 				045EB2712960607A00483203 /* Debug */,
 				045EB2722960607A00483203 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		048A2EC1296DC420008C904B /* Build configuration list for PBXNativeTarget "CLOCNotificationManageriOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				048A2EBD296DC420008C904B /* Debug */,
+				048A2EBE296DC420008C904B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		048A2EC2296DC420008C904B /* Build configuration list for PBXNativeTarget "CLOCNotificationManageriOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				048A2EBF296DC420008C904B /* Debug */,
+				048A2EC0296DC420008C904B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
