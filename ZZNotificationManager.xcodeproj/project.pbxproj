@@ -211,6 +211,13 @@
 			path = Composer;
 			sourceTree = "<group>";
 		};
+		04480B26296EB91C002C053E /* CLOCNotificationManageriOSTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CLOCNotificationManageriOSTests;
+			sourceTree = "<group>";
+		};
 		045EB2512960607A00483203 = {
 			isa = PBXGroup;
 			children = (
@@ -218,7 +225,7 @@
 				045EB2672960607A00483203 /* ZZNotificationManagerTests */,
 				04030C01296755E1006EF9BE /* CLOCNotificationManagerTests */,
 				048A2EAF296DC420008C904B /* CLOCNotificationManageriOS */,
-				048A2EB9296DC420008C904B /* CLOCNotificationManageriOSTests */,
+				04480B26296EB91C002C053E /* CLOCNotificationManageriOSTests */,
 				045EB25C2960607A00483203 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -276,13 +283,6 @@
 			children = (
 			);
 			path = CLOCNotificationManageriOS;
-			sourceTree = "<group>";
-		};
-		048A2EB9296DC420008C904B /* CLOCNotificationManageriOSTests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = CLOCNotificationManageriOSTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
