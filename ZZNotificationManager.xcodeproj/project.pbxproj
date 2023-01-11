@@ -30,6 +30,9 @@
 		04444A39291A772300B6273B /* Date+GetComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A38291A772300B6273B /* Date+GetComponents.swift */; };
 		04444A3C291A779800B6273B /* MockNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A3B291A779800B6273B /* MockNotificationCenter.swift */; };
 		04444A3F291BA15B00B6273B /* ZZNotificationManagerComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A3E291BA15B00B6273B /* ZZNotificationManagerComposer.swift */; };
+		04480B28296EC1C7002C053E /* CLOCNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04480B27296EC1C7002C053E /* CLOCNotificationsViewControllerTests.swift */; };
+		04480B2A296F42F2002C053E /* ZZNotificationManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045EB25B2960607A00483203 /* ZZNotificationManager.framework */; platformFilter = ios; };
+		04480B2B296F42F2002C053E /* ZZNotificationManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 045EB25B2960607A00483203 /* ZZNotificationManager.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		045EB2642960607A00483203 /* ZZNotificationManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045EB25B2960607A00483203 /* ZZNotificationManager.framework */; };
 		0481EBF6296C022800669E59 /* ProjectNotificationUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0481EBF5296C022800669E59 /* ProjectNotificationUseCaseTests.swift */; };
 		0481EBF8296C1B7700669E59 /* CLOCNotificationTimeSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0481EBF7296C1B7700669E59 /* CLOCNotificationTimeSetter.swift */; };
@@ -54,6 +57,13 @@
 			remoteGlobalIDString = 045EB25A2960607A00483203;
 			remoteInfo = ZZNotificationManager;
 		};
+		04480B2C296F42F2002C053E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 045EB2522960607A00483203 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 045EB25A2960607A00483203;
+			remoteInfo = ZZNotificationManager;
+		};
 		045EB2652960607A00483203 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 045EB2522960607A00483203 /* Project object */;
@@ -69,6 +79,20 @@
 			remoteInfo = CLOCNotificationManageriOS;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		04480B2E296F42F2002C053E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				04480B2B296F42F2002C053E /* ZZNotificationManager.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		04030BF2296755E1006EF9BE /* CLOCNotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationManagerTests.swift; sourceTree = "<group>"; };
@@ -91,6 +115,7 @@
 		04444A38291A772300B6273B /* Date+GetComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+GetComponents.swift"; sourceTree = "<group>"; };
 		04444A3B291A779800B6273B /* MockNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNotificationCenter.swift; sourceTree = "<group>"; };
 		04444A3E291BA15B00B6273B /* ZZNotificationManagerComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManagerComposer.swift; sourceTree = "<group>"; };
+		04480B27296EC1C7002C053E /* CLOCNotificationsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationsViewControllerTests.swift; sourceTree = "<group>"; };
 		045EB25B2960607A00483203 /* ZZNotificationManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZZNotificationManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		045EB2632960607A00483203 /* ZZNotificationManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZZNotificationManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManagerTests.swift; sourceTree = "<group>"; };
@@ -135,6 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04480B2A296F42F2002C053E /* ZZNotificationManager.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,8 +240,16 @@
 		04480B26296EB91C002C053E /* CLOCNotificationManageriOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				04480B27296EC1C7002C053E /* CLOCNotificationsViewControllerTests.swift */,
 			);
 			path = CLOCNotificationManageriOSTests;
+			sourceTree = "<group>";
+		};
+		04480B29296F42F2002C053E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		045EB2512960607A00483203 = {
@@ -227,6 +261,7 @@
 				048A2EAF296DC420008C904B /* CLOCNotificationManageriOS */,
 				04480B26296EB91C002C053E /* CLOCNotificationManageriOSTests */,
 				045EB25C2960607A00483203 /* Products */,
+				04480B29296F42F2002C053E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -367,10 +402,12 @@
 				048A2EAA296DC420008C904B /* Sources */,
 				048A2EAB296DC420008C904B /* Frameworks */,
 				048A2EAC296DC420008C904B /* Resources */,
+				04480B2E296F42F2002C053E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				04480B2D296F42F2002C053E /* PBXTargetDependency */,
 			);
 			name = CLOCNotificationManageriOS;
 			productName = CLOCNotificationManageriOS;
@@ -422,6 +459,7 @@
 					};
 					048A2EB4296DC420008C904B = {
 						CreatedOnToolsVersion = 14.0;
+						LastSwiftMigration = 1340;
 					};
 				};
 			};
@@ -552,6 +590,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04480B28296EC1C7002C053E /* CLOCNotificationsViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -562,6 +601,12 @@
 			isa = PBXTargetDependency;
 			target = 045EB25A2960607A00483203 /* ZZNotificationManager */;
 			targetProxy = 04030C05296755E1006EF9BE /* PBXContainerItemProxy */;
+		};
+		04480B2D296F42F2002C053E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 045EB25A2960607A00483203 /* ZZNotificationManager */;
+			targetProxy = 04480B2C296F42F2002C053E /* PBXContainerItemProxy */;
 		};
 		045EB2662960607A00483203 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -582,6 +627,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zzmasoud.CLOCNotificationManagerTests;
@@ -597,6 +643,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zzmasoud.CLOCNotificationManagerTests;
@@ -739,7 +786,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -774,7 +821,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -802,6 +849,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -825,6 +873,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -901,15 +950,22 @@
 		048A2EBF296DC420008C904B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zzmasoud.CLOCNotificationManageriOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -918,10 +974,16 @@
 		048A2EC0296DC420008C904B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zzmasoud.CLOCNotificationManageriOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
