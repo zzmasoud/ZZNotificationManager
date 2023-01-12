@@ -34,6 +34,7 @@
 		04480B2A296F42F2002C053E /* ZZNotificationManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045EB25B2960607A00483203 /* ZZNotificationManager.framework */; platformFilter = ios; };
 		04480B2B296F42F2002C053E /* ZZNotificationManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 045EB25B2960607A00483203 /* ZZNotificationManager.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		045EB2642960607A00483203 /* ZZNotificationManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045EB25B2960607A00483203 /* ZZNotificationManager.framework */; };
+		046ABDD3297085C900F2343F /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D60D2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift */; };
 		0481EBF6296C022800669E59 /* ProjectNotificationUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0481EBF5296C022800669E59 /* ProjectNotificationUseCaseTests.swift */; };
 		0481EBF8296C1B7700669E59 /* CLOCNotificationTimeSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0481EBF7296C1B7700669E59 /* CLOCNotificationTimeSetter.swift */; };
 		0481EBF9296C384100669E59 /* Int+TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C15296755E1006EF9BE /* Int+TimeInterval.swift */; };
@@ -591,6 +592,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04480B28296EC1C7002C053E /* CLOCNotificationsViewControllerTests.swift in Sources */,
+				046ABDD3297085C900F2343F /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

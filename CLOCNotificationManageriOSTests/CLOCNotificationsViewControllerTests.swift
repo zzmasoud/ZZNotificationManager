@@ -46,6 +46,10 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationsViewController, notificationManager: NotificationManagerSpy) {
         let notificationManager = NotificationManagerSpy()
         let sut = CLOCNotificationsViewController(notificationManager: notificationManager)
+        
+        trackForMemoryLeaks(notificationManager, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
+
         return (sut, notificationManager)
     }
 
