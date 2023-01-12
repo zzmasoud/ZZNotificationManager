@@ -8,7 +8,7 @@ import ZZNotificationManager
 final class CLOCNotificationsViewController: UIViewController {
     
     var notificationManager: AsyncNotificationManager?
-    var authorizationTask: Task<Bool?, Never>?
+    var authorizationTask: Task<Bool?, Error>?
     var errorView = UIView()
     
     convenience init(notificationManager: AsyncNotificationManager) {
@@ -22,7 +22,13 @@ final class CLOCNotificationsViewController: UIViewController {
         errorView.isHidden = true
         
         authorizationTask = Task { [weak self] in
-            try? await self?.notificationManager?.requestAuthorization()
+            do {
+                let isAuthorized = try await self?.notificationManager?.requestAuthorization() ?? false
+                self?.errorView.isHidden = isAuthorized
+                return isAuthorized
+            } catch {
+                throw error
+            }
         }
     }
 }
@@ -35,11 +41,11 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(notificationManager.authorizeCallCount, 0)
     }
     
-    func test_viewDidLoad_authorize() async {
+    func test_viewDidLoad_authorizes() async {
         let (sut, notificationManager) = makeSUT()
         
         await sut.loadViewIfNeeded()
-        _ = await sut.authorizationTask?.value
+        _ = try? await sut.authorizationTask?.value
         
         XCTAssertEqual(notificationManager.authorizeCallCount, 1)
     }
@@ -50,6 +56,17 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
         
         XCTAssertTrue(sut.errorView.isHidden)
+    }
+    
+    func test_onRejectedAuthorization_showsErrorView() async {
+        let (sut, notificationManager) = makeSUT()
+        
+        await sut.loadViewIfNeeded()
+        simulateUserRejectsNotificationAuthorization(notificationManager)
+        _ = try? await sut.authorizationTask?.value
+        
+        let isHidden = await sut.errorView.isHidden
+        XCTAssertFalse(isHidden)
     }
     
     // MARK: - Helpers
@@ -66,10 +83,11 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
 
     class NotificationManagerSpy: AsyncNotificationManager {
         private(set) var authorizeCallCount: Int = 0
+        var authorizationStatus: Bool = false
 
         func requestAuthorization() async throws -> Bool {
             authorizeCallCount += 1
-            return true
+            return authorizationStatus
         }
         
         func checkAuthorizationStatus() async -> ZZNotificationAuthStatus {
@@ -77,6 +95,10 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         }
         
         func setNotification(forDate: Date, andId id: String, content: UNNotificationContent) async throws {}
+    }
+    
+    func simulateUserRejectsNotificationAuthorization(_ notificationManager: NotificationManagerSpy) {
+        notificationManager.authorizationStatus = false
     }
 
 }
