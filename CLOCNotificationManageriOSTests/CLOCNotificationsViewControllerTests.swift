@@ -27,6 +27,7 @@ final class CLOCNotificationsViewController: UIViewController {
                 self?.errorView.isHidden = isAuthorized
                 return isAuthorized
             } catch {
+                self?.errorView.isHidden = true
                 throw error
             }
         }
@@ -69,6 +70,17 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         XCTAssertFalse(isHidden)
     }
     
+    func test_onFailedAuthorization_showsErrorView() async {
+        let (sut, notificationManager) = makeSUT()
+        
+        await sut.loadViewIfNeeded()
+        simulateFailsNotificationAuthorization(notificationManager)
+        _ = try? await sut.authorizationTask?.value
+        
+        let isHidden = await sut.errorView.isHidden
+        XCTAssertFalse(isHidden)
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationsViewController, notificationManager: NotificationManagerSpy) {
@@ -83,11 +95,15 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
 
     class NotificationManagerSpy: AsyncNotificationManager {
         private(set) var authorizeCallCount: Int = 0
-        var authorizationStatus: Bool = false
+        var authorizationStatus: (Bool, Error?) = (false, nil)
 
         func requestAuthorization() async throws -> Bool {
             authorizeCallCount += 1
-            return authorizationStatus
+            if let error = authorizationStatus.1 {
+                throw error
+            } else {
+                return authorizationStatus.0
+            }
         }
         
         func checkAuthorizationStatus() async -> ZZNotificationAuthStatus {
@@ -98,7 +114,11 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     }
     
     func simulateUserRejectsNotificationAuthorization(_ notificationManager: NotificationManagerSpy) {
-        notificationManager.authorizationStatus = false
+        notificationManager.authorizationStatus = (false, nil)
+    }
+    
+    func simulateFailsNotificationAuthorization(_ notificationManager: NotificationManagerSpy) {
+        notificationManager.authorizationStatus = (true, NSError(domain: "error", code: -1))
     }
 
 }
