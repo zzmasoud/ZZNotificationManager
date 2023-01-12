@@ -7,9 +7,10 @@ import ZZNotificationManager
 
 final class CLOCNotificationsViewController: UIViewController {
     
-    var notificationManager: CLOCNotificationsViewControllerTests.NotificationManagerSpy?
+    var notificationManager: AsyncNotificationManager?
+    var authorizationTask: Task<Bool?, Never>?
     
-    convenience init(notificationManager: CLOCNotificationsViewControllerTests.NotificationManagerSpy) {
+    convenience init(notificationManager: AsyncNotificationManager) {
         self.init()
         self.notificationManager = notificationManager
     }
@@ -17,7 +18,9 @@ final class CLOCNotificationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        notificationManager?.requestAuthorization()
+        authorizationTask = Task {
+            try? await self.notificationManager?.requestAuthorization()
+        }
     }
 }
 
@@ -30,23 +33,30 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(notificationManager.authorizeCallCount, 0)
     }
     
-    func test_viewDidLoad_authorize() {
+    func test_viewDidLoad_authorize() async {
         let notificationManager = NotificationManagerSpy()
-        let sut = CLOCNotificationsViewController(notificationManager: notificationManager)
+        let sut = await CLOCNotificationsViewController(notificationManager: notificationManager)
         
-        sut.loadViewIfNeeded()
-        
+        await sut.loadViewIfNeeded()
+        _ = await sut.authorizationTask?.value
         XCTAssertEqual(notificationManager.authorizeCallCount, 1)
     }
     
     // MARK: - Helpers
     
-    class NotificationManagerSpy {
+    class NotificationManagerSpy: AsyncNotificationManager {
         private(set) var authorizeCallCount: Int = 0
-        
-        func requestAuthorization() {
+
+        func requestAuthorization() async throws -> Bool {
             authorizeCallCount += 1
+            return true
         }
+        
+        func checkAuthorizationStatus() async -> ZZNotificationAuthStatus {
+            fatalError()
+        }
+        
+        func setNotification(forDate: Date, andId id: String, content: UNNotificationContent) async throws {}
     }
 
 }
