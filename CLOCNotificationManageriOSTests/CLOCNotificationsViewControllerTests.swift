@@ -18,8 +18,8 @@ final class CLOCNotificationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        authorizationTask = Task {
-            try? await self.notificationManager?.requestAuthorization()
+        authorizationTask = Task { [weak self] in
+            try? await self?.notificationManager?.requestAuthorization()
         }
     }
 }
