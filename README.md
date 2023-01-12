@@ -13,7 +13,7 @@
 - [x] Send instant local notificaion (e.g. for the killer mode in the app)
 
 ## UX Goals for the notifications UI experience 
-- [ ] Show an error view if premission is not granted
+- [x] Show an error view if premission is not granted
 - [ ] Load settings when view is presented
 - [ ] Allow user to manually toggle any setting and it will be saved instantly
 - [ ] Allow user to manually change any time and it will be saved instantly
