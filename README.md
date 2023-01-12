@@ -1,5 +1,9 @@
 # ZZNotificationManager
 
+![Diagram - click to zoom](/DOCS/Diagram.png)
+
+<br>
+
 ## Goals for the core module (`ZZNotificationManager`)
 - [x] Wrapping `UNNotificationCenter` main functionality 
 - [x] Grant premissions of local notifications
