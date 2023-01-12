@@ -27,23 +27,28 @@ final class CLOCNotificationsViewController: UIViewController {
 class CLOCNotificationsViewControllerTests: XCTestCase {
 
     func test_init_doesNotAuthorize() {
-        let notificationManager = NotificationManagerSpy()
-        _ = CLOCNotificationsViewController(notificationManager: notificationManager)
-        
+        let (_, notificationManager) = makeSUT()
+
         XCTAssertEqual(notificationManager.authorizeCallCount, 0)
     }
     
     func test_viewDidLoad_authorize() async {
-        let notificationManager = NotificationManagerSpy()
-        let sut = await CLOCNotificationsViewController(notificationManager: notificationManager)
+        let (sut, notificationManager) = makeSUT()
         
         await sut.loadViewIfNeeded()
         _ = await sut.authorizationTask?.value
+        
         XCTAssertEqual(notificationManager.authorizeCallCount, 1)
     }
     
     // MARK: - Helpers
     
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationsViewController, notificationManager: NotificationManagerSpy) {
+        let notificationManager = NotificationManagerSpy()
+        let sut = CLOCNotificationsViewController(notificationManager: notificationManager)
+        return (sut, notificationManager)
+    }
+
     class NotificationManagerSpy: AsyncNotificationManager {
         private(set) var authorizeCallCount: Int = 0
 
