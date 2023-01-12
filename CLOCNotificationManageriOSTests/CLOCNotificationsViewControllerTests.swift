@@ -9,6 +9,7 @@ final class CLOCNotificationsViewController: UIViewController {
     
     var notificationManager: AsyncNotificationManager?
     var authorizationTask: Task<Bool?, Never>?
+    var errorView = UIView()
     
     convenience init(notificationManager: AsyncNotificationManager) {
         self.init()
@@ -17,6 +18,8 @@ final class CLOCNotificationsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        errorView.isHidden = true
         
         authorizationTask = Task { [weak self] in
             try? await self?.notificationManager?.requestAuthorization()
@@ -39,6 +42,14 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         _ = await sut.authorizationTask?.value
         
         XCTAssertEqual(notificationManager.authorizeCallCount, 1)
+    }
+    
+    func test_viewDidLoad_errorViewIsHidden() {
+        let (sut, _) = makeSUT()
+
+        sut.loadViewIfNeeded()
+        
+        XCTAssertTrue(sut.errorView.isHidden)
     }
     
     // MARK: - Helpers
