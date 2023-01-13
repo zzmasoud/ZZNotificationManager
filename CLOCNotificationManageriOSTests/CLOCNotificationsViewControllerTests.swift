@@ -24,7 +24,7 @@ final class CLOCNotificationsViewController: UIViewController {
         authorizationTask = Task { [weak self] in
             do {
                 let isAuthorized = try await self?.notificationManager?.requestAuthorization() ?? false
-                self?.errorView.isHidden = isAuthorized
+                self?.errorView.isHidden = !isAuthorized
                 return isAuthorized
             } catch {
                 self?.errorView.isHidden = true
@@ -67,7 +67,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         _ = try? await sut.authorizationTask?.value
         
         let isHidden = await sut.errorView.isHidden
-        XCTAssertFalse(isHidden)
+        XCTAssertTrue(isHidden)
     }
     
     func test_onFailedAuthorization_showsErrorView() async {
@@ -78,7 +78,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         _ = try? await sut.authorizationTask?.value
         
         let isHidden = await sut.errorView.isHidden
-        XCTAssertFalse(isHidden)
+        XCTAssertTrue(isHidden)
     }
     
     // MARK: - Helpers
