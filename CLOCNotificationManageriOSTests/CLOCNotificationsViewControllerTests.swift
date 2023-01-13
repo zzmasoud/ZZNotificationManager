@@ -23,15 +23,20 @@ final class CLOCNotificationsViewController: UITableViewController {
         errorView.isHidden = true
         
         authorizationTask = Task { [weak self] in
+            guard
+                let self = self,
+                let notificationManager = self.notificationManager
+            else { return false }
+            
             do {
-                let isAuthorized = try await self?.notificationManager?.requestAuthorization() ?? false
-                self?.errorView.isHidden = !isAuthorized
+                let isAuthorized = try await notificationManager.requestAuthorization()
+                self.errorView.isHidden = isAuthorized
                 if isAuthorized {
-                    self?.fillTableData()
+                    self.fillTableData()
                 }
                 return isAuthorized
             } catch {
-                self?.errorView.isHidden = true
+                self.errorView.isHidden = false
                 throw error
             }
         }
@@ -76,7 +81,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
 
         sut.loadViewIfNeeded()
         
-        XCTAssertTrue(sut.errorView.isHidden)
+        XCTAssertFalse(sut.isShowingError)
     }
     
     func test_onRejectedAuthorization_showsErrorView() async {
@@ -86,8 +91,8 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         await sut.loadViewIfNeeded()
         _ = try? await sut.authorizationTask?.value
         
-        let isHidden = await sut.errorView.isHidden
-        XCTAssertTrue(isHidden)
+        let isShowingError = await sut.isShowingError
+        XCTAssertTrue(isShowingError)
     }
     
     func test_onFailedAuthorization_showsErrorView() async {
@@ -97,8 +102,8 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         await sut.loadViewIfNeeded()
         _ = try? await sut.authorizationTask?.value
         
-        let isHidden = await sut.errorView.isHidden
-        XCTAssertTrue(isHidden)
+        let isShowingError = await sut.isShowingError
+        XCTAssertTrue(isShowingError)
     }
     
     func test_onGrantedAuthorization_showsSettings() async {
@@ -172,5 +177,9 @@ private extension CLOCNotificationsViewController {
     
     var isShowingSettings: Bool {
         return numberOfRenderedSettingItemViews == CLOCNotificationSettingKey.allCases.count
+    }
+    
+    var isShowingError: Bool {
+        return errorView.isHidden == false
     }
 }
