@@ -4,7 +4,7 @@
 
 import Foundation
 
-public enum CLOCNotificationSettingKey: String {
+public enum CLOCNotificationSettingKey: String, CaseIterable {
     case timerPassedItsDeadline,
          timerPassedTheDuration,
          noTasksHasBeenAddedSince,

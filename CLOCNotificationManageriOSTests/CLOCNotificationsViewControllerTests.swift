@@ -5,11 +5,12 @@
 import XCTest
 import ZZNotificationManager
 
-final class CLOCNotificationsViewController: UIViewController {
+final class CLOCNotificationsViewController: UITableViewController {
     
     var notificationManager: AsyncNotificationManager?
     var authorizationTask: Task<Bool?, Error>?
     var errorView = UIView()
+    var tableData: [[CLOCNotificationSettingKey]] = []
     
     convenience init(notificationManager: AsyncNotificationManager) {
         self.init()
@@ -25,12 +26,31 @@ final class CLOCNotificationsViewController: UIViewController {
             do {
                 let isAuthorized = try await self?.notificationManager?.requestAuthorization() ?? false
                 self?.errorView.isHidden = !isAuthorized
+                if isAuthorized {
+                    self?.fillTableData()
+                }
                 return isAuthorized
             } catch {
                 self?.errorView.isHidden = true
                 throw error
             }
         }
+    }
+    
+    private func fillTableData() {
+        tableData = [
+            [.timerPassedItsDeadline, .timerPassedTheDuration],
+            [.projectDeadlineReached, .noTasksHasBeenAddedSince]
+        ]
+        tableView.reloadData()
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return tableData.count
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableData[section].count
     }
 }
 
@@ -61,9 +81,9 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     
     func test_onRejectedAuthorization_showsErrorView() async {
         let (sut, notificationManager) = makeSUT()
-        
-        await sut.loadViewIfNeeded()
         simulateUserRejectsNotificationAuthorization(notificationManager)
+
+        await sut.loadViewIfNeeded()
         _ = try? await sut.authorizationTask?.value
         
         let isHidden = await sut.errorView.isHidden
@@ -72,13 +92,26 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     
     func test_onFailedAuthorization_showsErrorView() async {
         let (sut, notificationManager) = makeSUT()
+        simulateFailsNotificationAuthorization(notificationManager)
         
         await sut.loadViewIfNeeded()
-        simulateFailsNotificationAuthorization(notificationManager)
         _ = try? await sut.authorizationTask?.value
         
         let isHidden = await sut.errorView.isHidden
         XCTAssertTrue(isHidden)
+    }
+    
+    func test_onGrantedAuthorization_showsSettings() async {
+        let (sut, notificationManager) = makeSUT()
+        simulateGrantsNotificationAuthorization(notificationManager)
+
+        await sut.loadViewIfNeeded()
+        let isShowingSettingsBeforeGrantingAuthorization = await sut.isShowingSettings
+        XCTAssertFalse(isShowingSettingsBeforeGrantingAuthorization)
+
+        _ = try? await sut.authorizationTask?.value
+        let isShowingSettings = await sut.isShowingSettings
+        XCTAssertTrue(isShowingSettings)
     }
     
     // MARK: - Helpers
@@ -120,5 +153,24 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     func simulateFailsNotificationAuthorization(_ notificationManager: NotificationManagerSpy) {
         notificationManager.authorizationStatus = (true, NSError(domain: "error", code: -1))
     }
+    
+    func simulateGrantsNotificationAuthorization(_ notificationCenter: NotificationManagerSpy) {
+        notificationCenter.authorizationStatus = (true, nil)
+    }
 
+}
+
+private extension CLOCNotificationsViewController {
+    var numberOfRenderedSettingItemViews: Int {
+        let sections = tableView.numberOfSections
+        let rows = (0..<sections).reduce(into: 0) { [weak tableView] partialResult, section in
+            guard let tableView = tableView else { return }
+            partialResult += tableView.numberOfRows(inSection: section)
+        }
+        return rows
+    }
+    
+    var isShowingSettings: Bool {
+        return numberOfRenderedSettingItemViews == CLOCNotificationSettingKey.allCases.count
+    }
 }
