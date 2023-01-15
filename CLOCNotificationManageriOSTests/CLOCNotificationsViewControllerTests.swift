@@ -6,6 +6,10 @@ import XCTest
 import ZZNotificationManager
 import CLOCNotificationManageriOS
 
+protocol CLOCNotificationsViewControllerDelegate: AnyObject {
+    func didToggle(key: CLOCNotificationSettingKey, value: Bool)
+}
+
 final class CLOCNotificationsViewController: UITableViewController {
     typealias SettingItemCellRepresentableClosure = ((_ key: CLOCNotificationSettingKey) -> SettingItemCellRepresentable)
     
@@ -13,6 +17,7 @@ final class CLOCNotificationsViewController: UITableViewController {
     var settingItemCellRepresentableClosure: SettingItemCellRepresentableClosure?
     var errorView = UIView()
     var tableData: [[CLOCNotificationSettingKey]] = []
+    public weak var delegate: CLOCNotificationsViewControllerDelegate?
     
     convenience init(notificationManager: NotificationManager, configurableNotificationSettingKeys: [[CLOCNotificationSettingKey]], settingItemCellRepresentableClosure: @escaping SettingItemCellRepresentableClosure) {
         self.init(style: .grouped)
@@ -68,6 +73,10 @@ final class CLOCNotificationsViewController: UITableViewController {
         cell.captionLabel.isHidden = item.caption == nil
         cell.captionLabel.text = item.caption
         cell.changeTimeButton.isEnabled = item.isOn
+        
+        cell.onToggle = { [weak self] isOn in
+            self?.delegate?.didToggle(key: key, value: isOn)
+        }
         
         return cell
     }
@@ -146,6 +155,33 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         
         cell.switchControl.simulateToggle() // toggle it so it changes to `false`
         XCTAssertEqual(cell.isChangeButtonEnabled, false)
+    }
+    
+    func test_settingItemCellTogglingSwitch_triggersDelegate() {
+        let (sut, notificationManager) = makeSUT()
+        let delegate = DelegateSpy()
+        sut.delegate = delegate
+        
+        sut.loadViewIfNeeded()
+        XCTAssertFalse(sut.isShowingSettings)
+        
+        notificationManager.simulateGrantsNotificationAuthorization()
+        XCTAssertTrue(sut.isShowingSettings)
+
+        let view = sut.settingItemView(at: IndexPath(row: 0, section: 0))
+        guard let cell = view as? SettingItemCell else {
+            return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: view))")
+        }
+        cell.switchControl.isOn = false // make it `false` as the start state
+        cell.switchControl.simulateToggle()
+        
+        let expectedKey = keys[0][0]
+        XCTAssertEqual(delegate.receivedSwitchToggles[0].key, expectedKey)
+        XCTAssertEqual(delegate.receivedSwitchToggles[0].value, true)
+        
+        cell.switchControl.simulateToggle()
+        XCTAssertEqual(delegate.receivedSwitchToggles[1].key, expectedKey)
+        XCTAssertEqual(delegate.receivedSwitchToggles[1].value, false)
     }
     
     // MARK: - Helpers
@@ -239,6 +275,14 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
             }
         }
     }
+    
+    private class DelegateSpy: CLOCNotificationsViewControllerDelegate {
+        private(set) var receivedSwitchToggles: [(key: CLOCNotificationSettingKey, value: Bool)] = []
+        
+        func didToggle(key: CLOCNotificationSettingKey, value: Bool) {
+            receivedSwitchToggles.append((key, value))
+        }
+    }
 }
 
 private extension CLOCNotificationsViewController {
@@ -279,13 +323,25 @@ private extension SettingItemCell {
     var isChangeButtonEnabled: Bool { changeTimeButton.isEnabled }
 }
 
-// MARK: - UIButton + Simulate
+// MARK: - UISwitch + Simulate
 
 private extension UISwitch {
     func simulateToggle() {
         self.setOn(!self.isOn, animated: false) // triggering bottom targets don't change the value (isOn).
         self.allTargets.forEach({ target in
             self.actions(forTarget: target, forControlEvent: .valueChanged)?.forEach({ selector in
+                (target as NSObject).perform(Selector(selector))
+            })
+        })
+    }
+}
+
+// MARK: - UIButton + Simulate
+
+private extension UIButton {
+    func simulateTap() {
+        self.allTargets.forEach({ target in
+            self.actions(forTarget: target, forControlEvent: .touchUpInside)?.forEach({ selector in
                 (target as NSObject).perform(Selector(selector))
             })
         })

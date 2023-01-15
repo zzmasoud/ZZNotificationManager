@@ -17,7 +17,10 @@ public class SettingItemCell: UITableViewCell {
         return control
     }()
     
+    public var onToggle: ((_ isOn: Bool) -> Void)?
+    
     @objc private func switchToggled() {
         changeTimeButton.isEnabled = switchControl.isOn
+        onToggle?(switchControl.isOn)
     }
 }
