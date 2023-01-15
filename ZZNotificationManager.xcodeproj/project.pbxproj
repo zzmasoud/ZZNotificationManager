@@ -26,7 +26,7 @@
 		0408A3962917A7FE00C26444 /* ZZNotificationContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */; };
 		04114B712973FB6100AF6E18 /* SettingItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04114B702973FB6100AF6E18 /* SettingItemCell.swift */; };
 		04114B732974023500AF6E18 /* SettingItemCellRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04114B722974023500AF6E18 /* SettingItemCellRepresentable.swift */; };
-		04114B7629740DEC00AF6E18 /* MockNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04114B7529740DEC00AF6E18 /* MockNotificationManager.swift */; };
+		04114B7629740DEC00AF6E18 /* NotificationManagerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04114B7529740DEC00AF6E18 /* NotificationManagerSpy.swift */; };
 		04114B7929740E2E00AF6E18 /* MockSettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04114B7829740E2E00AF6E18 /* MockSettingItem.swift */; };
 		043AEFB02969C6B900FC5B86 /* XCTestCase+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */; };
 		043AEFB32969CCF400FC5B86 /* CLOCNotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */; };
@@ -115,7 +115,7 @@
 		0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationContentTests.swift; sourceTree = "<group>"; };
 		04114B702973FB6100AF6E18 /* SettingItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItemCell.swift; sourceTree = "<group>"; };
 		04114B722974023500AF6E18 /* SettingItemCellRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItemCellRepresentable.swift; sourceTree = "<group>"; };
-		04114B7529740DEC00AF6E18 /* MockNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNotificationManager.swift; sourceTree = "<group>"; };
+		04114B7529740DEC00AF6E18 /* NotificationManagerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManagerSpy.swift; sourceTree = "<group>"; };
 		04114B7829740E2E00AF6E18 /* MockSettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSettingItem.swift; sourceTree = "<group>"; };
 		043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Assertions.swift"; sourceTree = "<group>"; };
 		043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationSettings.swift; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 		04114B7729740E2600AF6E18 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				04114B7529740DEC00AF6E18 /* MockNotificationManager.swift */,
+				04114B7529740DEC00AF6E18 /* NotificationManagerSpy.swift */,
 				04114B7829740E2E00AF6E18 /* MockSettingItem.swift */,
 			);
 			path = Shared;
@@ -616,7 +616,7 @@
 			files = (
 				04480B28296EC1C7002C053E /* CLOCNotificationsViewControllerTests.swift in Sources */,
 				04114B7929740E2E00AF6E18 /* MockSettingItem.swift in Sources */,
-				04114B7629740DEC00AF6E18 /* MockNotificationManager.swift in Sources */,
+				04114B7629740DEC00AF6E18 /* NotificationManagerSpy.swift in Sources */,
 				046ABDD3297085C900F2343F /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

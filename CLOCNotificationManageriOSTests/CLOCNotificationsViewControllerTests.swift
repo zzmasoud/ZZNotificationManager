@@ -99,7 +99,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         let (sut, notificationManager) = makeSUT()
 
         sut.loadViewIfNeeded()
-        simulateUserRejectsNotificationAuthorization(notificationManager)
+        notificationManager.simulateUserRejectsNotificationAuthorization()
         
         XCTAssertTrue(sut.isShowingError)
     }
@@ -108,7 +108,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         let (sut, notificationManager) = makeSUT()
         
         sut.loadViewIfNeeded()
-        simulateFailsNotificationAuthorization(notificationManager)
+        notificationManager.simulateFailsNotificationAuthorization()
 
         XCTAssertTrue(sut.isShowingError)
     }
@@ -119,7 +119,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
         XCTAssertFalse(sut.isShowingSettings)
         
-        simulateGrantsNotificationAuthorization(notificationManager)
+        notificationManager.simulateGrantsNotificationAuthorization()
         XCTAssertTrue(sut.isShowingSettings)
         
         assertThat(sut, hasViewConfiguredFor: settingItem, at: IndexPath(row: 0, section: 0))
@@ -129,7 +129,6 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     
     private let settingItem = MockSettingItem(icon: UIImage(), title: "Title", isOn: true)
 
-    
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationsViewController, notificationManager: NotificationManagerSpy) {
         let notificationManager = NotificationManagerSpy()
         let sut = CLOCNotificationsViewController(notificationManager: notificationManager) { key in
@@ -155,19 +154,6 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(view.isShowingCaption, settingItem.caption != nil, "presented caption label wrongly", file: file, line: line)
         XCTAssertEqual(view.caption, settingItem.caption, "rendered caption is not as same as the model", file: file, line: line)
     }
-    
-    func simulateUserRejectsNotificationAuthorization(_ notificationManager: NotificationManagerSpy) {
-        notificationManager.authorizationStatus[0](false, nil)
-    }
-    
-    func simulateFailsNotificationAuthorization(_ notificationManager: NotificationManagerSpy) {
-        notificationManager.authorizationStatus[0](true, NSError(domain: "error", code: -1))
-    }
-    
-    func simulateGrantsNotificationAuthorization(_ notificationCenter: NotificationManagerSpy) {
-        notificationCenter.authorizationStatus[0](true, nil)
-    }
-
 }
 
 private extension CLOCNotificationsViewController {
@@ -197,7 +183,7 @@ private extension CLOCNotificationsViewController {
     }
 }
 
-extension SettingItemCell {
+private extension SettingItemCell {
     var icon: UIImage? { iconImageView.image }
     var title: String? { titleLabel.text }
     var isOn: Bool { switchControl.isOn }

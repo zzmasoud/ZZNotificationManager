@@ -24,4 +24,17 @@ class NotificationManagerSpy: NotificationManager {
     func removePendingNotifications(withIds: [String]) {
         fatalError()
     }
+    
+    func simulateUserRejectsNotificationAuthorization() {
+        authorizationStatus[0](false, nil)
+    }
+    
+    func simulateFailsNotificationAuthorization() {
+        authorizationStatus[0](true, NSError(domain: "error", code: -1))
+    }
+    
+    func simulateGrantsNotificationAuthorization() {
+        authorizationStatus[0](true, nil)
+    }
+
 }
