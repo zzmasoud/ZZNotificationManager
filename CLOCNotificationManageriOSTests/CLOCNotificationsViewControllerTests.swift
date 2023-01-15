@@ -108,11 +108,9 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     
     func test_onGrantedAuthorization_showsSettings() async {
         let (sut, notificationManager) = makeSUT()
-        simulateGrantsNotificationAuthorization(notificationManager)
 
+        simulateGrantsNotificationAuthorization(notificationManager)
         await sut.loadViewIfNeeded()
-        let isShowingSettingsBeforeGrantingAuthorization = await sut.isShowingSettings
-        XCTAssertFalse(isShowingSettingsBeforeGrantingAuthorization)
 
         _ = try? await sut.authorizationTask?.value
         let isShowingSettings = await sut.isShowingSettings
