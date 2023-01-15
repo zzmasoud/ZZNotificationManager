@@ -140,6 +140,41 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         ]
     ]
     
+    private let settingItems: [CLOCNotificationSettingKey: SettingItemCellRepresentable] = [
+        .timerPassedItsDeadline:
+            MockSettingItem(
+                icon: UIImage(color: .red)!,
+                title: "timerPassedItsDeadline",
+                isOn: true,
+                subtitle: "when timer passing the progress",
+                caption: nil
+            ),
+        .timerPassedTheDuration:
+            MockSettingItem(
+                icon: UIImage(color: .green)!,
+                title: "timerPassedTheDuration",
+                isOn: false,
+                subtitle: "when timer passing this time",
+                caption: "you can set this to get a notification base on this deadline"
+            ),
+        .noTasksHasBeenAddedSince:
+            MockSettingItem(
+                icon: UIImage(color: .blue)!,
+                title: "noTasksHasBeenAddedSince",
+                isOn: false,
+                subtitle: "when timer passing the progress",
+                caption: "get a reminder on closing to the prject's deadline"
+            ),
+        .projectDeadlineReached:
+            MockSettingItem(
+                icon: UIImage(color: .black)!,
+                title: "projectDeadlineReached",
+                isOn: true,
+                subtitle: "get a reminder on prject's deadline",
+                caption: "tap to change the date"
+            )
+    ]
+    
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationsViewController, notificationManager: NotificationManagerSpy) {
         let notificationManager = NotificationManagerSpy()
         let sut = CLOCNotificationsViewController(
@@ -156,40 +191,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     }
     
     private func makeMockSettingItem(fromKey key: CLOCNotificationSettingKey) -> SettingItemCellRepresentable {
-        switch key {
-        case .timerPassedItsDeadline:
-            return MockSettingItem(
-                icon: UIImage(color: .red)!,
-                title: "timerPassedItsDeadline",
-                isOn: true,
-                subtitle: "when timer passing the progress",
-                caption: nil
-            )
-        case .timerPassedTheDuration:
-            return MockSettingItem(
-                icon: UIImage(color: .green)!,
-                title: "timerPassedTheDuration",
-                isOn: false,
-                subtitle: "when timer passing this time",
-                caption: "you can set this to get a notification base on this deadline"
-            )
-        case .noTasksHasBeenAddedSince:
-            return MockSettingItem(
-                icon: UIImage(color: .blue)!,
-                title: "noTasksHasBeenAddedSince",
-                isOn: false,
-                subtitle: "when timer passing the progress",
-                caption: "get a reminder on closing to the prject's deadline"
-            )
-        case .projectDeadlineReached:
-            return MockSettingItem(
-                icon: UIImage(color: .black)!,
-                title: "projectDeadlineReached",
-                isOn: true,
-                subtitle: "get a reminder on prject's deadline",
-                caption: "tap to change the date"
-            )
-        }
+        return settingItems[key]!
     }
     
     private func assertThat(_ sut: CLOCNotificationsViewController, hasViewConfiguredFor settingItem: SettingItemCellRepresentable, at indexPath: IndexPath, file: StaticString = #file, line: UInt = #line) {
