@@ -117,12 +117,11 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     }
 
     class NotificationManagerSpy: NotificationManager {
-        private(set) var authorizeCallCount: Int = 0
-        var authorizationStatus: ((Bool, Error?) -> Void)? = nil
+        var authorizationStatus: [(Bool, Error?) -> Void] = []
+        var authorizeCallCount: Int { authorizationStatus.count }
 
         func requestAuthorization(completion: @escaping (Bool, Error?) -> Void) {
-            authorizeCallCount += 1
-            authorizationStatus = completion
+            authorizationStatus.append(completion)
         }
         
         func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion) {
@@ -139,15 +138,15 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     }
     
     func simulateUserRejectsNotificationAuthorization(_ notificationManager: NotificationManagerSpy) {
-        notificationManager.authorizationStatus?(false, nil)
+        notificationManager.authorizationStatus[0](false, nil)
     }
     
     func simulateFailsNotificationAuthorization(_ notificationManager: NotificationManagerSpy) {
-        notificationManager.authorizationStatus?(true, NSError(domain: "error", code: -1))
+        notificationManager.authorizationStatus[0](true, NSError(domain: "error", code: -1))
     }
     
     func simulateGrantsNotificationAuthorization(_ notificationCenter: NotificationManagerSpy) {
-        notificationCenter.authorizationStatus?(true, nil)
+        notificationCenter.authorizationStatus[0](true, nil)
     }
 
 }
