@@ -8,6 +8,7 @@ import CLOCNotificationManageriOS
 
 protocol CLOCNotificationsViewControllerDelegate: AnyObject {
     func didToggle(key: CLOCNotificationSettingKey, value: Bool)
+    func didTapToChangeTime(key: CLOCNotificationSettingKey)
 }
 
 final class CLOCNotificationsViewController: UITableViewController {
@@ -76,6 +77,10 @@ final class CLOCNotificationsViewController: UITableViewController {
         
         cell.onToggle = { [weak self] isOn in
             self?.delegate?.didToggle(key: key, value: isOn)
+        }
+        
+        cell.onChangeTimeAction = { [weak self] in
+            self?.delegate?.didTapToChangeTime(key: key)
         }
         
         return cell
@@ -182,6 +187,31 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         assertThat(delegate, receivedValue: false, forKey: expectedKey, at: 1)
     }
     
+    func test_settingItemCellChangeTimeButtonTap_triggersDelegate() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        let expectedKey = keys[indexPath.section][indexPath.row]
+        let (sut, notificationManager) = makeSUT()
+        let delegate = DelegateSpy()
+        sut.delegate = delegate
+        
+        sut.loadViewIfNeeded()
+        XCTAssertFalse(sut.isShowingSettings)
+        
+        notificationManager.simulateGrantsNotificationAuthorization()
+        XCTAssertTrue(sut.isShowingSettings)
+
+        let view = sut.settingItemView(at: indexPath)
+        guard let cell = view as? SettingItemCell else {
+            return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: view))")
+        }
+        
+        cell.changeTimeButton.simulateTap()
+        assertThat(delegate, receivedActionForKey: expectedKey, at: 0)
+        
+        cell.changeTimeButton.simulateTap()
+        assertThat(delegate, receivedActionForKey: expectedKey, at: 1)
+    }
+    
     // MARK: - Helpers
     
     private let keys: [[CLOCNotificationSettingKey]] =
@@ -276,9 +306,14 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     
     private class DelegateSpy: CLOCNotificationsViewControllerDelegate {
         private(set) var receivedSwitchToggles: [(key: CLOCNotificationSettingKey, value: Bool)] = []
+        private(set) var receivedChangeTimeActions: [CLOCNotificationSettingKey] = []
         
         func didToggle(key: CLOCNotificationSettingKey, value: Bool) {
             receivedSwitchToggles.append((key, value))
+        }
+        
+        func didTapToChangeTime(key: CLOCNotificationSettingKey) {
+            receivedChangeTimeActions.append(key)
         }
     }
     
@@ -286,6 +321,11 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         let receivedSwitchToggle = delegate.receivedSwitchToggles[index]
         XCTAssertEqual(receivedSwitchToggle.key, expectedKey, "expected to receive key (\(expectedKey)) but got (\(receivedSwitchToggle.key))", file: file, line: line)
         XCTAssertEqual(receivedSwitchToggle.value, expectedValue, "expected to receive value (\(expectedValue)) but got (\(receivedSwitchToggle.value))", file: file, line: line)
+    }
+    
+    private func assertThat(_ delegate: DelegateSpy, receivedActionForKey expectedKey: CLOCNotificationSettingKey, at index: Int, file: StaticString = #file, line: UInt = #line) {
+        let receivedKey = delegate.receivedChangeTimeActions[index]
+        XCTAssertEqual(receivedKey, expectedKey, "expected to receive key (\(expectedKey)) but got (\(receivedKey))", file: file, line: line)
     }
 }
 

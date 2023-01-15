@@ -9,7 +9,6 @@ public class SettingItemCell: UITableViewCell {
     public let titleLabel = UILabel()
     public let subtitleLabel = UILabel()
     public let captionLabel = UILabel()
-    public let changeTimeButton = UIButton()
     
     private(set) public lazy var switchControl: UISwitch = {
         let control = UISwitch()
@@ -17,10 +16,21 @@ public class SettingItemCell: UITableViewCell {
         return control
     }()
     
+    private(set) public lazy var changeTimeButton: UIButton = {
+        let control = UIButton()
+        control.addTarget(self, action: #selector(changeTimeTapped), for: .touchUpInside)
+        return control
+    }()
+    
     public var onToggle: ((_ isOn: Bool) -> Void)?
+    public var onChangeTimeAction: (() -> Void)?
     
     @objc private func switchToggled() {
         changeTimeButton.isEnabled = switchControl.isOn
         onToggle?(switchControl.isOn)
+    }
+    
+    @objc private func changeTimeTapped() {
+        onChangeTimeAction?()
     }
 }
