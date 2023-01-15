@@ -10,7 +10,7 @@ public protocol NotificationManager {
     typealias AuthorizationStatusCompletion = (ZZNotificationAuthStatus) -> Void
     typealias SetNotificationCompletion = (SetNotificationError?) -> Void
     
-    func requestAuthorization(completion: AuthorizationCompletion)
+    func requestAuthorization(completion: @escaping AuthorizationCompletion)
     func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion)
     func setNotification(forDate: Date, andId id: String, content: UNNotificationContent, completion: @escaping SetNotificationCompletion)
     func removePendingNotifications(withIds: [String])
