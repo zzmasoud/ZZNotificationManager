@@ -122,14 +122,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         simulateGrantsNotificationAuthorization(notificationManager)
         XCTAssertTrue(sut.isShowingSettings)
         
-        let view = sut.settingItemView(at: IndexPath(row: 0, section: 0)) as? SettingItemCell
-        XCTAssertEqual(view?.title, settingItem.title)
-        XCTAssertEqual(view?.icon, settingItem.icon)
-        XCTAssertEqual(view?.isOn, settingItem.isOn)
-        XCTAssertEqual(view?.isShowingSubtitle, settingItem.subtitle != nil)
-        XCTAssertEqual(view?.subtitle, settingItem.subtitle)
-        XCTAssertEqual(view?.isShowingCaption, settingItem.caption != nil)
-        XCTAssertEqual(view?.caption, settingItem.caption)
+        assertThat(sut, hasViewConfiguredFor: settingItem, at: IndexPath(row: 0, section: 0))
     }
     
     // MARK: - Helpers
@@ -176,6 +169,20 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         var isOn: Bool
         var subtitle: String?
         var caption: String?
+    }
+    
+    private func assertThat(_ sut: CLOCNotificationsViewController, hasViewConfiguredFor settingItem: SettingItemCellRepresentable, at indexPath: IndexPath, file: StaticString = #file, line: UInt = #line) {
+        let cell = sut.settingItemView(at: indexPath)
+        guard let view = cell as? SettingItemCell else {
+            return XCTFail("expected to get \(SettingItemCell.self) but gor \(String(describing: cell))", file: file, line: line)
+        }
+        XCTAssertEqual(view.title, settingItem.title, "rendered title is not as same as the model", file: file, line: line)
+        XCTAssertEqual(view.icon, settingItem.icon, "rendered icon is not as same as the model", file: file, line: line)
+        XCTAssertEqual(view.isOn, settingItem.isOn, "rendered switch control value is not as same as the model", file: file, line: line)
+        XCTAssertEqual(view.isShowingSubtitle, settingItem.subtitle != nil, "presented subtitle label wrongly", file: file, line: line)
+        XCTAssertEqual(view.subtitle, settingItem.subtitle, "rendered subtitle is not as same as the model", file: file, line: line)
+        XCTAssertEqual(view.isShowingCaption, settingItem.caption != nil, "presented caption label wrongly", file: file, line: line)
+        XCTAssertEqual(view.caption, settingItem.caption, "rendered caption is not as same as the model", file: file, line: line)
     }
     
     func simulateUserRejectsNotificationAuthorization(_ notificationManager: NotificationManagerSpy) {
