@@ -159,7 +159,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         switch key {
         case .timerPassedItsDeadline:
             return MockSettingItem(
-                icon: UIImage(),
+                icon: UIImage(color: .red)!,
                 title: "timerPassedItsDeadline",
                 isOn: true,
                 subtitle: "when timer passing the progress",
@@ -167,7 +167,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
             )
         case .timerPassedTheDuration:
             return MockSettingItem(
-                icon: UIImage(),
+                icon: UIImage(color: .green)!,
                 title: "timerPassedTheDuration",
                 isOn: false,
                 subtitle: "when timer passing this time",
@@ -175,7 +175,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
             )
         case .noTasksHasBeenAddedSince:
             return MockSettingItem(
-                icon: UIImage(),
+                icon: UIImage(color: .blue)!,
                 title: "noTasksHasBeenAddedSince",
                 isOn: false,
                 subtitle: "when timer passing the progress",
@@ -183,7 +183,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
             )
         case .projectDeadlineReached:
             return MockSettingItem(
-                icon: UIImage(),
+                icon: UIImage(color: .black)!,
                 title: "projectDeadlineReached",
                 isOn: true,
                 subtitle: "get a reminder on prject's deadline",
