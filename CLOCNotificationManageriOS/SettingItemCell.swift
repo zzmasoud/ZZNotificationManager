@@ -10,4 +10,5 @@ public class SettingItemCell: UITableViewCell {
     public let subtitleLabel = UILabel()
     public let switchControl = UISwitch()
     public let captionLabel = UILabel()
+    public let changeTimeButton = UIButton()
 }

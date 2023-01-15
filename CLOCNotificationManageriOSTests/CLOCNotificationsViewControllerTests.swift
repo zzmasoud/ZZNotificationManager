@@ -67,6 +67,7 @@ final class CLOCNotificationsViewController: UITableViewController {
         cell.subtitleLabel.text = item.subtitle
         cell.captionLabel.isHidden = item.caption == nil
         cell.captionLabel.text = item.caption
+        cell.changeTimeButton.isEnabled = item.isOn
         
         return cell
     }
@@ -206,6 +207,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(view.subtitle, settingItem.subtitle, "rendered subtitle is not as same as the model", file: file, line: line)
         XCTAssertEqual(view.isShowingCaption, settingItem.caption != nil, "presented caption label wrongly", file: file, line: line)
         XCTAssertEqual(view.caption, settingItem.caption, "rendered caption is not as same as the model", file: file, line: line)
+        XCTAssertEqual(view.isChangeButtonEnabled, settingItem.isOn)
     }
     
     private func assertThat(_ sut: CLOCNotificationsViewController, isRendering keys: [[CLOCNotificationSettingKey]], file: StaticString = #file, line: UInt = #line) {
@@ -253,4 +255,5 @@ private extension SettingItemCell {
     var subtitle: String? { subtitleLabel.text }
     var isShowingCaption: Bool { !captionLabel.isHidden }
     var caption: String? { captionLabel.text }
+    var isChangeButtonEnabled: Bool { changeTimeButton.isEnabled }
 }
