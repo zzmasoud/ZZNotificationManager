@@ -4,6 +4,7 @@
 
 import XCTest
 import ZZNotificationManager
+import CLOCNotificationManageriOS
 
 final class CLOCNotificationsViewController: UITableViewController {
     
@@ -164,8 +165,12 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
 }
 
 private extension CLOCNotificationsViewController {
+    var numberOfSections: Int {
+        return tableView.numberOfSections
+    }
+
     var numberOfRenderedSettingItemViews: Int {
-        let sections = tableView.numberOfSections
+        let sections = numberOfSections
         let rows = (0..<sections).reduce(into: 0) { [weak tableView] partialResult, section in
             guard let tableView = tableView else { return }
             partialResult += tableView.numberOfRows(inSection: section)
@@ -174,10 +179,14 @@ private extension CLOCNotificationsViewController {
     }
     
     var isShowingSettings: Bool {
-        return numberOfRenderedSettingItemViews == CLOCNotificationSettingKey.allCases.count
+        return numberOfSections == 2 && numberOfRenderedSettingItemViews == CLOCNotificationSettingKey.allCases.count
     }
     
     var isShowingError: Bool {
         return errorView.isHidden == false
+    }
+    
+    func settingItemView(at indexPath: IndexPath) -> UITableViewCell? {
+        return tableView.cellForRow(at: indexPath)
     }
 }

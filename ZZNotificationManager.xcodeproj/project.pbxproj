@@ -24,6 +24,7 @@
 		0407577C296D598B00A25D66 /* MockUserNotificationCenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A34291A75CE00B6273B /* MockUserNotificationCenterProtocol.swift */; };
 		0407577E296D59DB00A25D66 /* ZZNotificationContent+CLOCNotificationSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0407577D296D59DB00A25D66 /* ZZNotificationContent+CLOCNotificationSetting.swift */; };
 		0408A3962917A7FE00C26444 /* ZZNotificationContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */; };
+		04114B712973FB6100AF6E18 /* SettingItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04114B702973FB6100AF6E18 /* SettingItemCell.swift */; };
 		043AEFB02969C6B900FC5B86 /* XCTestCase+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */; };
 		043AEFB32969CCF400FC5B86 /* CLOCNotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */; };
 		04444A33291A756600B6273B /* ZZNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A32291A756600B6273B /* ZZNotificationManager.swift */; };
@@ -109,6 +110,7 @@
 		04075774296D590500A25D66 /* CLOCNotificationManager+Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLOCNotificationManager+Project.swift"; sourceTree = "<group>"; };
 		0407577D296D59DB00A25D66 /* ZZNotificationContent+CLOCNotificationSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZZNotificationContent+CLOCNotificationSetting.swift"; sourceTree = "<group>"; };
 		0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationContentTests.swift; sourceTree = "<group>"; };
+		04114B702973FB6100AF6E18 /* SettingItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItemCell.swift; sourceTree = "<group>"; };
 		043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Assertions.swift"; sourceTree = "<group>"; };
 		043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationSettings.swift; sourceTree = "<group>"; };
 		04444A32291A756600B6273B /* ZZNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManager.swift; sourceTree = "<group>"; };
@@ -317,6 +319,7 @@
 		048A2EAF296DC420008C904B /* CLOCNotificationManageriOS */ = {
 			isa = PBXGroup;
 			children = (
+				04114B702973FB6100AF6E18 /* SettingItemCell.swift */,
 			);
 			path = CLOCNotificationManageriOS;
 			sourceTree = "<group>";
@@ -457,6 +460,7 @@
 					};
 					048A2EAD296DC420008C904B = {
 						CreatedOnToolsVersion = 14.0;
+						LastSwiftMigration = 1340;
 					};
 					048A2EB4296DC420008C904B = {
 						CreatedOnToolsVersion = 14.0;
@@ -584,6 +588,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04114B712973FB6100AF6E18 /* SettingItemCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -893,6 +898,7 @@
 		048A2EBD296DC420008C904B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -914,6 +920,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -922,6 +929,7 @@
 		048A2EBE296DC420008C904B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -952,6 +960,7 @@
 		048A2EBF296DC420008C904B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -976,6 +985,7 @@
 		048A2EC0296DC420008C904B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
