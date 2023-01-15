@@ -14,16 +14,18 @@ final class CLOCNotificationsViewController: UITableViewController {
     var errorView = UIView()
     var tableData: [[CLOCNotificationSettingKey]] = []
     
-    convenience init(notificationManager: NotificationManager, settingItemCellRepresentableClosure: @escaping SettingItemCellRepresentableClosure) {
+    convenience init(notificationManager: NotificationManager, configurableNotificationSettingKeys: [[CLOCNotificationSettingKey]], settingItemCellRepresentableClosure: @escaping SettingItemCellRepresentableClosure) {
         self.init()
         self.notificationManager = notificationManager
         self.settingItemCellRepresentableClosure = settingItemCellRepresentableClosure
+        self.tableData = configurableNotificationSettingKeys
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         errorView.isHidden = true
+        tableView.dataSource = nil
         
         notificationManager?.requestAuthorization(completion: { [weak self] isAuthorized, error in
             guard error == nil else {
@@ -40,10 +42,7 @@ final class CLOCNotificationsViewController: UITableViewController {
     }
     
     private func fillTableData() {
-        tableData = [
-            [.timerPassedItsDeadline, .timerPassedTheDuration],
-            [.projectDeadlineReached, .noTasksHasBeenAddedSince]
-        ]
+        tableView.dataSource = self
         tableView.reloadData()
     }
     
@@ -72,10 +71,10 @@ final class CLOCNotificationsViewController: UITableViewController {
 }
 
 class CLOCNotificationsViewControllerTests: XCTestCase {
-
+    
     func test_init_doesNotAuthorize() {
         let (_, notificationManager) = makeSUT()
-
+        
         XCTAssertEqual(notificationManager.authorizeCallCount, 0)
     }
     
@@ -89,7 +88,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     
     func test_viewDidLoad_errorViewIsHidden() {
         let (sut, _) = makeSUT()
-
+        
         sut.loadViewIfNeeded()
         
         XCTAssertFalse(sut.isShowingError)
@@ -97,7 +96,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     
     func test_onRejectedAuthorization_showsErrorView() {
         let (sut, notificationManager) = makeSUT()
-
+        
         sut.loadViewIfNeeded()
         notificationManager.simulateUserRejectsNotificationAuthorization()
         
@@ -109,7 +108,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         
         sut.loadViewIfNeeded()
         notificationManager.simulateFailsNotificationAuthorization()
-
+        
         XCTAssertTrue(sut.isShowingError)
     }
     
@@ -128,16 +127,22 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     // MARK: - Helpers
     
     private let settingItem = MockSettingItem(icon: UIImage(), title: "Title", isOn: true)
-
+    
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationsViewController, notificationManager: NotificationManagerSpy) {
         let notificationManager = NotificationManagerSpy()
-        let sut = CLOCNotificationsViewController(notificationManager: notificationManager) { key in
+        let sut = CLOCNotificationsViewController(
+            notificationManager: notificationManager,
+            configurableNotificationSettingKeys: [
+                [.timerPassedItsDeadline, .timerPassedTheDuration],
+                [.projectDeadlineReached, .noTasksHasBeenAddedSince]
+            ]
+        ) { key in
             return self.settingItem
         }
         
         trackForMemoryLeaks(notificationManager, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
-
+        
         return (sut, notificationManager)
     }
     
@@ -160,7 +165,7 @@ private extension CLOCNotificationsViewController {
     var numberOfSections: Int {
         return tableView.numberOfSections
     }
-
+    
     var numberOfRenderedSettingItemViews: Int {
         let sections = numberOfSections
         let rows = (0..<sections).reduce(into: 0) { [weak tableView] partialResult, section in
