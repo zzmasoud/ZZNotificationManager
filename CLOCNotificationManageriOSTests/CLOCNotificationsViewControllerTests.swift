@@ -158,6 +158,8 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     }
     
     func test_settingItemCellTogglingSwitch_triggersDelegate() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        let expectedKey = keys[indexPath.section][indexPath.row]
         let (sut, notificationManager) = makeSUT()
         let delegate = DelegateSpy()
         sut.delegate = delegate
@@ -168,20 +170,16 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         notificationManager.simulateGrantsNotificationAuthorization()
         XCTAssertTrue(sut.isShowingSettings)
 
-        let view = sut.settingItemView(at: IndexPath(row: 0, section: 0))
+        let view = sut.settingItemView(at: indexPath)
         guard let cell = view as? SettingItemCell else {
             return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: view))")
         }
         cell.switchControl.isOn = false // make it `false` as the start state
         cell.switchControl.simulateToggle()
-        
-        let expectedKey = keys[0][0]
-        XCTAssertEqual(delegate.receivedSwitchToggles[0].key, expectedKey)
-        XCTAssertEqual(delegate.receivedSwitchToggles[0].value, true)
+        assertThat(delegate, receivedValue: true, forKey: expectedKey, at: 0)
         
         cell.switchControl.simulateToggle()
-        XCTAssertEqual(delegate.receivedSwitchToggles[1].key, expectedKey)
-        XCTAssertEqual(delegate.receivedSwitchToggles[1].value, false)
+        assertThat(delegate, receivedValue: false, forKey: expectedKey, at: 1)
     }
     
     // MARK: - Helpers
@@ -282,6 +280,12 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         func didToggle(key: CLOCNotificationSettingKey, value: Bool) {
             receivedSwitchToggles.append((key, value))
         }
+    }
+    
+    private func assertThat(_ delegate: DelegateSpy, receivedValue expectedValue: Bool, forKey expectedKey: CLOCNotificationSettingKey, at index: Int, file: StaticString = #file, line: UInt = #line) {
+        let receivedSwitchToggle = delegate.receivedSwitchToggles[index]
+        XCTAssertEqual(receivedSwitchToggle.key, expectedKey, "expected to receive key (\(expectedKey)) but got (\(receivedSwitchToggle.key))", file: file, line: line)
+        XCTAssertEqual(receivedSwitchToggle.value, expectedValue, "expected to receive value (\(expectedValue)) but got (\(receivedSwitchToggle.value))", file: file, line: line)
     }
 }
 
