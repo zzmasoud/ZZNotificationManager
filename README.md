@@ -18,6 +18,6 @@
 
 ## UX Goals for the notifications UI experience 
 - [x] Show an error view if premission is not granted
-- [ ] Load settings when view is presented
+- [ ] Load settings when view is presented and premission is granted
 - [ ] Allow user to manually toggle any setting and it will be saved instantly
 - [ ] Allow user to manually change any time and it will be saved instantly
