@@ -141,35 +141,6 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
 
         return (sut, notificationManager)
     }
-
-    class NotificationManagerSpy: NotificationManager {
-        var authorizationStatus: [(Bool, Error?) -> Void] = []
-        var authorizeCallCount: Int { authorizationStatus.count }
-
-        func requestAuthorization(completion: @escaping (Bool, Error?) -> Void) {
-            authorizationStatus.append(completion)
-        }
-        
-        func checkAuthorizationStatus(completion: @escaping AuthorizationStatusCompletion) {
-            fatalError()
-        }
-        
-        func setNotification(forDate: Date, andId id: String, content: UNNotificationContent, completion: @escaping SetNotificationCompletion) {
-            fatalError()
-        }
-
-        func removePendingNotifications(withIds: [String]) {
-            fatalError()
-        }
-    }
-    
-    private struct MockSettingItem: SettingItemCellRepresentable {
-        var icon: UIImage
-        var title: String
-        var isOn: Bool
-        var subtitle: String?
-        var caption: String?
-    }
     
     private func assertThat(_ sut: CLOCNotificationsViewController, hasViewConfiguredFor settingItem: SettingItemCellRepresentable, at indexPath: IndexPath, file: StaticString = #file, line: UInt = #line) {
         let cell = sut.settingItemView(at: indexPath)
