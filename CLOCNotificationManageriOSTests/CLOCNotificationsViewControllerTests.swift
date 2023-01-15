@@ -7,14 +7,17 @@ import ZZNotificationManager
 import CLOCNotificationManageriOS
 
 final class CLOCNotificationsViewController: UITableViewController {
+    typealias SettingItemCellRepresentableClosure = ((_ key: CLOCNotificationSettingKey) -> SettingItemCellRepresentable)
     
     var notificationManager: NotificationManager?
+    var settingItemCellRepresentableClosure: SettingItemCellRepresentableClosure?
     var errorView = UIView()
     var tableData: [[CLOCNotificationSettingKey]] = []
     
-    convenience init(notificationManager: NotificationManager) {
+    convenience init(notificationManager: NotificationManager, settingItemCellRepresentableClosure: @escaping SettingItemCellRepresentableClosure) {
         self.init()
         self.notificationManager = notificationManager
+        self.settingItemCellRepresentableClosure = settingItemCellRepresentableClosure
     }
     
     override func viewDidLoad() {
@@ -50,6 +53,21 @@ final class CLOCNotificationsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableData[section].count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let key = tableData[indexPath.section][indexPath.row]
+        let cell = SettingItemCell()
+        guard let item = settingItemCellRepresentableClosure?(key) else { return cell }
+        cell.iconImageView.image = item.icon
+        cell.titleLabel.text = item.title
+        cell.switchControl.isOn = item.isOn
+        cell.subtitleLabel.isHidden = item.subtitle == nil
+        cell.subtitleLabel.text = item.subtitle
+        cell.captionLabel.isHidden = item.caption == nil
+        cell.captionLabel.text = item.caption
+        
+        return cell
     }
 }
 
@@ -103,13 +121,27 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         
         simulateGrantsNotificationAuthorization(notificationManager)
         XCTAssertTrue(sut.isShowingSettings)
+        
+        let view = sut.settingItemView(at: IndexPath(row: 0, section: 0)) as? SettingItemCell
+        XCTAssertEqual(view?.title, settingItem.title)
+        XCTAssertEqual(view?.icon, settingItem.icon)
+        XCTAssertEqual(view?.isOn, settingItem.isOn)
+        XCTAssertEqual(view?.isShowingSubtitle, settingItem.subtitle != nil)
+        XCTAssertEqual(view?.subtitle, settingItem.subtitle)
+        XCTAssertEqual(view?.isShowingCaption, settingItem.caption != nil)
+        XCTAssertEqual(view?.caption, settingItem.caption)
     }
     
     // MARK: - Helpers
     
+    private let settingItem = MockSettingItem(icon: UIImage(), title: "Title", isOn: true)
+
+    
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationsViewController, notificationManager: NotificationManagerSpy) {
         let notificationManager = NotificationManagerSpy()
-        let sut = CLOCNotificationsViewController(notificationManager: notificationManager)
+        let sut = CLOCNotificationsViewController(notificationManager: notificationManager) { key in
+            return self.settingItem
+        }
         
         trackForMemoryLeaks(notificationManager, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
@@ -136,6 +168,14 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         func removePendingNotifications(withIds: [String]) {
             fatalError()
         }
+    }
+    
+    private struct MockSettingItem: SettingItemCellRepresentable {
+        var icon: UIImage
+        var title: String
+        var isOn: Bool
+        var subtitle: String?
+        var caption: String?
     }
     
     func simulateUserRejectsNotificationAuthorization(_ notificationManager: NotificationManagerSpy) {
@@ -177,4 +217,14 @@ private extension CLOCNotificationsViewController {
     func settingItemView(at indexPath: IndexPath) -> UITableViewCell? {
         return tableView.cellForRow(at: indexPath)
     }
+}
+
+extension SettingItemCell {
+    var icon: UIImage? { iconImageView.image }
+    var title: String? { titleLabel.text }
+    var isOn: Bool { switchControl.isOn }
+    var isShowingSubtitle: Bool { !subtitleLabel.isHidden }
+    var subtitle: String? { subtitleLabel.text }
+    var isShowingCaption: Bool { !captionLabel.isHidden }
+    var caption: String? { captionLabel.text }
 }

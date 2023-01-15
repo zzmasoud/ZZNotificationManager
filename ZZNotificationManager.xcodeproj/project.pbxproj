@@ -25,6 +25,7 @@
 		0407577E296D59DB00A25D66 /* ZZNotificationContent+CLOCNotificationSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0407577D296D59DB00A25D66 /* ZZNotificationContent+CLOCNotificationSetting.swift */; };
 		0408A3962917A7FE00C26444 /* ZZNotificationContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */; };
 		04114B712973FB6100AF6E18 /* SettingItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04114B702973FB6100AF6E18 /* SettingItemCell.swift */; };
+		04114B732974023500AF6E18 /* SettingItemCellRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04114B722974023500AF6E18 /* SettingItemCellRepresentable.swift */; };
 		043AEFB02969C6B900FC5B86 /* XCTestCase+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */; };
 		043AEFB32969CCF400FC5B86 /* CLOCNotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */; };
 		04444A33291A756600B6273B /* ZZNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A32291A756600B6273B /* ZZNotificationManager.swift */; };
@@ -111,6 +112,7 @@
 		0407577D296D59DB00A25D66 /* ZZNotificationContent+CLOCNotificationSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZZNotificationContent+CLOCNotificationSetting.swift"; sourceTree = "<group>"; };
 		0408A3952917A7FE00C26444 /* ZZNotificationContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationContentTests.swift; sourceTree = "<group>"; };
 		04114B702973FB6100AF6E18 /* SettingItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItemCell.swift; sourceTree = "<group>"; };
+		04114B722974023500AF6E18 /* SettingItemCellRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItemCellRepresentable.swift; sourceTree = "<group>"; };
 		043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Assertions.swift"; sourceTree = "<group>"; };
 		043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationSettings.swift; sourceTree = "<group>"; };
 		04444A32291A756600B6273B /* ZZNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManager.swift; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				04114B702973FB6100AF6E18 /* SettingItemCell.swift */,
+				04114B722974023500AF6E18 /* SettingItemCellRepresentable.swift */,
 			);
 			path = CLOCNotificationManageriOS;
 			sourceTree = "<group>";
@@ -588,6 +591,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04114B732974023500AF6E18 /* SettingItemCellRepresentable.swift in Sources */,
 				04114B712973FB6100AF6E18 /* SettingItemCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
