@@ -144,7 +144,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         cell.switchControl.simulateToggle() // toggle it so it changes to `true`
         XCTAssertEqual(cell.isChangeButtonEnabled, true)
         
-        cell.switchControl.simulateToggle() // toggle it so it changes to `true`
+        cell.switchControl.simulateToggle() // toggle it so it changes to `false`
         XCTAssertEqual(cell.isChangeButtonEnabled, false)
     }
     
