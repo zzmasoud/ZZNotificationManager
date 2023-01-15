@@ -15,7 +15,7 @@ final class CLOCNotificationsViewController: UITableViewController {
     var tableData: [[CLOCNotificationSettingKey]] = []
     
     convenience init(notificationManager: NotificationManager, configurableNotificationSettingKeys: [[CLOCNotificationSettingKey]], settingItemCellRepresentableClosure: @escaping SettingItemCellRepresentableClosure) {
-        self.init()
+        self.init(style: .grouped)
         self.notificationManager = notificationManager
         self.settingItemCellRepresentableClosure = settingItemCellRepresentableClosure
         self.tableData = configurableNotificationSettingKeys
@@ -23,9 +23,11 @@ final class CLOCNotificationsViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.frame = CGRect(x: 0, y: 0, width: 1000, height: 1000) // this is a tricky line, since without this line the tableview's frame would be zero and this causes no call to cellForRowAt
         
         errorView.isHidden = true
         tableView.dataSource = nil
+        tableView.delegate = self
         
         notificationManager?.requestAuthorization(completion: { [weak self] isAuthorized, error in
             guard error == nil else {
@@ -121,23 +123,30 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         notificationManager.simulateGrantsNotificationAuthorization()
         XCTAssertTrue(sut.isShowingSettings)
         
-        assertThat(sut, hasViewConfiguredFor: settingItem, at: IndexPath(row: 0, section: 0))
+        assertThat(sut, isRendering: keys)
     }
     
     // MARK: - Helpers
     
-    private let settingItem = MockSettingItem(icon: UIImage(), title: "Title", isOn: true)
+    private let keys: [[CLOCNotificationSettingKey]] =
+    [
+        [
+            .timerPassedItsDeadline,
+            .timerPassedTheDuration
+        ],
+        [
+            .projectDeadlineReached,
+            .noTasksHasBeenAddedSince
+        ]
+    ]
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationsViewController, notificationManager: NotificationManagerSpy) {
         let notificationManager = NotificationManagerSpy()
         let sut = CLOCNotificationsViewController(
             notificationManager: notificationManager,
-            configurableNotificationSettingKeys: [
-                [.timerPassedItsDeadline, .timerPassedTheDuration],
-                [.projectDeadlineReached, .noTasksHasBeenAddedSince]
-            ]
+            configurableNotificationSettingKeys: keys
         ) { key in
-            return self.settingItem
+            return self.makeMockSettingItem(fromKey: key)
         }
         
         trackForMemoryLeaks(notificationManager, file: file, line: line)
@@ -146,10 +155,47 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         return (sut, notificationManager)
     }
     
+    private func makeMockSettingItem(fromKey key: CLOCNotificationSettingKey) -> SettingItemCellRepresentable {
+        switch key {
+        case .timerPassedItsDeadline:
+            return MockSettingItem(
+                icon: UIImage(),
+                title: "timerPassedItsDeadline",
+                isOn: true,
+                subtitle: "when timer passing the progress",
+                caption: nil
+            )
+        case .timerPassedTheDuration:
+            return MockSettingItem(
+                icon: UIImage(),
+                title: "timerPassedTheDuration",
+                isOn: false,
+                subtitle: "when timer passing this time",
+                caption: "you can set this to get a notification base on this deadline"
+            )
+        case .noTasksHasBeenAddedSince:
+            return MockSettingItem(
+                icon: UIImage(),
+                title: "noTasksHasBeenAddedSince",
+                isOn: false,
+                subtitle: "when timer passing the progress",
+                caption: "get a reminder on closing to the prject's deadline"
+            )
+        case .projectDeadlineReached:
+            return MockSettingItem(
+                icon: UIImage(),
+                title: "projectDeadlineReached",
+                isOn: true,
+                subtitle: "get a reminder on prject's deadline",
+                caption: "tap to change the date"
+            )
+        }
+    }
+    
     private func assertThat(_ sut: CLOCNotificationsViewController, hasViewConfiguredFor settingItem: SettingItemCellRepresentable, at indexPath: IndexPath, file: StaticString = #file, line: UInt = #line) {
         let cell = sut.settingItemView(at: indexPath)
         guard let view = cell as? SettingItemCell else {
-            return XCTFail("expected to get \(SettingItemCell.self) but gor \(String(describing: cell))", file: file, line: line)
+            return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: cell))", file: file, line: line)
         }
         XCTAssertEqual(view.title, settingItem.title, "rendered title is not as same as the model", file: file, line: line)
         XCTAssertEqual(view.icon, settingItem.icon, "rendered icon is not as same as the model", file: file, line: line)
@@ -158,6 +204,15 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(view.subtitle, settingItem.subtitle, "rendered subtitle is not as same as the model", file: file, line: line)
         XCTAssertEqual(view.isShowingCaption, settingItem.caption != nil, "presented caption label wrongly", file: file, line: line)
         XCTAssertEqual(view.caption, settingItem.caption, "rendered caption is not as same as the model", file: file, line: line)
+    }
+    
+    private func assertThat(_ sut: CLOCNotificationsViewController, isRendering keys: [[CLOCNotificationSettingKey]], file: StaticString = #file, line: UInt = #line) {
+        for section in 0..<keys.count {
+            let rows = keys[section]
+            for row in 0..<rows.count {
+                assertThat(sut, hasViewConfiguredFor: self.makeMockSettingItem(fromKey: keys[section][row]), at: IndexPath(row: row, section: section), file: file, line: line)
+            }
+        }
     }
 }
 
