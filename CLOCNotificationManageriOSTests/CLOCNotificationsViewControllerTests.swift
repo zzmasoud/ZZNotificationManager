@@ -127,6 +127,27 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         assertThat(sut, isRendering: keys)
     }
     
+    func test_settingItemCellChangeButton_ChangesIsEnabledWhenSwitchToggled() {
+        let (sut, notificationManager) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        XCTAssertFalse(sut.isShowingSettings)
+        
+        notificationManager.simulateGrantsNotificationAuthorization()
+        XCTAssertTrue(sut.isShowingSettings)
+
+        let view = sut.settingItemView(at: IndexPath(row: 0, section: 0))
+        guard let cell = view as? SettingItemCell else {
+            return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: view))")
+        }
+        cell.switchControl.isOn = false // make it `false` as the start state
+        cell.switchControl.simulateToggle() // toggle it so it changes to `true`
+        XCTAssertEqual(cell.isChangeButtonEnabled, true)
+        
+        cell.switchControl.simulateToggle() // toggle it so it changes to `true`
+        XCTAssertEqual(cell.isChangeButtonEnabled, false)
+    }
+    
     // MARK: - Helpers
     
     private let keys: [[CLOCNotificationSettingKey]] =
@@ -202,7 +223,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         }
         XCTAssertEqual(view.title, settingItem.title, "rendered title is not as same as the model", file: file, line: line)
         XCTAssertEqual(view.icon, settingItem.icon, "rendered icon is not as same as the model", file: file, line: line)
-        XCTAssertEqual(view.isOn, settingItem.isOn, "rendered switch control value is not as same as the model", file: file, line: line)
+        XCTAssertEqual(view.isSwitchOn, settingItem.isOn, "rendered switch control value is not as same as the model", file: file, line: line)
         XCTAssertEqual(view.isShowingSubtitle, settingItem.subtitle != nil, "presented subtitle label wrongly", file: file, line: line)
         XCTAssertEqual(view.subtitle, settingItem.subtitle, "rendered subtitle is not as same as the model", file: file, line: line)
         XCTAssertEqual(view.isShowingCaption, settingItem.caption != nil, "presented caption label wrongly", file: file, line: line)
@@ -250,10 +271,23 @@ private extension CLOCNotificationsViewController {
 private extension SettingItemCell {
     var icon: UIImage? { iconImageView.image }
     var title: String? { titleLabel.text }
-    var isOn: Bool { switchControl.isOn }
+    var isSwitchOn: Bool { switchControl.isOn }
     var isShowingSubtitle: Bool { !subtitleLabel.isHidden }
     var subtitle: String? { subtitleLabel.text }
     var isShowingCaption: Bool { !captionLabel.isHidden }
     var caption: String? { captionLabel.text }
     var isChangeButtonEnabled: Bool { changeTimeButton.isEnabled }
+}
+
+// MARK: - UIButton + Simulate
+
+private extension UISwitch {
+    func simulateToggle() {
+        self.setOn(!self.isOn, animated: false) // triggering bottom targets don't change the value (isOn).
+        self.allTargets.forEach({ target in
+            self.actions(forTarget: target, forControlEvent: .valueChanged)?.forEach({ selector in
+                (target as NSObject).perform(Selector(selector))
+            })
+        })
+    }
 }
