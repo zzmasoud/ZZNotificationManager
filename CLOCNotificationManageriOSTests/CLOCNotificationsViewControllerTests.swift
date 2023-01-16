@@ -247,7 +247,8 @@ private extension CLOCNotificationsViewController {
     }
     
     func settingItemView(at indexPath: IndexPath) -> UITableViewCell? {
-        return tableView.cellForRow(at: indexPath)
+        let dataSource = tableView.dataSource
+        return dataSource?.tableView(tableView, cellForRowAt: indexPath)
     }
 }
 

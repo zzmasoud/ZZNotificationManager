@@ -30,7 +30,6 @@ final public class CLOCNotificationsViewController: UITableViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.frame = CGRect(x: 0, y: 0, width: 1000, height: 1000) // this is a tricky line, since without this line the tableview's frame would be zero and this causes no call to cellForRowAt
         
         errorView.isHidden = true
         tableView.dataSource = nil
