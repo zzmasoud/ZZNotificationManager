@@ -5,9 +5,9 @@
 import UIKit
 
 public final class SettingItemCellController {
-    private let viewModel: SettingItemViewModel
+    private let viewModel: SettingItemViewModel<UIImage>
 
-    init(viewModel: SettingItemViewModel) {
+    init(viewModel: SettingItemViewModel<UIImage>) {
         self.viewModel = viewModel
     }
     

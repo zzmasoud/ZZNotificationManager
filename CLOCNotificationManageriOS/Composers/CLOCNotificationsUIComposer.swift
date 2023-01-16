@@ -4,6 +4,7 @@
 
 
 import ZZNotificationManager
+import UIKit
 
 final public class CLOCNotificationsUIComposer {
     public typealias SettingItemCellRepresentableClosure = ((_ key: Key) -> SettingItemCellRepresentable)
@@ -33,7 +34,7 @@ final public class CLOCNotificationsUIComposer {
         return sectionedKeys.map({ (title: String, keys: [Key]) in
             let controllers = keys.map { settingKey -> SettingItemCellController in
                 let item = cellRepresentable(settingKey)
-                let viewModel = SettingItemViewModel(key: settingKey, item: item, delegate: delegate)
+                let viewModel = SettingItemViewModel<UIImage>(key: settingKey, item: item, delegate: delegate, imageTransformer: { _ in item.icon })
                 return SettingItemCellController(viewModel: viewModel)
             }
             return (title, controllers)
