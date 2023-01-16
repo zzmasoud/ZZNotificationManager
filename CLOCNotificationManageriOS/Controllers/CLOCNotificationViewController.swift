@@ -6,28 +6,24 @@ import UIKit
 import ZZNotificationManager
 
 public protocol CLOCNotificationsViewControllerDelegate: AnyObject {
-    func didToggle(key: CLOCNotificationsViewController.Key, value: Bool)
-    func didTapToChangeTime(key: CLOCNotificationsViewController.Key)
+    func didToggle(key: CLOCNotificationsUIComposer.Key, value: Bool)
+    func didTapToChangeTime(key: CLOCNotificationsUIComposer.Key)
 }
 
 final public class CLOCNotificationsViewController: UITableViewController {
+    public typealias Section = String
+    public typealias Item = SettingItemCellController
+    public typealias SectionedItems = (section: Section, items: [Item])
     public typealias NotificationAuthorizationCompletion = ((@escaping (Bool, Error?) -> Void) -> ())
-    public typealias Key = CLOCNotificationSettingKey
-    public typealias SectionedKeys = (title: String, keys: [Key])
-    public typealias SettingItemCellRepresentableClosure = ((_ key: Key) -> SettingItemCellRepresentable)
-    
-    var settingItemCellRepresentableClosure: SettingItemCellRepresentableClosure?
+
+    var tableModels: [SectionedItems] = []
     var notificationAuthorizationCompletion: NotificationAuthorizationCompletion?
     private(set) public var errorView = UIView()
-    var tableData: [SectionedKeys] = []
-    public weak var delegate: CLOCNotificationsViewControllerDelegate?
-    private var cellControllers: [IndexPath: SettingItemCellController] = [:]
     
-    public convenience init(notificationAuthorizationCompletion: @escaping NotificationAuthorizationCompletion, configurableNotificationSettingKeys: [SectionedKeys], settingItemCellRepresentableClosure: @escaping SettingItemCellRepresentableClosure) {
+    convenience init(tableModels: [SectionedItems], notificationAuthorizationCompletion: @escaping NotificationAuthorizationCompletion) {
         self.init()
+        self.tableModels = tableModels
         self.notificationAuthorizationCompletion = notificationAuthorizationCompletion
-        self.settingItemCellRepresentableClosure = settingItemCellRepresentableClosure
-        self.tableData = configurableNotificationSettingKeys
     }
     
     public override func viewDidLoad() {
@@ -54,22 +50,18 @@ final public class CLOCNotificationsViewController: UITableViewController {
     }
     
     public override func numberOfSections(in tableView: UITableView) -> Int {
-        return tableData.count
+        return tableModels.count
     }
     
     public override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return tableData[section].title
+        return tableModels[section].section
     }
     
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableData[section].keys.count
+        return tableModels[section].items.count
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let key = tableData[indexPath.section].keys[indexPath.row]
-        guard let item = settingItemCellRepresentableClosure?(key) else { return UITableViewCell() }
-        let cellController = SettingItemCellController(key: key, item: item, delegate: delegate)
-        cellControllers[indexPath] = cellController
-        return cellController.view()
+        return tableModels[indexPath.section].items[indexPath.row].view()
     }
 }

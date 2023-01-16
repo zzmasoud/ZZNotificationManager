@@ -4,12 +4,12 @@
 
 import UIKit
 
-final class SettingItemCellController {
-    private let key: CLOCNotificationsViewController.Key
+public final class SettingItemCellController {
+    private let key: CLOCNotificationsUIComposer.Key
     private let item: SettingItemCellRepresentable
     private let delegate: CLOCNotificationsViewControllerDelegate?
 
-    init(key: CLOCNotificationsViewController.Key, item: SettingItemCellRepresentable, delegate: CLOCNotificationsViewControllerDelegate?) {
+    init(key: CLOCNotificationsUIComposer.Key, item: SettingItemCellRepresentable, delegate: CLOCNotificationsViewControllerDelegate?) {
         self.key = key
         self.item = item
         self.delegate = delegate

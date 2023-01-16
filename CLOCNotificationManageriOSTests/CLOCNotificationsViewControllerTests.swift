@@ -85,10 +85,8 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     }
     
     func test_settingItemCellTogglingSwitch_triggersDelegate() {
-        let (sut, notificationManager) = makeSUT()
         let delegate = DelegateSpy()
-        sut.delegate = delegate
-        trackForMemoryLeaks(delegate)
+        let (sut, notificationManager) = makeSUT(delegate: delegate)
         
         sut.loadViewIfNeeded()
         XCTAssertFalse(sut.isShowingSettings)
@@ -124,10 +122,8 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     }
     
     func test_settingItemCellChangeTimeButtonTap_triggersDelegate() {
-        let (sut, notificationManager) = makeSUT()
         let delegate = DelegateSpy()
-        sut.delegate = delegate
-        trackForMemoryLeaks(delegate)
+        let (sut, notificationManager) = makeSUT(delegate: delegate)
         
         sut.loadViewIfNeeded()
         XCTAssertFalse(sut.isShowingSettings)
@@ -159,17 +155,17 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     
     // MARK: - Helpers
         
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationsViewController, notificationManager: NotificationManagerSpy) {
+    private func makeSUT(delegate: DelegateSpy? = nil, file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationsViewController, notificationManager: NotificationManagerSpy) {
         let notificationManager = NotificationManagerSpy()
-        let sut = CLOCNotificationsViewController(
-            notificationAuthorizationCompletion: notificationManager.requestAuthorization,
-            configurableNotificationSettingKeys: sectionedKeys
-        ) { key in
-            return self.makeMockSettingItem(fromKey: key)
-        }
-        
+        let composer = CLOCNotificationsUIComposer(delegate: delegate)
+        let sut = composer.composedWith(sectionedKeys: sectionedKeys, cellRepresentable: { [self] key in
+            return makeMockSettingItem(fromKey: key)
+        }, notificationManager: notificationManager)
         trackForMemoryLeaks(notificationManager, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
+        if let delegate = delegate {
+            trackForMemoryLeaks(delegate, file: file,line: line)
+        }
         
         return (sut, notificationManager)
     }
@@ -197,7 +193,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.titleForHeader(InSection: section), title, file: file, line: line)
     }
     
-    private func assertThat(_ sut: CLOCNotificationsViewController, isRendering sections: [CLOCNotificationsViewController.SectionedKeys], file: StaticString = #file, line: UInt = #line) {
+    private func assertThat(_ sut: CLOCNotificationsViewController, isRendering sections: [CLOCNotificationsUIComposer.SectionedKeys], file: StaticString = #file, line: UInt = #line) {
         for section in 0..<sections.count {
             let sectioned = sections[section]
             assertThat(sut, hasSectionHeaderTitle: sectioned.title, at: section, file: file, line: line)
