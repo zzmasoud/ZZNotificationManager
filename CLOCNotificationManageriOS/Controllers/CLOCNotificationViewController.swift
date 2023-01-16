@@ -21,6 +21,7 @@ final public class CLOCNotificationsViewController: UITableViewController {
     private(set) public var errorView = UIView()
     var tableData: [SectionedKeys] = []
     public weak var delegate: CLOCNotificationsViewControllerDelegate?
+    private var cellControllers: [IndexPath: SettingItemCellController] = [:]
     
     public convenience init(notificationAuthorizationCompletion: @escaping NotificationAuthorizationCompletion, configurableNotificationSettingKeys: [SectionedKeys], settingItemCellRepresentableClosure: @escaping SettingItemCellRepresentableClosure) {
         self.init()
@@ -66,25 +67,9 @@ final public class CLOCNotificationsViewController: UITableViewController {
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let key = tableData[indexPath.section].keys[indexPath.row]
-        let cell = SettingItemCell()
-        guard let item = settingItemCellRepresentableClosure?(key) else { return cell }
-        cell.iconImageView.image = item.icon
-        cell.titleLabel.text = item.title
-        cell.switchControl.isOn = item.isOn
-        cell.subtitleLabel.isHidden = item.subtitle == nil
-        cell.subtitleLabel.text = item.subtitle
-        cell.captionLabel.isHidden = item.caption == nil
-        cell.captionLabel.text = item.caption
-        cell.changeTimeButton.isEnabled = item.isOn
-        
-        cell.onToggle = { [weak self] isOn in
-            self?.delegate?.didToggle(key: key, value: isOn)
-        }
-        
-        cell.onChangeTimeAction = { [weak self] in
-            self?.delegate?.didTapToChangeTime(key: key)
-        }
-        
-        return cell
+        guard let item = settingItemCellRepresentableClosure?(key) else { return UITableViewCell() }
+        let cellController = SettingItemCellController(key: key, item: item, delegate: delegate)
+        cellControllers[indexPath] = cellController
+        return cellController.view()
     }
 }
