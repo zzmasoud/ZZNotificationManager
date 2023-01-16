@@ -48,6 +48,7 @@
 		048A2EB6296DC420008C904B /* CLOCNotificationManageriOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048A2EAE296DC420008C904B /* CLOCNotificationManageriOS.framework */; };
 		04AABEE92917B06D00D4CA64 /* ZZNotificationContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AABEE82917B06D00D4CA64 /* ZZNotificationContent.swift */; };
 		04AABEEB2917DBBA00D4CA64 /* ZZNotificationAuthStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AABEEA2917DBBA00D4CA64 /* ZZNotificationAuthStatus.swift */; };
+		04D911FC2975369600B4669B /* CLOCNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D911FB2975369600B4669B /* CLOCNotificationViewController.swift */; };
 		04E3D60E2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D60D2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift */; };
 		04E3D6122961F0F6002D64A7 /* DoNotDistrubPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D6112961F0F6002D64A7 /* DoNotDistrubPolicy.swift */; };
 		04E3D6142961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E3D6132961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift */; };
@@ -136,6 +137,7 @@
 		048A2EB5296DC420008C904B /* CLOCNotificationManageriOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CLOCNotificationManageriOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		04AABEE82917B06D00D4CA64 /* ZZNotificationContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationContent.swift; sourceTree = "<group>"; };
 		04AABEEA2917DBBA00D4CA64 /* ZZNotificationAuthStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationAuthStatus.swift; sourceTree = "<group>"; };
+		04D911FB2975369600B4669B /* CLOCNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationViewController.swift; sourceTree = "<group>"; };
 		04E3D60D2961F0F6002D64A7 /* XCTestCase+MemoryLeakTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+MemoryLeakTracking.swift"; sourceTree = "<group>"; };
 		04E3D6112961F0F6002D64A7 /* DoNotDistrubPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoNotDistrubPolicy.swift; sourceTree = "<group>"; };
 		04E3D6132961F0F6002D64A7 /* ZZDoNotDistrubPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZDoNotDistrubPolicyTests.swift; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 			children = (
 				04114B702973FB6100AF6E18 /* SettingItemCell.swift */,
 				04114B722974023500AF6E18 /* SettingItemCellRepresentable.swift */,
+				04D911FB2975369600B4669B /* CLOCNotificationViewController.swift */,
 			);
 			path = CLOCNotificationManageriOS;
 			sourceTree = "<group>";
@@ -609,6 +612,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04114B732974023500AF6E18 /* SettingItemCellRepresentable.swift in Sources */,
+				04D911FC2975369600B4669B /* CLOCNotificationViewController.swift in Sources */,
 				04114B712973FB6100AF6E18 /* SettingItemCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
