@@ -46,7 +46,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         notificationManager.simulateGrantsNotificationAuthorization()
         XCTAssertTrue(sut.isShowingSettings)
         
-        assertThat(sut, isRendering: keys)
+        assertThat(sut, isRendering: sectionedKeys)
     }
     
     func test_settingItemCellChangeButton_ChangesIsEnabledWhenSwitchToggled() {
@@ -104,8 +104,8 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         else {
             return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: view0)) and \(String(describing: view1))")
         }
-        let expectedKey0 = keys[0][0]
-        let expectedKey1 = keys[1][0]
+        let expectedKey0 = sectionedKeys[0].keys[0]
+        let expectedKey1 = sectionedKeys[1].keys[0]
         
         cell0.switchControl.isOn = false // make it `false` as the start state
         cell0.switchControl.simulateToggle()
@@ -142,8 +142,8 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         else {
             return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: view0)) and \(String(describing: view1))")
         }
-        let expectedKey0 = keys[0][0]
-        let expectedKey1 = keys[1][0]
+        let expectedKey0 = sectionedKeys[0].keys[0]
+        let expectedKey1 = sectionedKeys[1].keys[0]
         
         cell0.changeTimeButton.simulateTap()
         assertThat(delegate, receivedActionForKey: expectedKey0, at: 0)
@@ -161,7 +161,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         let notificationManager = NotificationManagerSpy()
         let sut = CLOCNotificationsViewController(
             notificationManager: notificationManager,
-            configurableNotificationSettingKeys: keys
+            configurableNotificationSettingKeys: sectionedKeys
         ) { key in
             return self.makeMockSettingItem(fromKey: key)
         }
@@ -191,11 +191,18 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(view.isChangeButtonEnabled, settingItem.isOn)
     }
     
-    private func assertThat(_ sut: CLOCNotificationsViewController, isRendering keys: [[CLOCNotificationSettingKey]], file: StaticString = #file, line: UInt = #line) {
-        for section in 0..<keys.count {
-            let rows = keys[section]
-            for row in 0..<rows.count {
-                assertThat(sut, hasViewConfiguredFor: self.makeMockSettingItem(fromKey: keys[section][row]), at: IndexPath(row: row, section: section), file: file, line: line)
+    private func assertThat(_ sut: CLOCNotificationsViewController, hasSectionHeaderTitle title: String, at section: Int, file: StaticString = #file, line: UInt = #line) {
+        XCTAssertEqual(sut.titleForHeader(InSection: section), title, file: file, line: line)
+    }
+    
+    private func assertThat(_ sut: CLOCNotificationsViewController, isRendering sections: [CLOCNotificationsViewController.SectionedKeys], file: StaticString = #file, line: UInt = #line) {
+        for section in 0..<sections.count {
+            let sectioned = sections[section]
+            assertThat(sut, hasSectionHeaderTitle: sectioned.title, at: section, file: file, line: line)
+
+            let keys = sectioned.keys
+            for row in 0..<keys.count {
+                assertThat(sut, hasViewConfiguredFor: self.makeMockSettingItem(fromKey: keys[row]), at: IndexPath(row: row, section: section), file: file, line: line)
             }
         }
     }
@@ -215,6 +222,11 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
 private extension CLOCNotificationsViewController {
     var numberOfSections: Int {
         return tableView.numberOfSections
+    }
+    
+    func titleForHeader(InSection section: Int) -> String? {
+        let dataSource = tableView.dataSource
+        return dataSource?.tableView?(tableView, titleForHeaderInSection: section)
     }
     
     var numberOfRenderedSettingItemViews: Int {

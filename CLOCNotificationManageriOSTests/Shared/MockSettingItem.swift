@@ -13,16 +13,16 @@ struct MockSettingItem: SettingItemCellRepresentable {
     var caption: String?
 }
 
-let keys: [[CLOCNotificationsViewController.Key]] =
+let sectionedKeys: [CLOCNotificationsViewController.SectionedKeys] =
 [
-    [
+    ("Alerts", [
         .timerPassedItsDeadline,
         .timerPassedTheDuration
-    ],
-    [
+    ]),
+    ("Reminders", [
         .projectDeadlineReached,
         .noTasksHasBeenAddedSince
-    ]
+    ])
 ]
 
 let settingItems: [CLOCNotificationsViewController.Key: SettingItemCellRepresentable] = [

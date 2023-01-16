@@ -12,15 +12,16 @@ public protocol CLOCNotificationsViewControllerDelegate: AnyObject {
 
 final public class CLOCNotificationsViewController: UITableViewController {
     public typealias Key = CLOCNotificationSettingKey
+    public typealias SectionedKeys = (title: String, keys: [Key])
     public typealias SettingItemCellRepresentableClosure = ((_ key: Key) -> SettingItemCellRepresentable)
     
     var notificationManager: NotificationManager?
     var settingItemCellRepresentableClosure: SettingItemCellRepresentableClosure?
     private(set) public var errorView = UIView()
-    var tableData: [[Key]] = []
+    var tableData: [SectionedKeys] = []
     public weak var delegate: CLOCNotificationsViewControllerDelegate?
     
-    public convenience init(notificationManager: NotificationManager, configurableNotificationSettingKeys: [[Key]], settingItemCellRepresentableClosure: @escaping SettingItemCellRepresentableClosure) {
+    public convenience init(notificationManager: NotificationManager, configurableNotificationSettingKeys: [SectionedKeys], settingItemCellRepresentableClosure: @escaping SettingItemCellRepresentableClosure) {
         self.init(style: .grouped)
         self.notificationManager = notificationManager
         self.settingItemCellRepresentableClosure = settingItemCellRepresentableClosure
@@ -58,12 +59,16 @@ final public class CLOCNotificationsViewController: UITableViewController {
         return tableData.count
     }
     
+    public override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return tableData[section].title
+    }
+    
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableData[section].count
+        return tableData[section].keys.count
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let key = tableData[indexPath.section][indexPath.row]
+        let key = tableData[indexPath.section].keys[indexPath.row]
         let cell = SettingItemCell()
         guard let item = settingItemCellRepresentableClosure?(key) else { return cell }
         cell.iconImageView.image = item.icon
