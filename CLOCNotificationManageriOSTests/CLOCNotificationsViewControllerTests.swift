@@ -7,20 +7,21 @@ import ZZNotificationManager
 import CLOCNotificationManageriOS
 
 protocol CLOCNotificationsViewControllerDelegate: AnyObject {
-    func didToggle(key: CLOCNotificationSettingKey, value: Bool)
-    func didTapToChangeTime(key: CLOCNotificationSettingKey)
+    func didToggle(key: CLOCNotificationsViewController.Key, value: Bool)
+    func didTapToChangeTime(key: CLOCNotificationsViewController.Key)
 }
 
 final class CLOCNotificationsViewController: UITableViewController {
-    typealias SettingItemCellRepresentableClosure = ((_ key: CLOCNotificationSettingKey) -> SettingItemCellRepresentable)
+    typealias Key = CLOCNotificationSettingKey
+    typealias SettingItemCellRepresentableClosure = ((_ key: Key) -> SettingItemCellRepresentable)
     
     var notificationManager: NotificationManager?
     var settingItemCellRepresentableClosure: SettingItemCellRepresentableClosure?
     var errorView = UIView()
-    var tableData: [[CLOCNotificationSettingKey]] = []
+    var tableData: [[Key]] = []
     public weak var delegate: CLOCNotificationsViewControllerDelegate?
     
-    convenience init(notificationManager: NotificationManager, configurableNotificationSettingKeys: [[CLOCNotificationSettingKey]], settingItemCellRepresentableClosure: @escaping SettingItemCellRepresentableClosure) {
+    convenience init(notificationManager: NotificationManager, configurableNotificationSettingKeys: [[Key]], settingItemCellRepresentableClosure: @escaping SettingItemCellRepresentableClosure) {
         self.init(style: .grouped)
         self.notificationManager = notificationManager
         self.settingItemCellRepresentableClosure = settingItemCellRepresentableClosure
