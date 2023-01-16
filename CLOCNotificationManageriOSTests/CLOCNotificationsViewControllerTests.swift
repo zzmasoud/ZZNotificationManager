@@ -88,6 +88,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         let (sut, notificationManager) = makeSUT()
         let delegate = DelegateSpy()
         sut.delegate = delegate
+        trackForMemoryLeaks(delegate)
         
         sut.loadViewIfNeeded()
         XCTAssertFalse(sut.isShowingSettings)
@@ -126,6 +127,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         let (sut, notificationManager) = makeSUT()
         let delegate = DelegateSpy()
         sut.delegate = delegate
+        trackForMemoryLeaks(delegate)
         
         sut.loadViewIfNeeded()
         XCTAssertFalse(sut.isShowingSettings)
