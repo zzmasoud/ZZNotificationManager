@@ -8,25 +8,14 @@ import CLOCNotificationManageriOS
 
 class CLOCNotificationsViewControllerTests: XCTestCase {
     
-    func test_init_doesNotAuthorize() {
-        let (_, notificationManager) = makeSUT()
+    func test_viewDidLoad_requestAuthorization() {
+        let (sut, notificationManager) = makeSUT()
         
         XCTAssertEqual(notificationManager.authorizeCallCount, 0)
-    }
-    
-    func test_viewDidLoad_authorizes() {
-        let (sut, notificationManager) = makeSUT()
         
         sut.loadViewIfNeeded()
         
         XCTAssertEqual(notificationManager.authorizeCallCount, 1)
-    }
-    
-    func test_viewDidLoad_errorViewIsHidden() {
-        let (sut, _) = makeSUT()
-        
-        sut.loadViewIfNeeded()
-        
         XCTAssertFalse(sut.isShowingError)
     }
     
