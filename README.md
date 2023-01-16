@@ -19,5 +19,9 @@
 ## UX Goals for the notifications UI experience 
 - [x] Show an error view if premission is not granted
 - [x] Load settings when view is presented and premission is granted
-- [X] Toggling the switch in any row triggers a specified delegate function
-- [X] Tapping the change time button in any row triggers a specified delegate function
+  - [ ] Sectioned rows with header title
+  - [X] Toggling the switch in any row changes its time button isEnabled property
+  - [X] Toggling the switch in any row triggers a specified delegate function
+  - [X] Tapping the change time button in any row triggers a specified delegate function
+  - [ ] Show the selected time in the button by a configurable time formatter
+- [ ] Changing the time from an external logic will refresh the row and its properties
