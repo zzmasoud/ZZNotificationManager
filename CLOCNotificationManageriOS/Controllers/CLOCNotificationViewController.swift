@@ -3,7 +3,6 @@
 //
 
 import UIKit
-import ZZNotificationManager
 
 public protocol CLOCNotificationsViewControllerDelegate: AnyObject {
     func didToggle(key: CLOCNotificationsUIComposer.Key, value: Bool)
