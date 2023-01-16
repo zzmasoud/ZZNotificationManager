@@ -5,35 +5,31 @@
 import UIKit
 
 public final class SettingItemCellController {
-    private let key: CLOCNotificationsUIComposer.Key
-    private let item: SettingItemCellRepresentable
-    private let delegate: CLOCNotificationsViewControllerDelegate?
+    private let viewModel: SettingItemViewModel
 
-    init(key: CLOCNotificationsUIComposer.Key, item: SettingItemCellRepresentable, delegate: CLOCNotificationsViewControllerDelegate?) {
-        self.key = key
-        self.item = item
-        self.delegate = delegate
+    init(viewModel: SettingItemViewModel) {
+        self.viewModel = viewModel
     }
     
     public func view() -> UITableViewCell {
-        let cell = SettingItemCell()
-        cell.iconImageView.image = item.icon
-        cell.titleLabel.text = item.title
-        cell.switchControl.isOn = item.isOn
-        cell.subtitleLabel.isHidden = item.subtitle == nil
-        cell.subtitleLabel.text = item.subtitle
-        cell.captionLabel.isHidden = item.caption == nil
-        cell.captionLabel.text = item.caption
-        cell.changeTimeButton.isEnabled = item.isOn
+        return binded(SettingItemCell())
+    }
+    
+    private func binded(_ cell: SettingItemCell) -> SettingItemCell {
+        cell.iconImageView.image = viewModel.icon
+        cell.titleLabel.text = viewModel.title
+        cell.switchControl.isOn = viewModel.isOn
+        cell.subtitleLabel.isHidden = !viewModel.hasSubtitle
+        cell.subtitleLabel.text = viewModel.subtitle
+        cell.captionLabel.isHidden = !viewModel.hasCaption
+        cell.captionLabel.text = viewModel.caption
+        cell.changeTimeButton.isEnabled = viewModel.isChangeTimeButtonEnabled
         
-        cell.onToggle = { [weak self] isOn in
-            guard let self = self, let delegate = self.delegate else { return }
-            delegate.didToggle(key: self.key, value: isOn)
-        }
-        
-        cell.onChangeTimeAction = { [weak self] in
-            guard let self = self, let delegate = self.delegate else { return }
-            delegate.didTapToChangeTime(key: self.key)
+        cell.onToggle = viewModel.toggle(isOn:)
+        cell.onChangeTimeAction = viewModel.changeTime
+
+        viewModel.onSwitchToggle = { [weak cell] isOn in
+            cell?.changeTimeButton.isEnabled = isOn
         }
         
         return cell

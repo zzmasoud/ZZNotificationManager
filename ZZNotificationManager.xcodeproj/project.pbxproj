@@ -18,6 +18,7 @@
 		04030C1A296755E1006EF9BE /* CLOCNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C19296755E1006EF9BE /* CLOCNotificationManager.swift */; };
 		04030C1C29688532006EF9BE /* TimerDidStartUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C1B29688532006EF9BE /* TimerDidStartUseCaseTests.swift */; };
 		04030C1E296885A4006EF9BE /* XCTestCase+SUT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C1D296885A4006EF9BE /* XCTestCase+SUT.swift */; };
+		04049A4A29759D870029402E /* SettingItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04049A4929759D870029402E /* SettingItemViewModel.swift */; };
 		04075772296D58AD00A25D66 /* CLOCNotificationManager+Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04075771296D58AC00A25D66 /* CLOCNotificationManager+Timer.swift */; };
 		04075775296D590500A25D66 /* CLOCNotificationManager+Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04075774296D590500A25D66 /* CLOCNotificationManager+Project.swift */; };
 		0407577B296D598800A25D66 /* ZZNotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045EB2732960607A00483203 /* ZZNotificationManagerTests.swift */; };
@@ -115,6 +116,7 @@
 		04030C19296755E1006EF9BE /* CLOCNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationManager.swift; sourceTree = "<group>"; };
 		04030C1B29688532006EF9BE /* TimerDidStartUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDidStartUseCaseTests.swift; sourceTree = "<group>"; };
 		04030C1D296885A4006EF9BE /* XCTestCase+SUT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+SUT.swift"; sourceTree = "<group>"; };
+		04049A4929759D870029402E /* SettingItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItemViewModel.swift; sourceTree = "<group>"; };
 		04075771296D58AC00A25D66 /* CLOCNotificationManager+Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLOCNotificationManager+Timer.swift"; sourceTree = "<group>"; };
 		04075774296D590500A25D66 /* CLOCNotificationManager+Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLOCNotificationManager+Project.swift"; sourceTree = "<group>"; };
 		0407577D296D59DB00A25D66 /* ZZNotificationContent+CLOCNotificationSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZZNotificationContent+CLOCNotificationSetting.swift"; sourceTree = "<group>"; };
@@ -217,6 +219,14 @@
 				043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		04049A4829759D720029402E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				04049A4929759D870029402E /* SettingItemViewModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		04075773296D58EC00A25D66 /* Helpers */ = {
@@ -350,6 +360,7 @@
 		048A2EAF296DC420008C904B /* CLOCNotificationManageriOS */ = {
 			isa = PBXGroup;
 			children = (
+				04049A4829759D720029402E /* Models */,
 				04D91206297579FD00B4669B /* Composers */,
 				04D9120229755FEA00B4669B /* Controllers */,
 				04D9120329755FEF00B4669B /* Views */,
@@ -651,6 +662,7 @@
 				04D911FC2975369600B4669B /* CLOCNotificationViewController.swift in Sources */,
 				04D9120829757A0400B4669B /* CLOCNotificationsUIComposer.swift in Sources */,
 				04114B712973FB6100AF6E18 /* SettingItemCell.swift in Sources */,
+				04049A4A29759D870029402E /* SettingItemViewModel.swift in Sources */,
 				04D912052975600D00B4669B /* SettingItemCellController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

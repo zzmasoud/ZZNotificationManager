@@ -33,7 +33,8 @@ final public class CLOCNotificationsUIComposer {
         return sectionedKeys.map({ (title: String, keys: [Key]) in
             let controllers = keys.map { settingKey -> SettingItemCellController in
                 let item = cellRepresentable(settingKey)
-                return SettingItemCellController(key: settingKey, item: item, delegate: delegate)
+                let viewModel = SettingItemViewModel(key: settingKey, item: item, delegate: delegate)
+                return SettingItemCellController(viewModel: viewModel)
             }
             return (title, controllers)
         })
