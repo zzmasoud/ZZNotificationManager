@@ -11,19 +11,20 @@ public protocol CLOCNotificationsViewControllerDelegate: AnyObject {
 }
 
 final public class CLOCNotificationsViewController: UITableViewController {
+    public typealias NotificationAuthorizationCompletion = ((@escaping (Bool, Error?) -> Void) -> ())
     public typealias Key = CLOCNotificationSettingKey
     public typealias SectionedKeys = (title: String, keys: [Key])
     public typealias SettingItemCellRepresentableClosure = ((_ key: Key) -> SettingItemCellRepresentable)
     
-    var notificationManager: NotificationManager?
     var settingItemCellRepresentableClosure: SettingItemCellRepresentableClosure?
+    var notificationAuthorizationCompletion: NotificationAuthorizationCompletion?
     private(set) public var errorView = UIView()
     var tableData: [SectionedKeys] = []
     public weak var delegate: CLOCNotificationsViewControllerDelegate?
     
-    public convenience init(notificationManager: NotificationManager, configurableNotificationSettingKeys: [SectionedKeys], settingItemCellRepresentableClosure: @escaping SettingItemCellRepresentableClosure) {
-        self.init(style: .grouped)
-        self.notificationManager = notificationManager
+    public convenience init(notificationAuthorizationCompletion: @escaping NotificationAuthorizationCompletion, configurableNotificationSettingKeys: [SectionedKeys], settingItemCellRepresentableClosure: @escaping SettingItemCellRepresentableClosure) {
+        self.init()
+        self.notificationAuthorizationCompletion = notificationAuthorizationCompletion
         self.settingItemCellRepresentableClosure = settingItemCellRepresentableClosure
         self.tableData = configurableNotificationSettingKeys
     }
@@ -35,12 +36,9 @@ final public class CLOCNotificationsViewController: UITableViewController {
         tableView.dataSource = nil
         tableView.delegate = self
         
-        notificationManager?.requestAuthorization(completion: { [weak self] isAuthorized, error in
-            guard error == nil else {
-                self?.errorView.isHidden = false
-                return
-            }
+        notificationAuthorizationCompletion?({ [weak self] isAuthorized, error in
             guard let self = self else { return }
+            guard error == nil else { return self.errorView.isHidden = false }
             
             self.errorView.isHidden = isAuthorized
             if isAuthorized {

@@ -160,7 +160,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationsViewController, notificationManager: NotificationManagerSpy) {
         let notificationManager = NotificationManagerSpy()
         let sut = CLOCNotificationsViewController(
-            notificationManager: notificationManager,
+            notificationAuthorizationCompletion: notificationManager.requestAuthorization,
             configurableNotificationSettingKeys: sectionedKeys
         ) { key in
             return self.makeMockSettingItem(fromKey: key)
