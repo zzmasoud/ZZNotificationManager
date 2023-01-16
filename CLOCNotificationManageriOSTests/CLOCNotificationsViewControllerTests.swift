@@ -150,21 +150,33 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         notificationManager.simulateGrantsNotificationAuthorization()
         XCTAssertTrue(sut.isShowingSettings)
 
-        let view = sut.settingItemView(at: IndexPath(row: 0, section: 0))
-        guard let cell = view as? SettingItemCell else {
-            return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: view))")
-        }
-        cell.switchControl.isOn = false // make it `false` as the start state
-        cell.switchControl.simulateToggle() // toggle it so it changes to `true`
-        XCTAssertEqual(cell.isChangeButtonEnabled, true)
+        let view0 = sut.settingItemView(at: IndexPath(row: 0, section: 0))
+        let view1 = sut.settingItemView(at: IndexPath(row: 0, section: 1))
         
-        cell.switchControl.simulateToggle() // toggle it so it changes to `false`
-        XCTAssertEqual(cell.isChangeButtonEnabled, false)
+        guard
+            let cell0 = view0 as? SettingItemCell,
+            let cell1 = view1 as? SettingItemCell
+        else {
+            return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: view0)) and \(String(describing: view1))")
+        }
+        
+        cell0.switchControl.isOn = false // make it `false` as the start state
+        cell0.switchControl.simulateToggle() // toggle it so it changes to `true`
+        XCTAssertEqual(cell0.isChangeButtonEnabled, true)
+        
+        cell1.switchControl.isOn = true // make it `true` as the start state
+        cell1.switchControl.simulateToggle()
+        XCTAssertEqual(cell1.isChangeButtonEnabled, false)
+
+        cell0.switchControl.simulateToggle()
+        XCTAssertEqual(cell0.isChangeButtonEnabled, false)
+
+        cell1.switchControl.simulateToggle()
+        cell1.switchControl.simulateToggle()
+        XCTAssertEqual(cell1.isChangeButtonEnabled, false)
     }
     
     func test_settingItemCellTogglingSwitch_triggersDelegate() {
-        let indexPath = IndexPath(row: 0, section: 0)
-        let expectedKey = keys[indexPath.section][indexPath.row]
         let (sut, notificationManager) = makeSUT()
         let delegate = DelegateSpy()
         sut.delegate = delegate
@@ -175,21 +187,34 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         notificationManager.simulateGrantsNotificationAuthorization()
         XCTAssertTrue(sut.isShowingSettings)
 
-        let view = sut.settingItemView(at: indexPath)
-        guard let cell = view as? SettingItemCell else {
-            return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: view))")
-        }
-        cell.switchControl.isOn = false // make it `false` as the start state
-        cell.switchControl.simulateToggle()
-        assertThat(delegate, receivedValue: true, forKey: expectedKey, at: 0)
+        let view0 = sut.settingItemView(at: IndexPath(row: 0, section: 0))
+        let view1 = sut.settingItemView(at: IndexPath(row: 0, section: 1))
         
-        cell.switchControl.simulateToggle()
-        assertThat(delegate, receivedValue: false, forKey: expectedKey, at: 1)
+        guard
+            let cell0 = view0 as? SettingItemCell,
+            let cell1 = view1 as? SettingItemCell
+        else {
+            return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: view0)) and \(String(describing: view1))")
+        }
+        let expectedKey0 = keys[0][0]
+        let expectedKey1 = keys[1][0]
+        
+        cell0.switchControl.isOn = false // make it `false` as the start state
+        cell0.switchControl.simulateToggle()
+        assertThat(delegate, receivedValue: true, forKey: expectedKey0, at: 0)
+        
+        cell1.switchControl.isOn = true // make it `true` as the start state
+        cell1.switchControl.simulateToggle()
+        assertThat(delegate, receivedValue: false, forKey: expectedKey1, at: 1)
+
+        cell1.switchControl.simulateToggle()
+        assertThat(delegate, receivedValue: true, forKey: expectedKey1, at: 2)
+        
+        cell0.switchControl.simulateToggle()
+        assertThat(delegate, receivedValue: false, forKey: expectedKey0, at: 3)
     }
     
     func test_settingItemCellChangeTimeButtonTap_triggersDelegate() {
-        let indexPath = IndexPath(row: 0, section: 0)
-        let expectedKey = keys[indexPath.section][indexPath.row]
         let (sut, notificationManager) = makeSUT()
         let delegate = DelegateSpy()
         sut.delegate = delegate
@@ -200,16 +225,26 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         notificationManager.simulateGrantsNotificationAuthorization()
         XCTAssertTrue(sut.isShowingSettings)
 
-        let view = sut.settingItemView(at: indexPath)
-        guard let cell = view as? SettingItemCell else {
-            return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: view))")
+        let view0 = sut.settingItemView(at: IndexPath(row: 0, section: 0))
+        let view1 = sut.settingItemView(at: IndexPath(row: 0, section: 1))
+        
+        guard
+            let cell0 = view0 as? SettingItemCell,
+            let cell1 = view1 as? SettingItemCell
+        else {
+            return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: view0)) and \(String(describing: view1))")
         }
+        let expectedKey0 = keys[0][0]
+        let expectedKey1 = keys[1][0]
         
-        cell.changeTimeButton.simulateTap()
-        assertThat(delegate, receivedActionForKey: expectedKey, at: 0)
+        cell0.changeTimeButton.simulateTap()
+        assertThat(delegate, receivedActionForKey: expectedKey0, at: 0)
         
-        cell.changeTimeButton.simulateTap()
-        assertThat(delegate, receivedActionForKey: expectedKey, at: 1)
+        cell1.changeTimeButton.simulateTap()
+        assertThat(delegate, receivedActionForKey: expectedKey1, at: 1)
+
+        cell0.changeTimeButton.simulateTap()
+        assertThat(delegate, receivedActionForKey: expectedKey0, at: 2)
     }
     
     // MARK: - Helpers
