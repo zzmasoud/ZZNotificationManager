@@ -156,54 +156,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     }
     
     // MARK: - Helpers
-    
-    private let keys: [[CLOCNotificationSettingKey]] =
-    [
-        [
-            .timerPassedItsDeadline,
-            .timerPassedTheDuration
-        ],
-        [
-            .projectDeadlineReached,
-            .noTasksHasBeenAddedSince
-        ]
-    ]
-    
-    private let settingItems: [CLOCNotificationSettingKey: SettingItemCellRepresentable] = [
-        .timerPassedItsDeadline:
-            MockSettingItem(
-                icon: UIImage(color: .red)!,
-                title: "timerPassedItsDeadline",
-                isOn: true,
-                subtitle: "when timer passing the progress",
-                caption: nil
-            ),
-        .timerPassedTheDuration:
-            MockSettingItem(
-                icon: UIImage(color: .green)!,
-                title: "timerPassedTheDuration",
-                isOn: false,
-                subtitle: "when timer passing this time",
-                caption: "you can set this to get a notification base on this deadline"
-            ),
-        .noTasksHasBeenAddedSince:
-            MockSettingItem(
-                icon: UIImage(color: .blue)!,
-                title: "noTasksHasBeenAddedSince",
-                isOn: false,
-                subtitle: "when timer passing the progress",
-                caption: "get a reminder on closing to the prject's deadline"
-            ),
-        .projectDeadlineReached:
-            MockSettingItem(
-                icon: UIImage(color: .black)!,
-                title: "projectDeadlineReached",
-                isOn: true,
-                subtitle: "get a reminder on prject's deadline",
-                caption: "tap to change the date"
-            )
-    ]
-    
+        
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationsViewController, notificationManager: NotificationManagerSpy) {
         let notificationManager = NotificationManagerSpy()
         let sut = CLOCNotificationsViewController(
@@ -244,19 +197,6 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
             for row in 0..<rows.count {
                 assertThat(sut, hasViewConfiguredFor: self.makeMockSettingItem(fromKey: keys[section][row]), at: IndexPath(row: row, section: section), file: file, line: line)
             }
-        }
-    }
-    
-    private class DelegateSpy: CLOCNotificationsViewControllerDelegate {
-        private(set) var receivedSwitchToggles: [(key: CLOCNotificationSettingKey, value: Bool)] = []
-        private(set) var receivedChangeTimeActions: [CLOCNotificationSettingKey] = []
-        
-        func didToggle(key: CLOCNotificationSettingKey, value: Bool) {
-            receivedSwitchToggles.append((key, value))
-        }
-        
-        func didTapToChangeTime(key: CLOCNotificationSettingKey) {
-            receivedChangeTimeActions.append(key)
         }
     }
     
