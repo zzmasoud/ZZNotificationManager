@@ -186,6 +186,7 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         guard let view = cell as? SettingItemCell else {
             return XCTFail("expected to get \(SettingItemCell.self) but got \(String(describing: cell))", file: file, line: line)
         }
+        XCTAssertTrue(view.selectionStyle == .none, "cell is selectable and it shouldn't be", file: file, line: line)
         XCTAssertEqual(view.title, settingItem.title, "rendered title is not as same as the model", file: file, line: line)
         XCTAssertEqual(view.icon, settingItem.icon, "rendered icon is not as same as the model", file: file, line: line)
         XCTAssertEqual(view.isSwitchOn, settingItem.isOn, "rendered switch control value is not as same as the model", file: file, line: line)
