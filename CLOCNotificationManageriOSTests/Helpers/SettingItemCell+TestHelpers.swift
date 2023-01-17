@@ -5,7 +5,7 @@
 import UIKit
 import CLOCNotificationManageriOS
 
-private extension SettingItemCell {
+extension SettingItemCell {
     var icon: UIImage? { iconImageView.image }
     var title: String? { titleLabel.text }
     var isSwitchOn: Bool { switchControl.isOn }
