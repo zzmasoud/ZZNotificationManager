@@ -33,6 +33,8 @@
 		041D650729768A03006949AE /* UITableView+dequeueReusableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041D650629768A03006949AE /* UITableView+dequeueReusableCell.swift */; };
 		041D65082976A6E3006949AE /* Int+TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04030C15296755E1006EF9BE /* Int+TimeInterval.swift */; };
 		042F4EC92976E1B8000DE3EB /* CLOCNotificationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042F4EC82976E1B8000DE3EB /* CLOCNotificationsViewModel.swift */; };
+		042F4ECB2976E586000DE3EB /* CLOCNotificationsViewController+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042F4ECA2976E586000DE3EB /* CLOCNotificationsViewController+TestHelpers.swift */; };
+		042F4ECD2976E5D6000DE3EB /* SettingItemCell+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042F4ECC2976E5D6000DE3EB /* SettingItemCell+TestHelpers.swift */; };
 		043AEFB02969C6B900FC5B86 /* XCTestCase+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */; };
 		043AEFB32969CCF400FC5B86 /* CLOCNotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */; };
 		04444A33291A756600B6273B /* ZZNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04444A32291A756600B6273B /* ZZNotificationManager.swift */; };
@@ -132,6 +134,8 @@
 		041D650429767E4C006949AE /* Notifications.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Notifications.storyboard; sourceTree = "<group>"; };
 		041D650629768A03006949AE /* UITableView+dequeueReusableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+dequeueReusableCell.swift"; sourceTree = "<group>"; };
 		042F4EC82976E1B8000DE3EB /* CLOCNotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationsViewModel.swift; sourceTree = "<group>"; };
+		042F4ECA2976E586000DE3EB /* CLOCNotificationsViewController+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLOCNotificationsViewController+TestHelpers.swift"; sourceTree = "<group>"; };
+		042F4ECC2976E5D6000DE3EB /* SettingItemCell+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingItemCell+TestHelpers.swift"; sourceTree = "<group>"; };
 		043AEFAF2969C6B900FC5B86 /* XCTestCase+Assertions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Assertions.swift"; sourceTree = "<group>"; };
 		043AEFB22969CCF400FC5B86 /* CLOCNotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLOCNotificationSettings.swift; sourceTree = "<group>"; };
 		04444A32291A756600B6273B /* ZZNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZZNotificationManager.swift; sourceTree = "<group>"; };
@@ -247,7 +251,7 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		04114B7729740E2600AF6E18 /* Shared */ = {
+		04114B7729740E2600AF6E18 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				04114B7529740DEC00AF6E18 /* NotificationManagerSpy.swift */,
@@ -255,8 +259,10 @@
 				04114B7829740E2E00AF6E18 /* MockSettingItem.swift */,
 				047EFC1F297479B800286D09 /* UIImage+InitByColor.swift */,
 				04D911FD297538F100B4669B /* UIControl+SImulatingTargets.swift */,
+				042F4ECA2976E586000DE3EB /* CLOCNotificationsViewController+TestHelpers.swift */,
+				042F4ECC2976E5D6000DE3EB /* SettingItemCell+TestHelpers.swift */,
 			);
-			path = Shared;
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		043AEFB12969CCD800FC5B86 /* CLOC */ = {
@@ -291,7 +297,7 @@
 		04480B26296EB91C002C053E /* CLOCNotificationManageriOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				04114B7729740E2600AF6E18 /* Shared */,
+				04114B7729740E2600AF6E18 /* Helpers */,
 				04480B27296EC1C7002C053E /* CLOCNotificationsUIIntegrationTests.swift */,
 			);
 			path = CLOCNotificationManageriOSTests;
@@ -687,9 +693,11 @@
 				04D9120129753A6900B4669B /* DelegateSpy.swift in Sources */,
 				04480B28296EC1C7002C053E /* CLOCNotificationsUIIntegrationTests.swift in Sources */,
 				04114B7929740E2E00AF6E18 /* MockSettingItem.swift in Sources */,
+				042F4ECD2976E5D6000DE3EB /* SettingItemCell+TestHelpers.swift in Sources */,
 				041D65082976A6E3006949AE /* Int+TimeInterval.swift in Sources */,
 				047EFC20297479B800286D09 /* UIImage+InitByColor.swift in Sources */,
 				04D911FE297538F100B4669B /* UIControl+SImulatingTargets.swift in Sources */,
+				042F4ECB2976E586000DE3EB /* CLOCNotificationsViewController+TestHelpers.swift in Sources */,
 				04114B7629740DEC00AF6E18 /* NotificationManagerSpy.swift in Sources */,
 				046ABDD3297085C900F2343F /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 			);
