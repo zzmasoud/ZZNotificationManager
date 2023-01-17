@@ -6,7 +6,7 @@ import XCTest
 import ZZNotificationManager
 import CLOCNotificationManageriOS
 
-class CLOCNotificationsViewControllerTests: XCTestCase {
+class CLOCNotificationsUIIntegrationTests: XCTestCase {
     
     func test_viewDidLoad_requestAuthorization() {
         let (sut, notificationManager) = makeSUT()

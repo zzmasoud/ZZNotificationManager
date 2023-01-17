@@ -11,7 +11,7 @@ public protocol CLOCNotificationsViewControllerDelegate: AnyObject {
 
 final public class CLOCNotificationsViewController: UITableViewController {
 
-    var viewModel: CLOCNotificationsViewModel! // is it make sense to force unwrap?
+    var viewModel: CLOCNotificationsViewModel! // does it make sense to force unwrap?
     private(set) public var errorView = UIView()
     
     public override func viewDidLoad() {
