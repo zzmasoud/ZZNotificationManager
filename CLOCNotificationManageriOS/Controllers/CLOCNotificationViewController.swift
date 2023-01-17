@@ -18,12 +18,7 @@ final public class CLOCNotificationsViewController: UITableViewController {
     var tableModels: [SectionedItems] = []
     var notificationAuthorizationCompletion: NotificationAuthorizationCompletion?
     private(set) public var errorView = UIView()
-    
-    convenience init(tableModels: [SectionedItems], notificationAuthorizationCompletion: @escaping NotificationAuthorizationCompletion) {
-        self.init()
-        self.tableModels = tableModels
-        self.notificationAuthorizationCompletion = notificationAuthorizationCompletion
-    }
+        
     
     public override func viewDidLoad() {
         super.viewDidLoad()
