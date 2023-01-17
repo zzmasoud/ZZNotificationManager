@@ -23,5 +23,5 @@
   - [X] Toggling the switch in any row changes its time button isEnabled property
   - [X] Toggling the switch in any row triggers a specified delegate function
   - [X] Tapping the change time button in any row triggers a specified delegate function
-  - [ ] Show the selected time in the button by a configurable time formatter
+  - [X] Show the selected time in the button by a configurable time formatter
 - [ ] Changing the time from an external logic will refresh the row and its properties
