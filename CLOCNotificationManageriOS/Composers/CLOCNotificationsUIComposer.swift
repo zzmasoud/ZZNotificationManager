@@ -16,19 +16,25 @@ final public class CLOCNotificationsUIComposer {
         self.delegate = delegate
     }
 
-    public func composedWith(sectionedKeys: [SectionedKeys], cellRepresentable: @escaping SettingItemCellRepresentableClosure, notificationManager: NotificationManager) -> CLOCNotificationsViewController {
+    public func composedWith(sectionedKeys: [SectionedKeys], cellRepresentable: @escaping SettingItemCellRepresentableClosure, notificationManager: NotificationManager, dateComponentsFormatter: DateComponentsFormatter) -> CLOCNotificationsViewController {
         let notificationsViewController = CLOCNotificationsViewController.makeFromStoryboard()
-        notificationsViewController.tableModels = mapSectionedKeysToSectionedItems(sectionedKeys, using: cellRepresentable)
+        notificationsViewController.tableModels = mapSectionedKeysToSectionedItems(sectionedKeys, using: cellRepresentable, dateComponentsFormatter: dateComponentsFormatter)
         notificationsViewController.notificationAuthorizationCompletion = notificationManager.requestAuthorization(completion:)
         
         return notificationsViewController
     }
     
-    private func mapSectionedKeysToSectionedItems(_ sectionedKeys: [SectionedKeys], using cellRepresentable: @escaping SettingItemCellRepresentableClosure) -> [CLOCNotificationsViewController.SectionedItems] {
+    private func mapSectionedKeysToSectionedItems(_ sectionedKeys: [SectionedKeys], using cellRepresentable: @escaping SettingItemCellRepresentableClosure, dateComponentsFormatter: DateComponentsFormatter) -> [CLOCNotificationsViewController.SectionedItems] {
         return sectionedKeys.map({ (title: String, keys: [Key]) in
             let controllers = keys.map { settingKey -> SettingItemCellController in
                 let item = cellRepresentable(settingKey)
-                let viewModel = SettingItemViewModel<UIImage>(key: settingKey, item: item, delegate: delegate, imageTransformer: { _ in item.icon })
+                let viewModel = SettingItemViewModel<UIImage>(
+                    key: settingKey,
+                    item: item,
+                    delegate: delegate,
+                    imageTransformer: { _ in item.icon },
+                    durationFormatter: dateComponentsFormatter.string(from:)
+                )
                 return SettingItemCellController(viewModel: viewModel)
             }
             return (title, controllers)

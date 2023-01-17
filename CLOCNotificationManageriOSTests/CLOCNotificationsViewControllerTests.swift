@@ -154,13 +154,20 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
     }
     
     // MARK: - Helpers
+    
+    private let dateComponentsFormatter: DateComponentsFormatter = {
+        let f = DateComponentsFormatter()
+        f.allowedUnits = [.minute, .hour, .day]
+        f.maximumUnitCount = 1
+        return f
+    }()
         
     private func makeSUT(delegate: DelegateSpy? = nil, file: StaticString = #file, line: UInt = #line) -> (sut: CLOCNotificationsViewController, notificationManager: NotificationManagerSpy) {
         let notificationManager = NotificationManagerSpy()
         let composer = CLOCNotificationsUIComposer(delegate: delegate)
         let sut = composer.composedWith(sectionedKeys: sectionedKeys, cellRepresentable: { [self] key in
             return makeMockSettingItem(fromKey: key)
-        }, notificationManager: notificationManager)
+        }, notificationManager: notificationManager, dateComponentsFormatter: dateComponentsFormatter)
         trackForMemoryLeaks(notificationManager, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         if let delegate = delegate {
@@ -187,6 +194,9 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         XCTAssertEqual(view.isShowingCaption, settingItem.caption != nil, "presented caption label wrongly", file: file, line: line)
         XCTAssertEqual(view.caption, settingItem.caption, "rendered caption is not as same as the model", file: file, line: line)
         XCTAssertEqual(view.isChangeButtonEnabled, settingItem.isOn)
+        let expectedButtonTitle = dateComponentsFormatter.string(from: settingItem.duration)
+        XCTAssertEqual(view.changeTimeButton.title(for: .normal), expectedButtonTitle, "unexpected button title for normal state", file: file, line: line)
+        XCTAssertEqual(view.changeTimeButton.title(for: .disabled), expectedButtonTitle, "unexpected button title for disabled state" ,file: file, line: line)
     }
     
     private func assertThat(_ sut: CLOCNotificationsViewController, hasSectionHeaderTitle title: String, at section: Int, file: StaticString = #file, line: UInt = #line) {

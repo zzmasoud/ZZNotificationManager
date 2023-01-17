@@ -11,6 +11,7 @@ struct MockSettingItem: SettingItemCellRepresentable {
     var isOn: Bool
     var subtitle: String?
     var caption: String?
+    var duration: TimeInterval
 }
 
 let sectionedKeys: [CLOCNotificationsUIComposer.SectionedKeys] =
@@ -32,7 +33,8 @@ let settingItems: [CLOCNotificationsUIComposer.Key: SettingItemCellRepresentable
             title: "timerPassedItsDeadline",
             isOn: true,
             subtitle: "when timer passing the progress",
-            caption: nil
+            caption: nil,
+            duration: 1.hours
         ),
     .timerPassedTheDuration:
         MockSettingItem(
@@ -40,7 +42,8 @@ let settingItems: [CLOCNotificationsUIComposer.Key: SettingItemCellRepresentable
             title: "timerPassedTheDuration",
             isOn: false,
             subtitle: "when timer passing this time",
-            caption: "you can set this to get a notification base on this deadline"
+            caption: "you can set this to get a notification base on this deadline",
+            duration: 2.hours
         ),
     .noTasksHasBeenAddedSince:
         MockSettingItem(
@@ -48,7 +51,8 @@ let settingItems: [CLOCNotificationsUIComposer.Key: SettingItemCellRepresentable
             title: "noTasksHasBeenAddedSince",
             isOn: false,
             subtitle: "when timer passing the progress",
-            caption: "get a reminder on closing to the prject's deadline"
+            caption: "get a reminder on closing to the prject's deadline",
+            duration: 3.hours
         ),
     .projectDeadlineReached:
         MockSettingItem(
@@ -56,6 +60,8 @@ let settingItems: [CLOCNotificationsUIComposer.Key: SettingItemCellRepresentable
             title: "projectDeadlineReached",
             isOn: true,
             subtitle: "get a reminder on prject's deadline",
-            caption: "tap to change the date"
+            caption: "tap to change the date",
+            duration: 7.days
+
         )
 ]

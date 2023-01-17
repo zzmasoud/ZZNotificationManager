@@ -27,6 +27,7 @@ public final class SettingItemCellController {
         cell?.captionLabel.isHidden = !viewModel.hasCaption
         cell?.captionLabel.text = viewModel.caption
         cell?.changeTimeButton.isEnabled = viewModel.isChangeTimeButtonEnabled
+        cell?.changeTimeButton.setTitle(viewModel.changeTimeButtonTitle, for: .normal)
         
         cell?.onToggle = viewModel.toggle(isOn:)
         cell?.onChangeTimeAction = viewModel.changeTime

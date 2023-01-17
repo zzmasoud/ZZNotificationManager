@@ -10,4 +10,5 @@ public protocol SettingItemCellRepresentable {
     var isOn: Bool { get }
     var subtitle: String? { get }
     var caption: String? { get }
+    var duration: TimeInterval { get }
 }
