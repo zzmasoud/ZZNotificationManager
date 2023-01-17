@@ -12,7 +12,7 @@ public final class SettingItemCellController {
         self.viewModel = viewModel
     }
     
-    public func view(in tableView: UITableView) -> UITableViewCell {
+    func view(in tableView: UITableView) -> UITableViewCell {
         let cell: SettingItemCell = tableView.dequeueReusableCell()
         self.cell = binded(cell)
         return cell

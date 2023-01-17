@@ -10,52 +10,34 @@ public protocol CLOCNotificationsViewControllerDelegate: AnyObject {
 }
 
 final public class CLOCNotificationsViewController: UITableViewController {
-    public typealias Section = String
-    public typealias Item = SettingItemCellController
-    public typealias SectionedItems = (section: Section, items: [Item])
-    public typealias NotificationAuthorizationCompletion = ((@escaping (Bool, Error?) -> Void) -> ())
 
-    var tableModels: [SectionedItems] = []
-    var notificationAuthorizationCompletion: NotificationAuthorizationCompletion?
+    var viewModel: CLOCNotificationsViewModel! // is it make sense to force unwrap?
     private(set) public var errorView = UIView()
-        
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        errorView.isHidden = true
-        tableView.dataSource = nil
-        tableView.delegate = self
+        viewModel.viewLoaded()
         
-        notificationAuthorizationCompletion?({ [weak self] isAuthorized, error in
-            guard let self = self else { return }
-            guard error == nil else { return self.errorView.isHidden = false }
-            
-            self.errorView.isHidden = isAuthorized
-            if isAuthorized {
-                self.fillTableData()
-            }
-        })
-    }
-    
-    private func fillTableData() {
-        tableView.dataSource = self
-        tableView.reloadData()
+        viewModel.onAuhorization = { [weak self] isGranted in
+            self?.errorView.isHidden = isGranted
+            self?.tableView.reloadData()
+        }
     }
     
     public override func numberOfSections(in tableView: UITableView) -> Int {
-        return tableModels.count
+        return viewModel.numberOfSections
     }
     
     public override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return tableModels[section].section
+        return viewModel.titleForHeader(inSection: section)
     }
     
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableModels[section].items.count
+        return viewModel.numberOfRows(inSection: section)
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableModels[indexPath.section].items[indexPath.row].view(in: tableView)
+        return viewModel.cellController(inSection: indexPath.section, row: indexPath.row).view(in: tableView)
     }
 }

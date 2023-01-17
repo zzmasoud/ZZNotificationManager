@@ -18,13 +18,12 @@ final public class CLOCNotificationsUIComposer {
 
     public func composedWith(sectionedKeys: [SectionedKeys], cellRepresentable: @escaping SettingItemCellRepresentableClosure, notificationManager: NotificationManager, dateComponentsFormatter: DateComponentsFormatter) -> CLOCNotificationsViewController {
         let notificationsViewController = CLOCNotificationsViewController.makeFromStoryboard()
-        notificationsViewController.tableModels = mapSectionedKeysToSectionedItems(sectionedKeys, using: cellRepresentable, dateComponentsFormatter: dateComponentsFormatter)
-        notificationsViewController.notificationAuthorizationCompletion = notificationManager.requestAuthorization(completion:)
+        notificationsViewController.viewModel = CLOCNotificationsViewModel(tableModels:  mapSectionedKeysToSectionedItems(sectionedKeys, using: cellRepresentable, dateComponentsFormatter: dateComponentsFormatter), notificationAuthorizationCompletion: notificationManager.requestAuthorization(completion:))
         
         return notificationsViewController
     }
     
-    private func mapSectionedKeysToSectionedItems(_ sectionedKeys: [SectionedKeys], using cellRepresentable: @escaping SettingItemCellRepresentableClosure, dateComponentsFormatter: DateComponentsFormatter) -> [CLOCNotificationsViewController.SectionedItems] {
+    private func mapSectionedKeysToSectionedItems(_ sectionedKeys: [SectionedKeys], using cellRepresentable: @escaping SettingItemCellRepresentableClosure, dateComponentsFormatter: DateComponentsFormatter) -> [CLOCNotificationsViewModel.SectionedItems] {
         return sectionedKeys.map({ (title: String, keys: [Key]) in
             let controllers = keys.map { settingKey -> SettingItemCellController in
                 let item = cellRepresentable(settingKey)

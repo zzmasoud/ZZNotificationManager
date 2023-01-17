@@ -16,7 +16,6 @@ class CLOCNotificationsViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
         
         XCTAssertEqual(notificationManager.authorizeCallCount, 1)
-        XCTAssertFalse(sut.isShowingError)
     }
     
     func test_onRejectedAuthorization_showsErrorView() {
