@@ -4,32 +4,22 @@
 
 import UIKit
 
-public class SettingItemCell: UITableViewCell {
-    public let iconImageView = UIImageView()
-    public let titleLabel = UILabel()
-    public let subtitleLabel = UILabel()
-    public let captionLabel = UILabel()
+public class SettingItemCell: UITableViewCell {    
+    @IBOutlet private(set) public var iconImageView: UIImageView!
+    @IBOutlet private(set) public var titleLabel: UILabel!
+    @IBOutlet private(set) public var subtitleLabel: UILabel!
+    @IBOutlet private(set) public var captionLabel: UILabel!
+    @IBOutlet private(set) public var switchControl: UISwitch!
+    @IBOutlet private(set) public var changeTimeButton: UIButton!
     
-    private(set) public lazy var switchControl: UISwitch = {
-        let control = UISwitch()
-        control.addTarget(self, action: #selector(switchToggled), for: .valueChanged)
-        return control
-    }()
+    var onToggle: ((_ isOn: Bool) -> Void)?
+    var onChangeTimeAction: (() -> Void)?
     
-    private(set) public lazy var changeTimeButton: UIButton = {
-        let control = UIButton()
-        control.addTarget(self, action: #selector(changeTimeTapped), for: .touchUpInside)
-        return control
-    }()
-    
-    public var onToggle: ((_ isOn: Bool) -> Void)?
-    public var onChangeTimeAction: (() -> Void)?
-    
-    @objc private func switchToggled() {
+    @IBAction private func switchToggled() {
         onToggle?(switchControl.isOn)
     }
     
-    @objc private func changeTimeTapped() {
+    @IBAction private func changeTimeTapped() {
         onChangeTimeAction?()
     }
 }

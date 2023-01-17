@@ -6,33 +6,34 @@ import UIKit
 
 public final class SettingItemCellController {
     private let viewModel: SettingItemViewModel<UIImage>
+    private var cell: SettingItemCell?
 
     init(viewModel: SettingItemViewModel<UIImage>) {
         self.viewModel = viewModel
     }
     
-    public func view() -> UITableViewCell {
-        return binded(SettingItemCell())
+    public func view(in tableView: UITableView) -> UITableViewCell {
+        let cell: SettingItemCell = tableView.dequeueReusableCell()
+        self.cell = binded(cell)
+        return cell
     }
     
-    private func binded(_ cell: SettingItemCell) -> SettingItemCell {
-        cell.iconImageView.image = viewModel.icon
-        cell.titleLabel.text = viewModel.title
-        cell.switchControl.isOn = viewModel.isOn
-        cell.subtitleLabel.isHidden = !viewModel.hasSubtitle
-        cell.subtitleLabel.text = viewModel.subtitle
-        cell.captionLabel.isHidden = !viewModel.hasCaption
-        cell.captionLabel.text = viewModel.caption
-        cell.changeTimeButton.isEnabled = viewModel.isChangeTimeButtonEnabled
+    private func binded(_ cell: SettingItemCell?) -> SettingItemCell? {
+        cell?.iconImageView.image = viewModel.icon
+        cell?.titleLabel.text = viewModel.title
+        cell?.switchControl.isOn = viewModel.isOn
+        cell?.subtitleLabel.isHidden = !viewModel.hasSubtitle
+        cell?.subtitleLabel.text = viewModel.subtitle
+        cell?.captionLabel.isHidden = !viewModel.hasCaption
+        cell?.captionLabel.text = viewModel.caption
+        cell?.changeTimeButton.isEnabled = viewModel.isChangeTimeButtonEnabled
         
-        cell.onToggle = viewModel.toggle(isOn:)
-        cell.onChangeTimeAction = viewModel.changeTime
+        cell?.onToggle = viewModel.toggle(isOn:)
+        cell?.onChangeTimeAction = viewModel.changeTime
 
-        viewModel.onSwitchToggle = { [weak cell] isOn in
-            cell?.changeTimeButton.isEnabled = isOn
+        viewModel.onSwitchToggle = { [weak self] isOn in
+            self?.cell?.changeTimeButton.isEnabled = isOn
         }
-        
         return cell
     }
 }
-

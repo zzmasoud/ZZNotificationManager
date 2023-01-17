@@ -17,15 +17,11 @@ final public class CLOCNotificationsUIComposer {
     }
 
     public func composedWith(sectionedKeys: [SectionedKeys], cellRepresentable: @escaping SettingItemCellRepresentableClosure, notificationManager: NotificationManager) -> CLOCNotificationsViewController {
-        let notificationsViewController = CLOCNotificationsViewController(
-            tableModels:
-                mapSectionedKeysToSectionedItems(
-                    sectionedKeys,
-                    using: cellRepresentable
-                ),
-            notificationAuthorizationCompletion:
-                notificationManager.requestAuthorization(completion:)
-        )
+        let bundle = Bundle(for: CLOCNotificationsViewController.self)
+        let storyboard = UIStoryboard(name: "Notifications", bundle: bundle)
+        let notificationsViewController = storyboard.instantiateInitialViewController() as! CLOCNotificationsViewController
+        notificationsViewController.tableModels = mapSectionedKeysToSectionedItems(sectionedKeys, using: cellRepresentable)
+        notificationsViewController.notificationAuthorizationCompletion = notificationManager.requestAuthorization(completion:)
         
         return notificationsViewController
     }

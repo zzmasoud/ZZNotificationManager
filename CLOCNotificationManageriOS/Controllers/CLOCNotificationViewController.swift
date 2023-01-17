@@ -61,6 +61,6 @@ final public class CLOCNotificationsViewController: UITableViewController {
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableModels[indexPath.section].items[indexPath.row].view()
+        return tableModels[indexPath.section].items[indexPath.row].view(in: tableView)
     }
 }
